@@ -1,0 +1,13 @@
+{
+  "status": "suggested_create_card_rendered_not_verified_saved",
+  "name": "七天币安股票实验研究检查",
+  "requested_initial_status": "PAUSED",
+  "project_path": "/Users/a123/Desktop/7天股票交易实验",
+  "timezone": "America/Chicago",
+  "planned_checks": 42,
+  "recurrence_validated_offline": true,
+  "scheduler_execution_verified": false,
+  "reason": "The task tool requires suggested_create for timezone-anchored recurrence; the configuration card was rendered. No active automation is claimed.",
+  "activation_blockers": ["Binance authentication returns -2015", "Stop/fill draft requires review"],
+  "rebase_dates_if_start_delayed": true
+}

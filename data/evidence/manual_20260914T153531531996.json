@@ -1,0 +1,23 @@
+{
+  "checked_at": "2026-09-14T06:35:31.533113+00:00",
+  "environment": "production",
+  "credentials_present": true,
+  "public_api_reachable": true,
+  "signed_account_read_verified": false,
+  "api_key_permissions_verified": false,
+  "stock_etf_access_verified": false,
+  "orders_allowed": false,
+  "errors": [
+    "account: HTTP 401 / Binance -2015",
+    "stock_rules: HTTP 400 / Binance -2015",
+    "stock_quote: HTTP 400 / Binance -2015",
+    "stock_orders: HTTP 400 / Binance -2015",
+    "api_permissions: HTTP 400 / Binance -2015"
+  ],
+  "scope": "stocks",
+  "stock_rules_read_verified": false,
+  "stock_quote_read_verified": false,
+  "stock_orders_read_verified": false,
+  "quote_freshness_verified": false,
+  "stock_symbol": "AAPL"
+}

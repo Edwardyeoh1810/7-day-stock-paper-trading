@@ -1,0 +1,89 @@
+{
+  "experiment_name": "7-day Binance stock/ETF paper trading experiment",
+  "timezone": "America/Chicago",
+  "cycle_length_trading_days": 7,
+  "max_checks_per_trading_day": 6,
+  "late_start_grace_minutes": 30,
+  "activation_status": "github_actions_prepared_not_deployed",
+  "planned_trading_dates": [
+    "2026-09-15",
+    "2026-09-16",
+    "2026-09-17",
+    "2026-09-18",
+    "2026-09-21",
+    "2026-09-22",
+    "2026-09-23"
+  ],
+  "default_mode": "paper_trading_only",
+  "note": "U.S. regular market open is 8:30 a.m. Central / 9:30 a.m. Eastern. The second check is set to 8:35 a.m. Central to review the first post-open conditions while keeping the schedule to six checks per day.",
+  "tasks": [
+    {
+      "id": "pre_market_0745_ct",
+      "time": "07:45",
+      "timezone": "America/Chicago",
+      "label": "Pre-market research and readiness",
+      "instructions": [
+        "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, and latest journal.",
+        "Read news, official calendars, account state if available, and overnight market context.",
+        "Generate today's watchlist.",
+        "Do not place orders."
+      ]
+    },
+    {
+      "id": "open_review_0835_ct",
+      "time": "08:35",
+      "timezone": "America/Chicago",
+      "label": "Post-open opportunity review",
+      "instructions": [
+        "Check first post-open price, spread, liquidity, and volume conditions.",
+        "Check whether any high-liquidity stock or ETF meets multi-evidence entry conditions.",
+        "Record trade candidates, risks, and no-trade reasons.",
+        "Use paper trading only unless a separately confirmed live order has been authorized."
+      ]
+    },
+    {
+      "id": "late_morning_1100_ct",
+      "time": "11:00",
+      "timezone": "America/Chicago",
+      "label": "Position and final new-entry review",
+      "instructions": [
+        "Check existing positions.",
+        "Decide whether to hold, reduce, stop out, or ignore new opportunities.",
+        "This is the last scheduled slot for considering a new paper trade unless risk is already open."
+      ]
+    },
+    {
+      "id": "midday_1300_ct",
+      "time": "13:00",
+      "timezone": "America/Chicago",
+      "label": "Risk management only",
+      "instructions": [
+        "Manage existing positions.",
+        "Do not actively expand risk.",
+        "Update risk, cash, open thesis, and next action."
+      ]
+    },
+    {
+      "id": "flatten_prep_1415_ct",
+      "time": "14:15",
+      "timezone": "America/Chicago",
+      "label": "Prepare to close intraday risk",
+      "instructions": [
+        "Prepare to close remaining intraday positions unless overnight hold is explicitly allowed in the strategy.",
+        "Reduce tail risk.",
+        "Record any unresolved data or order issues."
+      ]
+    },
+    {
+      "id": "end_of_day_1445_ct",
+      "time": "14:45",
+      "timezone": "America/Chicago",
+      "label": "End-of-day reconciliation",
+      "instructions": [
+        "Confirm exit from positions that should not remain overnight.",
+        "Record daily results, evidence, current holdings, cash, risk, and next run instructions.",
+        "Flag any human confirmation needed."
+      ]
+    }
+  ]
+}
