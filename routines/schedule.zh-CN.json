@@ -4,7 +4,7 @@
   "cycle_length_trading_days": 7,
   "max_checks_per_trading_day": 6,
   "late_start_grace_minutes": 30,
-  "activation_status": "github_actions_prepared_not_deployed",
+  "activation_status": "github_actions_deployed_hosted_runner_blocked_http_451",
   "planned_trading_dates": [
     "2026-09-15",
     "2026-09-16",

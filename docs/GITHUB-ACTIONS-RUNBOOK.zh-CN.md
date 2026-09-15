@@ -56,4 +56,6 @@ TELEGRAM_CHAT_ID=
 
 GitHub 托管 Runner 的公网 IP 不固定。如果 Binance API Key 启用了固定 IP 白名单，接口可能返回 `-2015`。若必须固定 IP，应迁移到有固定出口 IP 的 VPS 或自托管 Runner。
 
+2026-09-15 的首次 GitHub 托管 Runner 实测中，Binance 公开 `ping` 和时间接口均返回 HTTP 451。该结果说明托管 Runner 的运行地区无法访问 Binance.com，不是 API Key 验证失败。当前工作流已经部署，但不能依靠 GitHub 托管 Runner完成 Binance 数据读取。推荐在允许访问 Binance 的地区使用带固定出口 IP 的 VPS，并注册为带 `binance-paper` 标签的 GitHub 自托管 Runner。
+
 目前 `scripts/run_observation.py` 是只读观察运行器，不包含自动生成 paper 买卖指令、成交撮合或盈亏更新逻辑。它可以验证连接并留下记录，但还不能独立完成七天自主 paper trading；这部分需要下一阶段补齐并测试。
