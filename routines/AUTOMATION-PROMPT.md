@@ -14,7 +14,11 @@ Run `python3 -B scripts/run_observation.py --dry-run` first. Outside the planned
 
 Research the slot's topic with official calendars, news and verifiable data. Save research in separate journal/evidence files using the same run_id with a `-research` suffix, and update next-task focus. Do not edit generated API journals.
 
-Observe only when authentication or data is invalid or the stop/fill draft is unapproved. Keep 20 USDT paper capital and existing limits; record no trade when actual fees or minimum amounts make trading infeasible. Do not implement or execute live orders, transfers, tokenization or automatic agreement acceptance. This is not a continuous stop monitor. Read credentials locally through the script; never display them.
+After research, independently decide whether the local paper ledger should open, manage, close, or record no trade. The user authorized autonomous paper decisions only. Never submit a real Binance order, transfer, tokenization request, or account-setting change.
+
+For every decision, create a non-secret JSON file under `data/decisions/` with `paper_trading_only: true`, an `action` of `open_long`, `manage`, `close`, or `no_trade`, and the evidence, thesis, stop, and target required for an entry. Then run `python3 -B scripts/paper_engine.py --decision <file> --run-id <date_slot>`. The engine refreshes read-only Stocks data, rejects stale or unsafe state, and writes only to the local paper ledger. Do not create an entry before 08:30 Central or after 11:30 Central. At 14:15 Central, close any remaining paper position because overnight holds are disabled.
+
+Keep 10000 USDT paper capital and existing limits; record no trade when actual fees, liquidity, data quality, or evidence make trading infeasible. This is not a continuous stop monitor. Read credentials locally through the script; never display them.
 
 Stay quiet for unchanged or non-actionable state. Notify only on meaningful changes, completion, failure or required user action. Activate only after authentication passes and draft review completes. Revalidate seven sessions and synchronize schedules if the start is delayed. Pause after the seventh session.
 

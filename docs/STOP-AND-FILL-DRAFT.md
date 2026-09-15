@@ -1,8 +1,8 @@
 # Stop and Fill Rules v0.1
 
-Status: DRAFT FOR REVIEW, not active. Scope: a local paper experiment in ordinary US stocks/ETFs through Binance Stocks data. Excludes bStocks, leverage, options and crypto.
+Status: ACTIVE FOR LOCAL PAPER TRADING ONLY. Scope: a local paper experiment in ordinary US stocks/ETFs through Binance Stocks data. Excludes bStocks, leverage, options and crypto.
 
-## Proposed Parameters
+## Active Parameters
 
 Regular US sessions only, using America/New_York exchange calendars. One position at a time, with notional capped at 10% of initial experiment capital. Require two independent evidence categories, a structural stop and an exit plan before entry. Consider targets offering at least 1.5 times net risk. Reassess after 30 minutes; exit if follow-through is absent and the thesis weakens. Begin removing risk 45 minutes before the actual close and reconcile exits 15 minutes before close, including early-close adjustments. No overnight positions in v0.1.
 
@@ -34,7 +34,7 @@ Stop new entries after two consecutive stopped trades, or when max(0, -daily rea
 
 ## Capital and Execution Boundary
 
-Keep 20 USDT initial paper capital, 2 USDT maximum position and 0.10 USDT single-trade risk. When actual minimum order size or fees make these infeasible, record no trade. Synthetic offline test fixtures may exercise fills but must not count as live-data performance. Larger virtual capital or different risk limits require a separate decision.
+Keep 10000 USDT initial paper capital, 1000 USDT maximum position and 50 USDT maximum planned single-trade risk. When actual minimum order size or fees make these infeasible, record no trade. Synthetic offline test fixtures may exercise fills but must not count as live-data performance.
 
 The documented Stocks order types are MARKET and LIMIT; Spot STOP_LOSS/OCO support must not be assumed. Polling is not broker-held protection. This implementation sends no live orders and accepts no account agreements. Any future ordinary-equity order implementation must set tokenize=false and distinguish acknowledgement from actual fills and cancellation.
 

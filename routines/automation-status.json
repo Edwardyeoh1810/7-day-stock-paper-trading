@@ -1,5 +1,5 @@
 {
-  "status": "github_actions_deployed_hosted_runner_blocked_http_451",
+  "status": "gpt_heartbeat_active_local_paper_engine_enabled_github_hosted_runner_blocked_http_451",
   "name": "7-day paper trading observation",
   "requested_initial_status": "ACTIVE",
   "project_path": "/Users/a123/Desktop/7天股票交易实验",
@@ -10,7 +10,7 @@
   "repository": "yomislight/7-day-stock-paper-trading",
   "first_github_run_id": "34930058749",
   "reason": "GitHub Actions accepted and executed the workflow, but the hosted runner received HTTP 451 from Binance public endpoints. A supported-region self-hosted runner or VPS is required for Binance connectivity.",
-  "activation_blockers": ["GitHub-hosted runner receives HTTP 451 from Binance", "Autonomous paper decision and fill engine is not implemented", "Stop/fill draft requires review"],
+  "activation_blockers": ["GitHub-hosted runner receives HTTP 451 from Binance; use the local GPT heartbeat for the experiment"],
   "gpt_mobile_heartbeat": {
     "automation_id": "7",
     "name": "7天股票实验 六时段手机报告",

@@ -25,6 +25,7 @@ It is not a live trading system and must not be described as a profitable system
 - Perform read-only account, position, order, and market-data checks when credentials are locally available.
 - Produce watchlists, risk notes, and paper trade records.
 - In paper trading only, autonomously decide whether to buy, sell, reduce, stop out, flatten, hold, or stay in cash according to the strategy and risk limits.
+- Autonomous paper execution requires `autonomous_paper_execution_enabled: true` in readiness and writes only to the local ledger through `scripts/paper_engine.py`.
 - Record no-trade decisions with evidence and reasons.
 
 ## Prohibited Work
@@ -76,6 +77,6 @@ Each journal entry must state:
 ## Binance Runtime
 
 - Use `docs/BINANCE-API.md` and its Chinese companion for the Stocks endpoint mapping. The default checker uses `/sapi/v1/equity/`, not Spot symbol probes.
-- `scripts/run_observation.py` is read-only; its SQLite database records executions, not a completed trading engine. No POST endpoint is implemented.
-- `docs/STOP-AND-FILL-DRAFT.md` and its Chinese companion remain drafts. They do not authorize fills, continuous monitoring or changed risk limits.
+- `scripts/run_observation.py` is read-only. `scripts/paper_engine.py` may simulate local paper fills only; it has no broker POST path.
+- The approved local paper rules enforce one position, 10% maximum notional, 0.5% maximum planned loss, two evidence categories, 1.5 net reward/risk, no new entry after 11:30 Central, and no overnight position.
 - Preserve both languages. Dates in the schedule are provisional until authentication and review pass; do not count setup days as experiment sessions.

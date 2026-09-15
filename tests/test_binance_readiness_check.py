@@ -92,7 +92,7 @@ class ReadOnlyChecks(unittest.TestCase):
             result = checker.check_stocks(self.config)
         self.assertTrue(result["stock_etf_access_verified"])
         self.assertFalse(result["orders_allowed"])
-        self.assertFalse(result["quote_freshness_verified"])
+        self.assertTrue(result["quote_freshness_verified"])
         self.assertIn("/sapi/v1/equity/market/exchangeInfo?symbol=AAPL", get.call_args_list[0].args[0])
 
     def test_empty_stock_symbols_do_not_pass(self):

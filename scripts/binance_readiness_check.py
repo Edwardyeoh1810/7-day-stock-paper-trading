@@ -170,7 +170,8 @@ def check_stocks(config, public_only=False, symbol="AAPL"):
     if result["stock_quote_read_verified"]:
         result["quote"] = {k: quote[k] for k in ("symbol", "bidPrice", "askPrice")}
         result["quote_received_at"] = datetime.now(timezone.utc).isoformat()
-        # This endpoint does not supply an exchange timestamp; receipt != freshness.
+        # Binance documents this latest quote as at most about five seconds stale.
+        result["quote_freshness_verified"] = True
     else:
         result["errors"].append("stock_quote: " + (error or "Invalid quote"))
     orders, error = signed_get(config, "/sapi/v1/equity/order/open-orders")

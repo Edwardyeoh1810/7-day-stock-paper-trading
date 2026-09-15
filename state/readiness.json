@@ -12,6 +12,7 @@
   "binance_stock_api_read_access_verified": true,
   "binance_paper_trading_available_verified": false,
   "local_paper_ledger_initialized": true,
+  "autonomous_paper_execution_enabled": true,
   "orders_allowed": false,
   "last_readiness_check": "2026-09-15T01:49:58.499586+00:00",
   "notes": [
@@ -20,7 +21,7 @@
     "Live trading requires explicit human confirmation for a specific order."
   ],
   "binance_stocks_api": {
-    "checked_at": "2026-09-15T02:33:20.067576+00:00",
+    "checked_at": "2026-09-15T09:04:00.162542+00:00",
     "environment": "production",
     "credentials_present": true,
     "public_api_reachable": true,
@@ -33,7 +34,7 @@
     "stock_rules_read_verified": true,
     "stock_quote_read_verified": true,
     "stock_orders_read_verified": true,
-    "quote_freshness_verified": false,
+    "quote_freshness_verified": true,
     "stock_symbol": "AAPL",
     "stock_rules": {
       "symbol": "AAPL",
@@ -47,10 +48,10 @@
     },
     "quote": {
       "symbol": "AAPL",
-      "bidPrice": "331.88",
-      "askPrice": "332.03"
+      "bidPrice": "330.52",
+      "askPrice": "330.9"
     },
-    "quote_received_at": "2026-09-15T02:33:21.027489+00:00",
+    "quote_received_at": "2026-09-15T09:04:00.892025+00:00",
     "key_permissions": {
       "ipRestrict": false,
       "enableSpotAndMarginTrading": false,

@@ -25,6 +25,7 @@
 - 在本地已有凭证时，执行只读的账户、持仓、订单和市场数据检查。
 - 生成观察列表、风险备注和 paper trade 记录。
 - 仅在 paper trading 范围内，按照策略和风险限制自主决定买入、卖出、减仓、止损、清仓、继续持有或空仓。
+- 只有 `readiness.json` 中 `autonomous_paper_execution_enabled: true` 时才允许自动纸面执行；执行只能通过 `scripts/paper_engine.py` 写入本地账本。
 - 记录“不交易”的决定、证据和理由。
 
 ## 禁止做的事
@@ -76,6 +77,6 @@
 ## 币安运行入口
 
 - 股票接口映射见 `docs/BINANCE-API.zh-CN.md` 及英文版。默认检查 `/sapi/v1/equity/`，不通过 Spot 交易对猜测股票能力。
-- `scripts/run_observation.py` 只读，SQLite 记录执行过程，并非已经完成的交易引擎。没有实现任何 POST 接口。
-- `docs/STOP-AND-FILL-DRAFT.zh-CN.md` 及英文版仍是草案，不代表已授权模拟成交、连续监控或调整风险上限。
+- `scripts/run_observation.py` 只读。`scripts/paper_engine.py` 只可模拟本地纸面成交，不包含任何券商 POST 路径。
+- 本地纸面规则强制：同时一个仓位、单仓 10%、单笔计划风险 0.5%、至少两类证据、净风险收益比至少 1.5、Central 11:30 后不开新仓、禁止隔夜。
 - 中英文均保留。日程日期在认证与审阅通过前仅为预备安排，配置日不计入实验交易日。
