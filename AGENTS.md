@@ -17,7 +17,7 @@ It is not a live trading system and must not be described as a profitable system
 - Target platform: Binance stock/ETF trading capability.
 - Before any execution path is used, verify whether Binance account permissions, region eligibility, API support, and any paper/sandbox capability are available.
 - If Binance does not expose paper trading for stocks/ETFs, use the local paper ledger in this project.
-- Binance API keys must stay local in the root `binance-api.env`; never ask the user to paste keys in chat. The read-only checker reads only this file. Share `binance-api.env.example`, never the completed credential file.
+- Binance API keys must stay local in the root `09-API密钥-仅本地/binance-api.env`; never ask the user to paste keys in chat. The read-only checker reads only this file. Share `09-API密钥-仅本地/binance-api.env.example`, never the completed credential file.
 
 ## Permitted Work
 
@@ -25,7 +25,7 @@ It is not a live trading system and must not be described as a profitable system
 - Perform read-only account, position, order, and market-data checks when credentials are locally available.
 - Produce watchlists, risk notes, and paper trade records.
 - In paper trading only, autonomously decide whether to buy, sell, reduce, stop out, flatten, hold, or stay in cash according to the strategy and risk limits.
-- Autonomous paper execution requires `autonomous_paper_execution_enabled: true` in readiness and writes only to the local ledger through `scripts/paper_engine.py`.
+- Autonomous paper execution requires `autonomous_paper_execution_enabled: true` in readiness and writes only to the local ledger through `06-程序脚本-scripts/paper_engine.py`.
 - Record no-trade decisions with evidence and reasons.
 
 ## Prohibited Work
@@ -43,23 +43,23 @@ Every scheduled run must read these files before taking action:
 
 - `AGENTS.md`
 - `AGENTS.zh-CN.md`
-- `docs/TRADING-STRATEGY.md`
-- `docs/TRADING-STRATEGY.zh-CN.md`
-- `routines/schedule.json`
-- `routines/schedule.zh-CN.json`
-- `routines/CONTINUITY.md`
-- `routines/CONTINUITY.zh-CN.md`
-- `state/readiness.json`
-- `data/current-state.json`
-- Latest file in `data/journal/`, if present
+- `02-项目文档-docs/TRADING-STRATEGY.md`
+- `02-项目文档-docs/TRADING-STRATEGY.zh-CN.md`
+- `03-定时任务-routines/schedule.json`
+- `03-定时任务-routines/schedule.zh-CN.json`
+- `03-定时任务-routines/CONTINUITY.md`
+- `03-定时任务-routines/CONTINUITY.zh-CN.md`
+- `04-运行状态-state/readiness.json`
+- `05-交易记录-data/current-state.json`
+- Latest file in `05-交易记录-data/journal/`, if present
 
 ## Required End-of-Run Writes
 
 Every scheduled run must update:
 
-- `data/current-state.json`
-- The current trading day's journal file in `data/journal/`
-- Evidence notes in `data/evidence/`
+- `05-交易记录-data/current-state.json`
+- The current trading day's journal file in `05-交易记录-data/journal/`
+- Evidence notes in `05-交易记录-data/evidence/`
 
 Each journal entry must state:
 
@@ -76,7 +76,7 @@ Each journal entry must state:
 
 ## Binance Runtime
 
-- Use `docs/BINANCE-API.md` and its Chinese companion for the Stocks endpoint mapping. The default checker uses `/sapi/v1/equity/`, not Spot symbol probes.
-- `scripts/run_observation.py` is read-only. `scripts/paper_engine.py` may simulate local paper fills only; it has no broker POST path.
+- Use `02-项目文档-docs/BINANCE-API.md` and its Chinese companion for the Stocks endpoint mapping. The default checker uses `/sapi/v1/equity/`, not Spot symbol probes.
+- `06-程序脚本-scripts/run_observation.py` is read-only. `06-程序脚本-scripts/paper_engine.py` may simulate local paper fills only; it has no broker POST path.
 - The approved local paper rules enforce one position, 10% maximum notional, 0.5% maximum planned loss, two evidence categories, 1.5 net reward/risk, no new entry after 11:30 Central, and no overnight position.
 - Preserve both languages. Dates in the schedule are provisional until authentication and review pass; do not count setup days as experiment sessions.

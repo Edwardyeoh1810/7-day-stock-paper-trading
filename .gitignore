@@ -7,8 +7,8 @@
 __pycache__/
 *.pyc
 .DS_Store
-data/*.sqlite3*
-state/run.lock
+05-交易记录-data/*.sqlite3*
+04-运行状态-state/run.lock
 observation-output.json
 .github-actions-runtime/
 *.swp

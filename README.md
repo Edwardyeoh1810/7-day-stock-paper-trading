@@ -1,68 +1,53 @@
 # 7 天股票交易实验
 
-项目唯一工作目录：`/Users/a123/Desktop/7天股票交易实验`。
+这是一个使用 **10000 USDT 虚拟资金** 的 7 个美股交易日实验。系统可以在风险规则内自主进行本地 paper trading，但不会提交真实 Binance 订单，也不能被描述为稳定盈利系统。
 
-这是使用币安股票 API 的研究与模拟实验。币安股票接口只读连接已经验证，实验使用 10000 USDT 本地 paper trading 账本。真实交易始终关闭；自动运行器可自行作出纸面决策，并用本地账本模拟成交、止损、平仓与盈亏更新。
+## 先看这里
 
-## 从这里阅读
+1. [开始使用](01-开始使用/开始使用.md)
+2. [当前项目说明](01-开始使用/项目完整说明.md)
+3. [中文交易策略](02-项目文档-docs/TRADING-STRATEGY.zh-CN.md)
+4. [当前组合状态](05-交易记录-data/current-state.json)
+5. [最新交易日志](05-交易记录-data/journal/)
 
-| 你要了解什么 | 打开文件 |
-| --- | --- |
-| 全部决定、当前进度、下一步 | [项目交接说明](docs/PROJECT-HANDOFF.zh-CN.md) |
-| 2026-09-15 GitHub Actions 与安全修改 | [本次修改记录](docs/2026-09-15修改记录.md) |
-| GitHub Actions 部署与密钥填写 | [云端运行说明](docs/GITHUB-ACTIONS-RUNBOOK.zh-CN.md) |
-| 配置 API 和运行检查 | [开始使用](开始使用.md) |
-| 币安股票接口与认证排查 | [币安接口说明](docs/BINANCE-API.zh-CN.md) |
-| 审阅止损与模拟成交规则 | [止损成交草案 v0.1](docs/STOP-AND-FILL-DRAFT.zh-CN.md) |
-| 原有交易策略与额度 | [策略](docs/TRADING-STRATEGY.zh-CN.md) |
-| AI 每次运行应遵守的规则 | [运行规则](AGENTS.zh-CN.md) |
-| 日程、恢复与定时任务说明 | [连续性协议](routines/CONTINUITY.zh-CN.md)、[定时任务说明](routines/AUTOMATION-PROMPT.zh-CN.md) |
-| 测试结果和验收边界 | [验证记录](data/evidence/2026-09-14-validation.md) |
-| 最初发现的问题及后续处理 | [项目审阅](docs/项目审阅.md) |
-| English overview | [README English](README.en.md) |
+## 中文目录
 
-## 状态快照
+| 目录 | 给谁看 | 作用 |
+| --- | --- | --- |
+| `01-开始使用` | 所有人 | 操作步骤、项目总览和英文说明 |
+| `02-项目文档-docs` | 研究者 | 策略、Binance 接口、安全边界、部署和变更记录 |
+| `03-定时任务-routines` | 运行维护者 | 六次检查日程、连续性规则、自动任务提示词和任务状态 |
+| `04-运行状态-state` | 系统 | readiness 安全开关、paper 参数和运行锁 |
+| `05-交易记录-data` | 复盘者 | 当前组合、模拟账本、决策、日志和证据 |
+| `06-程序脚本-scripts` | 开发者 | 只读连接、调度器和 paper trading 引擎 |
+| `07-自动测试-tests` | 开发者 | 安全边界、账本、调度和恢复测试 |
+| `08-参考资料` | 研究者 | 原始 PDF 等参考材料，不作为当前运行指令 |
+| `09-API密钥-仅本地` | 账户所有者 | 本地 API 配置；真实密钥禁止提交或分享 |
 
-更新于 2026-09-15。本表来自 `state/readiness.json`、`data/current-state.json` 和自动测试结果。
+根目录的 `AGENTS.md` 和 `AGENTS.zh-CN.md` 是 AI 必读运行规则，不能移入其他目录。`.github/` 保存 GitHub Actions 工作流。
 
-| 项目 | 状态 |
-| --- | --- |
-| 独立本地凭证文件 | 已配置；实际内容只保存在 binance-api.env |
-| 币安公共接口 | 最近一次检查通过 |
-| 真实账户与股票 API | 只读验证成功；账户、股票规则、AAPL 报价、股票未完成订单与权限均可读取 |
-| 只读检查与 SQLite 运行记录 | 已实现并做过端到端演练 |
-| 自动测试 | 27 项通过；42 个日程槽位验证通过 |
-| 研究日程 | 2026-09-15 至 2026-09-23 的七个交易日，每天六次 Central 检查 |
-| GitHub Actions | 已上传至私有仓库并完成首次手动触发；GitHub 托管 Runner 访问 Binance 返回 HTTP 451 |
-| GitHub 仓库 | `yomislight/7-day-stock-paper-trading`，私有仓库 |
-| 止损成交规则 | 本地 paper ledger 已强制执行；不提供连续监控，仅在每天六次检查中管理风险 |
-| 模拟成交引擎 | 已实现；只写本地账本，不含 Binance 下单代码 |
-| 实盘下单 | 未实现、未启用、未下单 |
-| 本地模拟资金 | 初始及当前现金 10000 USDT，空仓 |
+## 当前安全边界
 
-后续实际状态以 [readiness](state/readiness.json)、[current-state](data/current-state.json)、[自动任务状态](routines/automation-status.json) 和最新证据为准。
+- 只允许 paper trading。
+- `live_trading_enabled` 必须保持 `false`。
+- API 仅用于读取账户、订单和股票行情。
+- 不交易期权、期货、杠杆、保证金、垃圾股或不明确产品。
+- 每次决策都必须保存理由、证据、风险和结果。
+- 行情不清楚、数据不足或定时检查错过时，保持空仓。
 
-## 文件如何组织
+## 常用命令
 
-```text
-7天股票交易实验/
-  README.md / README.en.md       项目首页
-  开始使用.md                    本地操作步骤
-  AGENTS.md / AGENTS.zh-CN.md    中英文运行规则
-  binance-api.env               真实本地凭证，不分享
-  binance-api.env.example       空白分享模板
-  docs/                        接口、策略、草案、审阅和交接说明
-  .github/workflows/           GitHub Actions 定时只读检查工作流
-  routines/                    日程、连续性协议、自动任务说明与状态
-  scripts/                     币安只读检查、运行器、SQLite 记录
-  tests/                       接口与运行机制测试
-  state/                       readiness 和运行锁
-  data/                        组合状态、SQLite、日志、证据
-  AI Trading with Codex and GPT 6 Astra.pdf  原始参考材料
+```bash
+cd "/Users/a123/Desktop/7天股票交易实验"
+
+# 检查 Binance 只读连接
+python3 -B "06-程序脚本-scripts/binance_readiness_check.py" --update-readiness
+
+# 查看当前是否到达计划检查时点
+python3 -B "06-程序脚本-scripts/run_observation.py" --dry-run
+
+# 运行全部安全测试
+python3 -B -m unittest discover -s "07-自动测试-tests" -v
 ```
 
-已有文件路径保持不变，方便脚本和日程继续使用。原 PDF 是 Alpaca 示例，不是当前币安实现的运行指令；当前币安版内容以接口说明为准。
-
-只维护本桌面目录。早先误放到 Documents 项目的启动日期和记录没有合并，避免把另一个目录的记录误当成此实验的真实进度。
-
-分享时使用空白凭证模板，不复制真实 env、编辑器交换文件或备份。GitHub 密钥只能填写在仓库 Actions Secrets 中；不要写入工作流、文档或聊天。当前三个 Binance Secrets 已通过 GitHub CLI 安全设置，仓库文件中仍没有密钥值。Git 忽略规则不会自动过滤 Finder 复制或压缩包。
+真实 API Key 只保存在 `09-API密钥-仅本地/binance-api.env`。不要把密钥粘贴到聊天、日志、截图或 GitHub 文件中。
