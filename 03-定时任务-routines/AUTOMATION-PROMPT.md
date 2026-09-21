@@ -4,11 +4,11 @@ This is the checked-in prompt for the local Claude scheduled tasks. See [automat
 
 ## Active Schedule
 
-Project directory: `/Users/edwardmacmini/Projects/7-day-stock-paper-trading`. Crypto trades around the clock, so there are six Asia/Kuala_Lumpur checks a day, every four hours: 00:00, 04:00, 08:00, 12:00, 16:00 and 20:00, on seven consecutive calendar days. Dates are in [schedule.json](schedule.json) and its [Chinese companion](schedule.zh-CN.json): 42 occurrences and a 30-minute late-start tolerance. One local Claude scheduled task (`paper-trading-4h-check`) fires at those times in the host's local time, which is the schedule's timezone. GitHub-hosted runners are blocked by Binance HTTP 451, so all runs are local.
+Project directory: `/Users/edwardmacmini/Projects/7-day-stock-paper-trading`. Crypto trades around the clock, so there are six Asia/Kuala_Lumpur checks a day, every four hours: 00:00, 04:00, 08:00, 12:00, 16:00 and 20:00, on thirty consecutive calendar days. Dates are in [schedule.json](schedule.json) and its [Chinese companion](schedule.zh-CN.json): 180 occurrences and a 30-minute late-start tolerance. One local Claude scheduled task (`paper-trading-4h-check`) fires at those times in the host's local time, which is the schedule's timezone. GitHub-hosted runners are blocked by Binance HTTP 451, so all runs are local.
 
 ## Saved Prompt
 
-Perform all project operations only in the project directory. Read both languages of AGENTS, strategy, schedule and CONTINUITY, plus readiness, current-state and the latest journal. The strategy documents were written for stocks; apply their evidence, risk and no-trade discipline to the USDT-perpetual futures watchlist, long or short, and where they conflict with `AGENTS.md`, `AGENTS.md` wins.
+Perform all project operations only in the project directory. Read both languages of AGENTS, strategy, schedule and CONTINUITY, plus readiness, current-state, the latest journal and `05-交易记录-data/reviews/LESSONS.md`. Apply the lessons: they may make you more selective, never less, and they never override a rule. State in the decision's thesis which lessons applied. Do not edit anything under `reviews/`; the 22:00 review task owns it (see [REVIEW-PROMPT.md](REVIEW-PROMPT.md)). The strategy documents were written for stocks; apply their evidence, risk and no-trade discipline to the USDT-perpetual futures watchlist, long or short, and where they conflict with `AGENTS.md`, `AGENTS.md` wins.
 
 Run `python3 -B 06-程序脚本-scripts/run_observation.py --dry-run` first. If `due_slot` is null (outside the planned sessions or slot tolerance), finish quietly and change nothing. For a due slot, run `python3 -B 06-程序脚本-scripts/run_observation.py`. Stop on duplicate_skipped or another_run_active. Reconcile interrupted read-only runs using `--recover` before continuing.
 
@@ -22,8 +22,8 @@ Whenever a position is open, submit a `manage` decision (or `close` with a `reas
 
 Keep 5000 USDT paper capital, the configured leverage and existing limits; record no trade when fees, liquidity, data quality, or evidence make trading infeasible. Stops and targets rest on the demo exchange between checks; a triggered stop sells at market, so the realised loss can differ slightly from the planned loss. Read credentials locally through the scripts; never display, print or copy them.
 
-Stay quiet for unchanged or non-actionable state. Report on scheduled runs, meaningful changes, completion, failure or required user action. After the seventh session's 14:45 check, write a final summary to the journal and do nothing on later runs.
+Stay quiet for unchanged or non-actionable state. Report on scheduled runs, meaningful changes, completion, failure or required user action. After the last planned date's 20:00 check, do nothing on later runs; the final review is written by the review task.
 
 ## Verification Boundary
 
-All 42 times and bilingual schedules are checked offline by the test suite. The demo readiness check, market snapshots for all five pairs, validate-only test orders, a no-trade engine pass, and live demo futures round trips (market entry, exit trigger orders placed, status, a triggered stop, cancel, reduce-only market exit) were verified on 2026-09-21. Scheduled tasks only run while the Claude desktop app is open; every run must compare the actual host time with the intended slot and must never backfill a historical trade.
+All 180 times and bilingual schedules are checked offline by the test suite. The demo readiness check, market snapshots for all five pairs, validate-only test orders, a no-trade engine pass, and live demo futures round trips (market entry, exit trigger orders placed, status, a triggered stop, cancel, reduce-only market exit) were verified on 2026-09-21. Scheduled tasks only run while the Claude desktop app is open; every run must compare the actual host time with the intended slot and must never backfill a historical trade.

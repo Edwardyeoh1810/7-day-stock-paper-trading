@@ -6,6 +6,7 @@
 - `demo_orders.py`：唯一的 POST 路径；固定指向 `demo-fapi.binance.com`（合约模拟盘，虚拟资金），`BINANCE_ENV` 不是 `demo` 时拒绝运行。
 - `paper_ledger.py`：仓位、费用、滑点、止损、目标和盈亏记账。
 - `paper_trade.py`：手动调用本地模拟账本的维护入口（不向模拟盘下单，可能与模拟盘账户不一致）。
+- `review_stats.py`：复盘用的确定性统计（只读账本，写入 `reviews/stats.json`），不连接 Binance。
 - `run_store.py`：运行去重、中断恢复和确定性导出。
 
 这些脚本均不得输出密钥或向 Binance 提交真实订单。

@@ -4,11 +4,11 @@
 
 ## 当前安排
 
-项目目录为 `/Users/edwardmacmini/Projects/7-day-stock-paper-trading`。加密货币全天交易，因此按 Asia/Kuala_Lumpur 时间每四小时检查一次，每天六次：00:00、04:00、08:00、12:00、16:00、20:00，连续七个自然日；日期见 [schedule.json](schedule.json) 及 [中文版](schedule.zh-CN.json)，共 42 个时点，迟到容差 30 分钟。一个本地 Claude 定时任务（`paper-trading-4h-check`）按主机本地时间（即日程时区）在这些时点触发。GitHub 托管 Runner 受 Binance HTTP 451 限制，所有运行均在本地进行。
+项目目录为 `/Users/edwardmacmini/Projects/7-day-stock-paper-trading`。加密货币全天交易，因此按 Asia/Kuala_Lumpur 时间每四小时检查一次，每天六次：00:00、04:00、08:00、12:00、16:00、20:00，连续三十个自然日；日期见 [schedule.json](schedule.json) 及 [中文版](schedule.zh-CN.json)，共 180 个时点，迟到容差 30 分钟。一个本地 Claude 定时任务（`paper-trading-4h-check`）按主机本地时间（即日程时区）在这些时点触发。GitHub 托管 Runner 受 Binance HTTP 451 限制，所有运行均在本地进行。
 
 ## 任务文案
 
-所有项目操作仅在项目目录进行。每次读取中英文 AGENTS、策略、schedule、CONTINUITY、readiness、current-state 和最新 journal。策略文档原为股票编写；将其证据、风险和“不交易”纪律应用于 USDT 永续合约观察列表（可做多或做空），与 `AGENTS.md` 冲突时以 `AGENTS.md` 为准。
+所有项目操作仅在项目目录进行。每次读取中英文 AGENTS、策略、schedule、CONTINUITY、readiness、current-state、最新 journal 和 `05-交易记录-data/reviews/LESSONS.md`。应用其中的经验：经验只能让你更严格，不能更宽松，也不能覆盖任何规则。在决策的 thesis 中写明应用了哪些经验。不要编辑 `reviews/` 下的任何文件；它由 22:00 的复盘任务负责（见 [REVIEW-PROMPT.zh-CN.md](REVIEW-PROMPT.zh-CN.md)）。策略文档原为股票编写；将其证据、风险和“不交易”纪律应用于 USDT 永续合约观察列表（可做多或做空），与 `AGENTS.md` 冲突时以 `AGENTS.md` 为准。
 
 先运行 `python3 -B 06-程序脚本-scripts/run_observation.py --dry-run`。如果 `due_slot` 为 null（不在计划交易日或时点容差内），安静结束且不做任何修改。时点到期时运行 `python3 -B 06-程序脚本-scripts/run_observation.py`。遇到 duplicate_skipped 或 another_run_active 即停止。继续前先用 `--recover` 处理中断的只读运行。
 
@@ -22,8 +22,8 @@
 
 保持 5000 USDT paper 资金、配置的杠杆和现有限制；当费用、流动性、数据质量或证据不足时记录不交易。两次检查之间，止损和止盈委托挂在模拟盘上；止损触发后按市价卖出，实际亏损可能与计划亏损略有差异。凭证只能由脚本在本地读取；绝不显示、打印或复制。
 
-状态无变化或无需操作时保持安静。在定时报告、重要变化、完成、失败或需要用户操作时汇报。第七个交易日 14:45 检查后，在日志中写入最终总结，之后的运行不再做任何事。
+状态无变化或无需操作时保持安静。在定时报告、重要变化、完成、失败或需要用户操作时汇报。最后一个计划日期 20:00 检查之后的运行不再做任何事；最终复盘由复盘任务撰写。
 
 ## 验证边界
 
-全部 42 个时点和中英文日程由测试套件离线校验。模拟盘 readiness 检查、五个交易对的行情快照、仅校验的测试订单、一次 no-trade 引擎运行，以及多次合约模拟盘实单往返（市价开仓、挂出平仓触发委托、查询状态、止损触发、撤单、只减仓市价平仓）已于 2026-09-21 验证。定时任务仅在 Claude 桌面应用打开时运行；每次运行必须比较主机实际时间与目标时点，绝不补做历史交易。
+全部 180 个时点和中英文日程由测试套件离线校验。模拟盘 readiness 检查、五个交易对的行情快照、仅校验的测试订单、一次 no-trade 引擎运行，以及多次合约模拟盘实单往返（市价开仓、挂出平仓触发委托、查询状态、止损触发、撤单、只减仓市价平仓）已于 2026-09-21 验证。定时任务仅在 Claude 桌面应用打开时运行；每次运行必须比较主机实际时间与目标时点，绝不补做历史交易。

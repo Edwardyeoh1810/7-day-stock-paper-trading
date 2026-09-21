@@ -1,21 +1,21 @@
 {
   "status": "claude_local_scheduled_tasks_active_binance_demo_crypto",
-  "name": "7-day Binance demo crypto paper trading",
+  "name": "30-day Binance demo futures paper trading",
   "requested_initial_status": "ACTIVE",
   "project_path": "/Users/edwardmacmini/Projects/7-day-stock-paper-trading",
   "repository_layout": "numbered_chinese_categories",
   "repository_layout_updated_on": "2026-09-16",
   "timezone": "Asia/Kuala_Lumpur",
-  "planned_checks": 42,
+  "planned_checks": 180,
   "recurrence_validated_offline": true,
   "scheduler_execution_verified": false,
   "repository": "Edwardyeoh1810/7-day-stock-paper-trading",
-  "reason": "Fork reset on 2026-09-21 and moved to Binance demo crypto Spot. GitHub-hosted runners receive HTTP 451 from Binance, so the six daily checks run as local Claude scheduled tasks.",
+  "reason": "Fork reset on 2026-09-21 and moved to Binance demo USDT-perpetual futures for 30 days. GitHub-hosted runners receive HTTP 451 from Binance, so the checks and the daily review run as local Claude scheduled tasks.",
   "activation_blockers": [],
   "rebase_dates_if_start_delayed": true,
   "claude_scheduled_tasks": {
     "host_timezone": "Asia/Kuala_Lumpur",
-    "note": "Tasks only run while the Claude desktop app is open. Each run starts with run_observation.py --dry-run and exits quietly when no slot is due. Disable the task after 2026-09-27.",
+    "note": "Tasks only run while the Claude desktop app is open. Each trading run starts with run_observation.py --dry-run and exits quietly when no slot is due. Disable both tasks after 2026-10-20.",
     "tasks": [
       {
         "task_id": "paper-trading-4h-check",
@@ -27,7 +27,14 @@
           "16:00",
           "20:00"
         ],
-        "local_cron": "0 0,4,8,12,16,20 21-27 9 *"
+        "local_cron": "0 0,4,8,12,16,20 * 9,10 *"
+      },
+      {
+        "task_id": "paper-trading-daily-review",
+        "local_times": [
+          "22:00"
+        ],
+        "local_cron": "0 22 * 9,10 *"
       }
     ]
   }

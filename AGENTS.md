@@ -1,7 +1,7 @@
 # AI Trading Experiment Operating Rules
 
-This project is a 7 day crypto futures research and paper trading experiment on the Binance demo futures account (virtual funds).
-It was forked from a stock/ETF experiment and keeps its risk limits and record keeping; the schedule is 24-hour: six checks a day, every four hours in Asia/Kuala_Lumpur time, on seven consecutive calendar days.
+This project is a 30 day crypto futures research and paper trading experiment on the Binance demo futures account (virtual funds).
+It was forked from a stock/ETF experiment and keeps its risk limits and record keeping; the schedule is 24-hour: six checks a day, every four hours in Asia/Kuala_Lumpur time, on thirty consecutive calendar days, with a daily review that feeds lessons back into later decisions.
 It is not a live trading system and must not be described as a profitable system.
 
 ## Safety Defaults
@@ -54,6 +54,7 @@ Every scheduled run must read these files before taking action:
 - `04-运行状态-state/readiness.json`
 - `05-交易记录-data/current-state.json`
 - Latest file in `05-交易记录-data/journal/`, if present
+- `05-交易记录-data/reviews/LESSONS.md`
 
 ## Required End-of-Run Writes
 
@@ -82,4 +83,10 @@ Each journal entry must state:
 - `06-程序脚本-scripts/run_observation.py` is read-only. The only POST path is `06-程序脚本-scripts/demo_orders.py`, which is hard-wired to the demo host and refuses to run unless `BINANCE_ENV=demo`.
 - The approved paper rules enforce one position, 50% maximum notional, 0.5% maximum planned loss, 2% maximum daily loss, a stop no further than 10% from the entry, two evidence categories, 1.5 net reward/risk, and a 24-hour maximum hold. Right after an entry fills, the engine places a reduce-only stop and take-profit trigger order on the demo exchange (mark-price triggered), so the stop works between checks; an entry whose exit orders are rejected is closed immediately. Never place, cancel or amend these orders by hand.
 - Every open position must be closed at the final check of the last planned date.
+
+## Review And Improvement
+
+- The daily review follows `03-定时任务-routines/REVIEW-PROMPT.md`: statistics from `06-程序脚本-scripts/review_stats.py`, a written review, and an updated `05-交易记录-data/reviews/LESSONS.md`.
+- Every trading check reads `LESSONS.md` and applies it. A lesson may make a decision more selective; it can never loosen or override a rule or risk limit.
+- Changes to rules, limits, leverage, watchlist, schedule or code are only proposed in `05-交易记录-data/reviews/PROPOSALS.md`. Only the user approves and applies them.
 - Preserve both languages. Dates in the schedule are provisional until authentication and review pass; do not count setup days as experiment sessions.

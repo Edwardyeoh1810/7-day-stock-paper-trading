@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-09-21T09:25:29.795872+08:00",
+  "sample_warning": "Fewer than 30 closed trades: treat every pattern as a hypothesis, not a finding.",
+  "account": {
+    "starting_capital_usdt": 5000,
+    "cash_usdt": 5000,
+    "equity_usdt": 5000,
+    "realized_pnl_usdt": 0,
+    "trading_day_index": 1,
+    "positions": []
+  },
+  "decisions_by_action": {},
+  "overall": {
+    "trades": 0
+  },
+  "by_symbol": {},
+  "by_side": {},
+  "by_exit_reason": {},
+  "by_evidence_category": {},
+  "trades": []
+}
