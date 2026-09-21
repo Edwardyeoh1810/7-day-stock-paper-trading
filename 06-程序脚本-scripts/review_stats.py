@@ -5,6 +5,7 @@ apart from writing 05-交易记录-data/reviews/stats.json; it never contacts Bi
 import json
 from collections import Counter
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from decimal import Decimal
 from pathlib import Path
 
@@ -77,7 +78,23 @@ def grouped(trades, key):
     return {name: summarize(members) for name, members in sorted(groups.items())}
 
 
-def build_report(ledger, state, decision_dir):
+def slot_coverage(schedule, decision_dir, now):
+    """Slots that were due so far against slots that have a recorded decision (proposal P-002)."""
+    zone = ZoneInfo(schedule["timezone"])
+    start = datetime.fromisoformat(schedule["coverage_from"])
+    due = []
+    for day in schedule["planned_trading_dates"]:
+        for task in schedule["tasks"]:
+            when = datetime.fromisoformat(day + "T" + task["time"]).replace(tzinfo=zone)
+            if start <= when <= now:
+                due.append(day + "_" + task["id"])
+    decided = {slot for slot in due if any(decision_dir.glob(slot + "*.json"))}
+    return {"slots_due": len(due), "slots_decided": len(decided),
+            "coverage_percent": round(100 * len(decided) / len(due), 1) if due else None,
+            "missed_slots": [slot for slot in due if slot not in decided]}
+
+
+def build_report(ledger, state, decision_dir, schedule=None, now=None):
     trades = closed_trades(ledger.get("events", []))
     decisions = Counter()
     for path in sorted(decision_dir.glob("*.json")):
@@ -91,6 +108,7 @@ def build_report(ledger, state, decision_dir):
         "account": {key: state.get(key) for key in ("starting_capital_usdt", "cash_usdt", "equity_usdt", "realized_pnl_usdt",
                                                      "trading_day_index", "positions")},
         "decisions_by_action": dict(decisions),
+        "slot_coverage": slot_coverage(schedule, decision_dir, now or datetime.now().astimezone()) if schedule else None,
         "overall": summarize(trades),
         "by_symbol": grouped(trades, "symbol"),
         "by_side": grouped(trades, "side"),
@@ -103,7 +121,8 @@ def build_report(ledger, state, decision_dir):
 def main():
     data = ROOT / "05-交易记录-data"
     report = build_report(json.loads((data / "paper-ledger.json").read_text(encoding="utf-8")),
-                          json.loads((data / "current-state.json").read_text(encoding="utf-8")), data / "decisions")
+                          json.loads((data / "current-state.json").read_text(encoding="utf-8")), data / "decisions",
+                          json.loads((ROOT / "03-定时任务-routines" / "schedule.json").read_text(encoding="utf-8")))
     atomic_json(data / "reviews" / "stats.json", report)
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0

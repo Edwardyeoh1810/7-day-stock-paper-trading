@@ -86,6 +86,7 @@ All limits are percentages of the 5000 USDT starting capital and are enforced by
 - Maximum daily loss: 2% = 100 USDT of realized loss per local day; once reached, no new entries that day.
 - Two consecutive stop-outs on the same local day block new entries for the rest of that day.
 - Net reward/risk at least 1.5; spread at most 25 basis points; stop at most 10% from the entry.
+- An entry must be submitted within 45 minutes of its scheduled check. A run that stalled or overran never enters; it may still manage or close an open position.
 
 A stop that triggers sells or buys at market, so in a fast move the realized loss can exceed the planned loss. If the risk budget makes a position impractically small, do not trade.
 

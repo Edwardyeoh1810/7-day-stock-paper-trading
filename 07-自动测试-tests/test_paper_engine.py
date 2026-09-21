@@ -3,7 +3,7 @@ import sys
 import tempfile
 import unittest
 from contextlib import ExitStack
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 from unittest.mock import patch
@@ -83,12 +83,14 @@ class ProtectionFlowTests(unittest.TestCase):
                             "minimum_evidence_categories": 2, "minimum_reward_risk": "1.5",
                             "timezone": "Asia/Kuala_Lumpur", "entry_window_open": "00:00",
                             "entry_window_close": "23:59", "max_hold_hours": "24", "leverage": "5",
+                            "decision_max_age_minutes": "45",
                             "max_stop_distance_percent": "10"},
             "ledger.json": {"version": 1, "next_sequence": 1, "events": []},
         }
         for name, payload in files.items():
             (root / name).write_text(json.dumps(payload), encoding="utf-8")
         self.build = lambda: PaperLedger(root / "state.json", root / "readiness.json", root / "config.json", root / "ledger.json")
+        self.slot = local.strftime("%Y-%m-%d_check_%H%M_paper")
         self.calls = []
         self.exit_result = None
         self.oco_fails = False
@@ -129,7 +131,7 @@ class ProtectionFlowTests(unittest.TestCase):
             return execute(decision, run_id)
 
     def test_entry_is_protected_on_the_exchange_with_tick_rounded_prices(self):
-        self.run_engine(self.decision, "r1")
+        self.run_engine(self.decision, self.slot)
         self.assertEqual(self.calls, [("prepare", "5"), ("market", "BUY", False), ("exits", "long", 78000.0, 90000.0)])
         position = self.build().state["positions"][0]
         self.assertEqual(position["demo_exit_orders"]["stop_algo_id"], "21")
@@ -139,17 +141,33 @@ class ProtectionFlowTests(unittest.TestCase):
 
     def test_short_entry_sells_first_and_buys_back_reduce_only(self):
         decision = {**self.decision, "action": "open_short", "stop_price": "86000", "target_price": "74000"}
-        self.run_engine(decision, "r1")
+        self.run_engine(decision, self.slot)
         self.assertEqual(self.calls[1:], [("market", "SELL", False), ("exits", "short", 86000.0, 74000.0)])
         self.calls.clear()
         result = self.run_engine({"paper_trading_only": True, "action": "close", "reason": "manual_exit"}, "r2")
         self.assertEqual(self.calls, [("cancel", "21"), ("market", "BUY", True)])
         self.assertEqual(result["event"]["funding_usdt"], "-0.2")
 
+    def test_stale_or_unscheduled_entries_are_rejected_before_any_order(self):
+        old = (datetime.now(timezone.utc).astimezone(ZoneInfo("Asia/Kuala_Lumpur")) - timedelta(minutes=46))
+        for run_id in (old.strftime("%Y-%m-%d_check_%H%M_paper"), "2026-09-21_check_1200_paper", "manual_entry"):
+            with self.assertRaisesRegex(PaperEngineError, "stale|scheduled check"):
+                self.run_engine(self.decision, run_id)
+        self.assertEqual(self.calls, [])
+        self.assertEqual(self.build().state["positions"], [])
+
+    def test_late_runs_may_still_manage_and_close(self):
+        self.run_engine(self.decision, self.slot)
+        self.calls.clear()
+        self.assertEqual(self.run_engine({"paper_trading_only": True, "action": "manage"}, "2026-09-21_check_1200_paper")["status"], "executed")
+        result = self.run_engine({"paper_trading_only": True, "action": "close", "reason": "manual_exit"}, "2026-09-21_check_1600_paper")
+        self.assertEqual(self.calls[-1], ("market", "SELL", True))
+        self.assertEqual(result["event"]["reason"], "manual_exit")
+
     def test_unprotectable_entry_is_closed_immediately(self):
         self.oco_fails = True
         with self.assertRaises(PaperEngineError):
-            self.run_engine(self.decision, "r1")
+            self.run_engine(self.decision, self.slot)
         self.assertEqual([call[0] for call in self.calls], ["prepare", "market", "exits", "market"])
         self.assertEqual(self.calls[-1], ("market", "SELL", True))
         ledger = self.build()
@@ -157,12 +175,12 @@ class ProtectionFlowTests(unittest.TestCase):
         self.assertEqual(ledger.ledger["events"][-1]["reason"], "protection_failed")
 
     def test_exchange_stop_is_booked_and_manual_close_cancels_exit_orders_first(self):
-        self.run_engine(self.decision, "r1")
+        self.run_engine(self.decision, self.slot)
         self.calls.clear()
         result = self.run_engine({"paper_trading_only": True, "action": "close", "reason": "thesis_invalid"}, "r2")
         self.assertEqual(self.calls, [("cancel", "21"), ("market", "SELL", True)])
         self.assertEqual(result["event"]["reason"], "thesis_invalid")
-        self.run_engine(self.decision, "r3")
+        self.run_engine(self.decision, self.slot + "_again")
         self.calls.clear()
         self.exit_result = {"reason": "stop", "fill": self.market(None, "BTCUSDT", "SELL", "0.006", True)}
         self.calls.clear()

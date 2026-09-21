@@ -9,7 +9,7 @@ evidence (with sample size), the expected effect, the risk of being wrong, statu
 ## P-001 — Bound the age of the evidence behind a decision, not just the quote
 
 - **Date raised:** 2026-09-21 (day 1)
-- **Status:** open
+- **Status:** approved by Edward on 2026-09-21 and implemented the same day: entries are rejected when their check was scheduled more than 45 minutes ago (`decision_max_age_minutes`); `manage`, `close` and `no_trade` are never blocked.
 - **What to change:** Add an evidence-freshness gate. Two parts, either or both: (a) a new
   `paper-config.json` key such as `decision_max_age_minutes` (a starting value of 30, matching the existing
   slot grace, is the obvious candidate); and (b) a check in `paper_ledger.py` / `paper_engine.py` that
@@ -38,7 +38,7 @@ evidence (with sample size), the expected effect, the risk of being wrong, statu
 ## P-002 — Decide the stalled-run policy, and measure slot coverage
 
 - **Date raised:** 2026-09-21 (day 1)
-- **Status:** open
+- **Status:** approved by Edward on 2026-09-21 and implemented the same day: policy — a late run never enters, still manages or closes an open position, otherwise records `no_trade` with reason `late run`; measurement — `review_stats.py` now reports `slot_coverage`.
 - **What to change:** Two related decisions, both Edward's:
   1. **Policy:** when a run resumes after its slot's 30-minute grace has expired, should it (a) submit the
      decision anyway, as happened today, (b) abort and leave the slot unrecorded, or (c) re-observe and

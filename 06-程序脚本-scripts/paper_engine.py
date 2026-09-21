@@ -6,6 +6,7 @@ Never sends a production order: market data and orders use the demo host only.""
 import argparse
 import copy
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -92,6 +93,18 @@ def fetch_snapshot(symbol, now):
     }
 
 
+def assert_fresh_entry(run_id, config, now):
+    """An entry must come from the scheduled check it was researched for. A run that stalls and
+    resumes hours later still carries its old thesis, stop and target (proposal P-001)."""
+    match = re.match(r"^(\d{4}-\d{2}-\d{2})_check_(\d{2})(\d{2})", str(run_id))
+    if not match:
+        raise PaperEngineError("Entries are only accepted from a scheduled check run id")
+    slot = datetime.fromisoformat("%s %s:%s" % match.groups()).replace(tzinfo=ZoneInfo(config["timezone"]))
+    age = (now - slot).total_seconds() / 60
+    if age < -5 or age > float(config["decision_max_age_minutes"]):
+        raise PaperEngineError("Entry decision is stale: its check was scheduled %d minutes ago" % age)
+
+
 def prior_event(ledger, run_id):
     return next((event for event in ledger.ledger.get("events", []) if event.get("run_id") == run_id), None)
 
@@ -128,8 +141,10 @@ def execute(decision, run_id, now=None):
     ledger = build_ledger()
     ledger.validate_readiness(now)
     ledger.roll_day(now)
-    snapshot = fetch_snapshot(symbol, now)
     action = decision["action"]
+    if action in {"open_long", "open_short"}:
+        assert_fresh_entry(run_id, ledger.config, now)
+    snapshot = fetch_snapshot(symbol, now)
     # Without this readiness switch fills are simulated locally and nothing is sent to the demo account.
     demo = ledger.readiness.get("demo_order_execution_enabled") is True
 

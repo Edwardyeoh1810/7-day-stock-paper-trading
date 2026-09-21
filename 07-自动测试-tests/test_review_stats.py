@@ -7,7 +7,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "06-程序脚本-scripts"))
 
-from review_stats import build_report
+from datetime import datetime
+
+from review_stats import build_report, slot_coverage
 
 
 def entry(action, symbol, side, time, planned, evidence):
@@ -46,6 +48,18 @@ class ReviewStatsTests(unittest.TestCase):
         self.assertEqual(sorted(report["by_evidence_category"]), ["news", "price_action", "volume"])
         self.assertEqual(report["by_evidence_category"]["price_action"]["trades"], 2)
         self.assertIsNotNone(report["sample_warning"])
+
+    def test_slot_coverage_counts_due_slots_against_recorded_decisions(self):
+        schedule = {"timezone": "Asia/Kuala_Lumpur", "coverage_from": "2026-09-21T12:00:00+08:00",
+                    "planned_trading_dates": ["2026-09-21", "2026-09-22"],
+                    "tasks": [{"id": "check_%02d00" % hour, "time": "%02d:00" % hour} for hour in (0, 4, 8, 12, 16, 20)]}
+        with tempfile.TemporaryDirectory() as temp:
+            for name in ("2026-09-21_check_1200.json", "2026-09-21_check_2000_retry.json", "2026-09-22_check_0400.json"):
+                (Path(temp) / name).write_text("{}")
+            coverage = slot_coverage(schedule, Path(temp), datetime.fromisoformat("2026-09-22T01:00:00+08:00"))
+        # 12:00, 16:00, 20:00 and the next day's 00:00 were due; the future 04:00 decision is not counted.
+        self.assertEqual((coverage["slots_due"], coverage["slots_decided"], coverage["coverage_percent"]), (4, 2, 50.0))
+        self.assertEqual(coverage["missed_slots"], ["2026-09-21_check_1600", "2026-09-22_check_0000"])
 
     def test_empty_ledger_reports_zero_trades(self):
         with tempfile.TemporaryDirectory() as temp:
