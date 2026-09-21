@@ -99,6 +99,20 @@ class PaperLedger:
             if key not in self.readiness:
                 raise PaperLedgerError("Missing risk limit: " + key)
 
+    def _zone(self):
+        return ZoneInfo(self.config["timezone"])
+
+    def roll_day(self, now):
+        """Start a new local day: the daily loss counter resets and the experiment day index moves on."""
+        today = now.astimezone(self._zone()).date().isoformat()
+        dates = self.state.get("planned_trading_dates", [])
+        if today not in dates or self.state.get("ledger_date") == today:
+            return
+        self.state["ledger_date"] = today
+        self.state["trading_day_index"] = dates.index(today) + 1
+        self.state["daily_realized_pnl_usdt"] = 0
+        atomic_json(self.state_path, self.state)
+
     def _limits(self):
         capital = decimal_value(self.state["starting_capital_usdt"], "starting_capital_usdt")
         return {
@@ -109,11 +123,11 @@ class PaperLedger:
         }
 
     def _assert_entry_window(self, now):
-        local = now.astimezone(ZoneInfo("America/Chicago"))
+        local = now.astimezone(self._zone())
         if local.date().isoformat() not in self.state.get("planned_trading_dates", []):
             raise PaperLedgerError("Not a planned trading date")
-        open_hour, open_minute = map(int, self.config["regular_session_open_ct"].split(":"))
-        cut_hour, cut_minute = map(int, self.config["new_entry_cutoff_ct"].split(":"))
+        open_hour, open_minute = map(int, self.config["entry_window_open"].split(":"))
+        cut_hour, cut_minute = map(int, self.config["entry_window_close"].split(":"))
         minute = local.hour * 60 + local.minute
         if not (open_hour * 60 + open_minute <= minute <= cut_hour * 60 + cut_minute):
             raise PaperLedgerError("New paper entries are outside the allowed window")
@@ -181,7 +195,7 @@ class PaperLedger:
     def _next_id(self, now):
         sequence = int(self.ledger.get("next_sequence", 1))
         self.ledger["next_sequence"] = sequence + 1
-        return "PAPER-%s-%04d" % (now.astimezone(ZoneInfo("America/Chicago")).strftime("%Y%m%d"), sequence)
+        return "PAPER-%s-%04d" % (now.astimezone(self._zone()).strftime("%Y%m%d"), sequence)
 
     def _portfolio_values(self, position=None, bid=None):
         cash = decimal_value(self.state["cash_usdt"], "cash_usdt")
@@ -251,7 +265,7 @@ class PaperLedger:
             raise PaperLedgerError("Paper order exceeds a risk limit")
         if notional + entry_fee > cash:
             raise PaperLedgerError("Insufficient paper cash")
-        local_date = now.astimezone(ZoneInfo("America/Chicago")).date().isoformat()
+        local_date = now.astimezone(self._zone()).date().isoformat()
         recent_closes = [event for event in self.ledger.get("events", [])
                          if event.get("action") == "close" and event.get("trading_date") == local_date]
         if len(recent_closes) >= 2 and all(event.get("reason") == "stop" for event in recent_closes[-2:]):
@@ -334,14 +348,20 @@ class PaperLedger:
         self.state["equity_usdt"] = json_number(equity)
         self.state["unrealized_pnl_usdt"] = json_number(unrealized)
         self.state["daily_open_risk_usdt"] = json_number(open_risk)
-        if evaluate and quote["bid"] <= stop:
+        # Exit orders resting on the demo exchange own the stop and target; evaluating them here too
+        # would race the exchange for the same coins.
+        protected = bool(position.get("demo_exit_orders"))
+        if evaluate and not protected and quote["bid"] <= stop:
             return self.close({"quote": request["quote"], "reason": "stop", "run_id": request.get("run_id")}, now, execute)
-        if evaluate and quote["bid"] >= decimal_value(position["target_price"], "target"):
+        if evaluate and not protected and quote["bid"] >= decimal_value(position["target_price"], "target"):
             return self.close({"quote": request["quote"], "reason": "target", "run_id": request.get("run_id")}, now, execute)
+        held_hours = Decimal(str((now - parse_time(position["entry_time"], "entry_time")).total_seconds())) / 3600
+        if evaluate and held_hours >= decimal_value(self.config["max_hold_hours"], "max_hold_hours"):
+            return self.close({"quote": request["quote"], "reason": "time_exit", "run_id": request.get("run_id")}, now, execute)
         event = {
             "event_id": self._next_id(now) + "-MARK",
             "action": "mark",
-            "trading_date": now.astimezone(ZoneInfo("America/Chicago")).date().isoformat(),
+            "trading_date": now.astimezone(self._zone()).date().isoformat(),
             "timestamp": now.isoformat(),
             "symbol": symbol,
             "mark_price": str(quote["bid"]),
@@ -352,6 +372,8 @@ class PaperLedger:
             event["run_id"] = str(request["run_id"])
         self._save_event(event)
         return event
+
+    EXIT_REASONS = {"stop", "target", "thesis_invalid", "time_exit", "end_of_day", "manual_exit", "protection_failed"}
 
     def close(self, request, now=None, execute=None):
         now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
@@ -368,7 +390,7 @@ class PaperLedger:
         if quote["executable_size"] < quantity:
             raise PaperLedgerError("Quoted bid size cannot support the paper exit")
         reason = str(request.get("reason", "manual_exit"))
-        if reason not in {"stop", "target", "thesis_invalid", "time_exit", "end_of_day", "manual_exit"}:
+        if reason not in self.EXIT_REASONS:
             raise PaperLedgerError("Unsupported paper exit reason")
         proceeds = quantity * fill
         exit_fee = proceeds * fee_rate
@@ -378,6 +400,48 @@ class PaperLedger:
             fill = decimal_value(demo_fill["avg_price"], "fill.avg_price")
             exit_fee = decimal_value(demo_fill["fee_usdt"], "fill.fee_usdt")
             proceeds = decimal_value(demo_fill["net_usdt"], "fill.net_usdt") + exit_fee
+        return self._settle(position, fill, proceeds, exit_fee, reason, now, request["quote"], demo_fill,
+                            request.get("run_id"))
+
+    def record_exit(self, demo_fill, reason, now=None, run_id=None):
+        """Book an exit the demo exchange already executed (a triggered stop or target order)."""
+        now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        positions = self.state.get("positions", [])
+        if len(positions) != 1:
+            raise PaperLedgerError("Exactly one active paper position is required")
+        if reason not in self.EXIT_REASONS:
+            raise PaperLedgerError("Unsupported paper exit reason")
+        exit_fee = decimal_value(demo_fill["fee_usdt"], "fill.fee_usdt")
+        proceeds = decimal_value(demo_fill["net_usdt"], "fill.net_usdt") + exit_fee
+        return self._settle(positions[0], decimal_value(demo_fill["avg_price"], "fill.avg_price"), proceeds,
+                            exit_fee, reason, now, None, demo_fill, run_id)
+
+    def set_protection(self, protection, now=None, run_id=None):
+        """Remember (or, with None, forget) the exit orders resting on the demo exchange."""
+        now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        positions = self.state.get("positions", [])
+        if len(positions) != 1:
+            raise PaperLedgerError("Exactly one active paper position is required")
+        if protection is None:
+            positions[0].pop("demo_exit_orders", None)
+        else:
+            positions[0]["demo_exit_orders"] = protection
+        event = {
+            "event_id": self._next_id(now) + "-PROTECT",
+            "action": "protect",
+            "trading_date": now.astimezone(self._zone()).date().isoformat(),
+            "timestamp": now.isoformat(),
+            "symbol": positions[0]["symbol"],
+            "demo_exit_orders": protection,
+        }
+        if run_id:
+            event["run_id"] = str(run_id)
+        self._save_event(event)
+        return event
+
+    def _settle(self, position, fill, proceeds, exit_fee, reason, now, quote, demo_fill, run_id):
+        symbol = position["symbol"]
+        quantity = decimal_value(position["quantity"], "quantity")
         cost_basis = decimal_value(position["cost_basis_usdt"], "cost_basis")
         net_pnl = proceeds - exit_fee - cost_basis
         cash = decimal_value(self.state["cash_usdt"], "cash") + proceeds - exit_fee
@@ -398,20 +462,20 @@ class PaperLedger:
             "event_id": order_id + "-CLOSE",
             "order_id": order_id,
             "action": "close",
-            "trading_date": now.astimezone(ZoneInfo("America/Chicago")).date().isoformat(),
+            "trading_date": now.astimezone(self._zone()).date().isoformat(),
             "timestamp": now.isoformat(),
             "symbol": symbol,
             "quantity": str(quantity),
             "fill_price": str(fill),
             "fee_usdt": str(exit_fee),
             "net_pnl_usdt": str(net_pnl),
-            "quote": request["quote"],
+            "quote": quote,
             "reason": reason,
         }
         if demo_fill is not None:
             event["demo_order"] = demo_fill
-        if request.get("run_id"):
-            event["run_id"] = str(request["run_id"])
+        if run_id:
+            event["run_id"] = str(run_id)
         self._save_event(event)
         return event
 

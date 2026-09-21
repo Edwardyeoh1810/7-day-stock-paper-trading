@@ -1,7 +1,7 @@
 # AI Trading Experiment Operating Rules
 
 This project is a 7 trading day crypto Spot research and paper trading experiment on the Binance demo account (virtual funds).
-It was forked from a stock/ETF experiment; the schedule, risk rules and record keeping are unchanged.
+It was forked from a stock/ETF experiment and keeps its risk limits and record keeping; the schedule is 24-hour: six checks a day, every four hours in Asia/Kuala_Lumpur time, on seven consecutive calendar days.
 It is not a live trading system and must not be described as a profitable system.
 
 ## Safety Defaults
@@ -79,5 +79,6 @@ Each journal entry must state:
 
 - With `BINANCE_ENV=demo` the checker reads Spot `/api/v3/` endpoints on the demo host. `02-项目文档-docs/BINANCE-API.md` and the strategy documents still describe the original Stocks setup; where they conflict with this file, this file wins.
 - `06-程序脚本-scripts/run_observation.py` is read-only. The only POST path is `06-程序脚本-scripts/demo_orders.py`, which is hard-wired to the demo host and refuses to run unless `BINANCE_ENV=demo`.
-- The approved paper rules enforce one position, 10% maximum notional, 0.5% maximum planned loss, two evidence categories, 1.5 net reward/risk, no new entry after 11:30 Central, and no overnight position.
+- The approved paper rules enforce one position, 10% maximum notional, 0.5% maximum planned loss, 2% maximum daily loss, two evidence categories, 1.5 net reward/risk, and a 24-hour maximum hold. Right after an entry fills, the engine places a stop-loss and take-profit (OCO) on the demo exchange, so the stop works between checks; an entry whose exit orders are rejected is closed immediately. Never place, cancel or amend these orders by hand.
+- Every open position must be closed at the final check of the last planned date.
 - Preserve both languages. Dates in the schedule are provisional until authentication and review pass; do not count setup days as experiment sessions.

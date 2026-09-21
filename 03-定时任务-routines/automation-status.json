@@ -5,7 +5,7 @@
   "project_path": "/Users/edwardmacmini/Projects/7-day-stock-paper-trading",
   "repository_layout": "numbered_chinese_categories",
   "repository_layout_updated_on": "2026-09-16",
-  "timezone": "America/Chicago",
+  "timezone": "Asia/Kuala_Lumpur",
   "planned_checks": 42,
   "recurrence_validated_offline": true,
   "scheduler_execution_verified": false,
@@ -14,33 +14,20 @@
   "activation_blockers": [],
   "rebase_dates_if_start_delayed": true,
   "claude_scheduled_tasks": {
-    "host_timezone": "UTC+8",
-    "note": "Tasks only run while the Claude desktop app is open. Each run starts with run_observation.py --dry-run and exits quietly when no slot is due. Disable the tasks after 2026-09-30.",
+    "host_timezone": "Asia/Kuala_Lumpur",
+    "note": "Tasks only run while the Claude desktop app is open. Each run starts with run_observation.py --dry-run and exits quietly when no slot is due. Disable the task after 2026-09-27.",
     "tasks": [
       {
-        "task_id": "paper-trading-0745ct-premarket",
-        "central_time": "07:45",
-        "local_cron": "45 20 21-29 9 *"
-      },
-      {
-        "task_id": "paper-trading-0835ct-open-review",
-        "central_time": "08:35",
-        "local_cron": "35 21 21-29 9 *"
-      },
-      {
-        "task_id": "paper-trading-1100ct-late-morning",
-        "central_time": "11:00",
-        "local_cron": "0 0 22-30 9 *"
-      },
-      {
-        "task_id": "paper-trading-1300ct-midday",
-        "central_time": "13:00",
-        "local_cron": "0 2 22-30 9 *"
-      },
-      {
-        "task_id": "paper-trading-1415-1445ct-close",
-        "central_time": "14:15 and 14:45",
-        "local_cron": "15,45 3 22-30 9 *"
+        "task_id": "paper-trading-4h-check",
+        "local_times": [
+          "00:00",
+          "04:00",
+          "08:00",
+          "12:00",
+          "16:00",
+          "20:00"
+        ],
+        "local_cron": "0 0,4,8,12,16,20 21-27 9 *"
       }
     ]
   }

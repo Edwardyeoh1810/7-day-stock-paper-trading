@@ -58,8 +58,10 @@ class PaperLedgerTests(unittest.TestCase):
             "readiness_max_age_hours": "24",
             "minimum_evidence_categories": 2,
             "minimum_reward_risk": "1.5",
-            "regular_session_open_ct": "08:30",
-            "new_entry_cutoff_ct": "11:30",
+            "timezone": "America/Chicago",
+            "entry_window_open": "08:30",
+            "entry_window_close": "11:30",
+            "max_hold_hours": "24",
         }
         self.ledger_data = {"version": 1, "next_sequence": 1, "events": []}
         self._write_all()
@@ -245,6 +247,45 @@ class PaperLedgerTests(unittest.TestCase):
         with self.assertRaisesRegex(PaperLedgerError, "exit reason"):
             ledger.close({"quote": self.quote(), "reason": "because"}, self.now, lambda *args: calls.append(args))
         self.assertEqual(calls, [])
+
+    def test_protected_position_leaves_stop_to_exchange_but_enforces_max_hold(self):
+        ledger = self.make_ledger()
+        ledger.open_long(self.request(), self.now)
+        ledger.set_protection({"order_list_id": "1", "stop_order_id": "2", "target_order_id": "3"}, self.now)
+        later = self.now + timedelta(minutes=5)
+        ledger.readiness["binance_demo_api"]["checked_at"] = later.isoformat()
+        event = ledger.mark({"quote": self.quote(bid="94.90", ask="95.00", received_at=later)}, later, evaluate=True)
+        self.assertEqual(event["action"], "mark")
+        self.assertEqual(len(ledger.state["positions"]), 1)
+        expired = self.now + timedelta(hours=24)
+        ledger.readiness["binance_demo_api"]["checked_at"] = expired.isoformat()
+        event = ledger.mark({"quote": self.quote(received_at=expired)}, expired, evaluate=True)
+        self.assertEqual((event["action"], event["reason"]), ("close", "time_exit"))
+
+    def test_record_exit_books_exchange_fill_without_a_quote(self):
+        ledger = self.make_ledger()
+        ledger.open_long(self.request(), self.now)
+        position = ledger.state["positions"][0]
+        fill = self.demo_fill("SELL", position["quantity"], "95", quote_fee="0.5")
+        event = ledger.record_exit(fill, "stop", self.now + timedelta(hours=3), "run-1")
+        expected = Decimal(position["quantity"]) * 95 - Decimal("0.5") - Decimal(position["cost_basis_usdt"])
+        self.assertEqual(Decimal(event["net_pnl_usdt"]), expected)
+        self.assertEqual((event["reason"], event["run_id"], event["quote"]), ("stop", "run-1", None))
+        state = json.loads((self.root / "05-交易记录-data/current-state.json").read_text())
+        self.assertEqual(state["positions"], [])
+        self.assertLess(state["daily_realized_pnl_usdt"], 0)
+
+    def test_roll_day_resets_daily_loss_once_per_planned_day(self):
+        self.state["daily_realized_pnl_usdt"] = -80
+        self._write_all()
+        ledger = self.make_ledger()
+        ledger.roll_day(self.now)
+        self.assertEqual((ledger.state["daily_realized_pnl_usdt"], ledger.state["trading_day_index"]), (0, 1))
+        ledger.state["daily_realized_pnl_usdt"] = -30
+        ledger.roll_day(self.now + timedelta(hours=1))
+        self.assertEqual(ledger.state["daily_realized_pnl_usdt"], -30)
+        ledger.roll_day(self.now + timedelta(days=30))
+        self.assertEqual(ledger.state["daily_realized_pnl_usdt"], -30)
 
     def test_reconcile_restores_last_event_snapshot(self):
         self.make_ledger().open_long(self.request(), self.now)

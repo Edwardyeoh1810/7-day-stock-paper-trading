@@ -1,6 +1,6 @@
 {
-  "experiment_name": "7天 Binance 股票/ETF paper trading 实验",
-  "timezone": "America/Chicago",
+  "experiment_name": "7 天 Binance 模拟盘加密现货 paper trading 实验",
+  "timezone": "Asia/Kuala_Lumpur",
   "cycle_length_trading_days": 7,
   "max_checks_per_trading_day": 6,
   "late_start_grace_minutes": 30,
@@ -11,78 +11,88 @@
     "2026-09-23",
     "2026-09-24",
     "2026-09-25",
-    "2026-09-28",
-    "2026-09-29"
+    "2026-09-26",
+    "2026-09-27"
   ],
   "default_mode": "paper_trading_only",
-  "note": "美股常规开盘时间是 Central 时间 8:30 a.m. / Eastern 时间 9:30 a.m.。第二次检查设置为 Central 时间 8:35 a.m.，用于观察开盘后第一轮市场状态，同时保持每天 6 次检查。",
+  "note": "加密货币全天交易：每天六次检查，按 Asia/Kuala_Lumpur 时间每四小时一次，连续七个自然日。两次检查之间由模拟盘上的止损/止盈委托保护仓位。",
   "tasks": [
     {
-      "id": "pre_market_0745_ct",
-      "time": "07:45",
-      "timezone": "America/Chicago",
-      "label": "盘前研究与 readiness 检查",
+      "id": "check_0000",
+      "time": "00:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "每四小时检查 00:00",
       "instructions": [
         "读取 AGENTS、策略、日程、连续性规则、readiness、current-state 和最新 journal。",
-        "读取新闻、官方日历、可用账户状态和隔夜市场背景。",
-        "生成今日观察列表。",
-        "不得下单。"
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
       ]
     },
     {
-      "id": "open_review_0835_ct",
-      "time": "08:35",
-      "timezone": "America/Chicago",
-      "label": "开盘后机会复核",
+      "id": "check_0400",
+      "time": "04:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "每四小时检查 04:00",
       "instructions": [
-        "检查开盘后的价格、点差、流动性和成交量状态。",
-        "检查是否有高流动性股票或 ETF 满足多证据入场条件。",
-        "记录交易候选、风险和不交易理由。",
-        "除非某笔实盘订单已单独获得用户确认，否则只能使用 paper trading。"
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state 和最新 journal。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
       ]
     },
     {
-      "id": "late_morning_1100_ct",
-      "time": "11:00",
-      "timezone": "America/Chicago",
-      "label": "上午持仓与最后新入场复核",
+      "id": "check_0800",
+      "time": "08:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "每四小时检查 08:00",
       "instructions": [
-        "检查已有持仓。",
-        "判断继续持有、减仓、止损或放弃新机会。",
-        "除非已有风险需要管理，否则这是最后一个考虑新 paper trade 的定时检查。"
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state 和最新 journal。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
       ]
     },
     {
-      "id": "midday_1300_ct",
-      "time": "13:00",
-      "timezone": "America/Chicago",
-      "label": "只做风险管理",
+      "id": "check_1200",
+      "time": "12:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "每四小时检查 12:00",
       "instructions": [
-        "管理已有持仓。",
-        "不主动扩大风险。",
-        "更新风险、现金、当前交易逻辑和下一步行动。"
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state 和最新 journal。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
       ]
     },
     {
-      "id": "flatten_prep_1415_ct",
-      "time": "14:15",
-      "timezone": "America/Chicago",
-      "label": "准备关闭日内风险",
+      "id": "check_1600",
+      "time": "16:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "每四小时检查 16:00",
       "instructions": [
-        "准备关闭剩余日内仓位，除非策略明确允许隔夜。",
-        "降低尾盘风险。",
-        "记录未解决的数据或订单问题。"
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state 和最新 journal。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
       ]
     },
     {
-      "id": "end_of_day_1445_ct",
-      "time": "14:45",
-      "timezone": "America/Chicago",
-      "label": "收盘前核对与记录",
+      "id": "check_2000",
+      "time": "20:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "每四小时检查 20:00",
       "instructions": [
-        "确认不应隔夜的仓位已经退出。",
-        "记录当日结果、证据、当前持仓、现金、风险和下一次任务说明。",
-        "标记需要人工确认的事项。"
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state 和最新 journal。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
       ]
     }
   ]

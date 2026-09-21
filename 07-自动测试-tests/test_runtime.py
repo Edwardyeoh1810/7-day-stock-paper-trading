@@ -2,7 +2,7 @@ import json
 import sys
 import tempfile
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
@@ -43,13 +43,17 @@ class RuntimeTests(unittest.TestCase):
         ids = set()
         for day in schedule["planned_trading_dates"]:
             for task in schedule["tasks"]:
-                now = datetime.fromisoformat(day + "T" + task["time"]).replace(tzinfo=ZoneInfo("America/Chicago"))
+                now = datetime.fromisoformat(day + "T" + task["time"]).replace(tzinfo=ZoneInfo(schedule["timezone"]))
                 slot = runner.due_slot(schedule, now.astimezone(ZoneInfo("Asia/Tokyo")))
                 self.assertIsNotNone(slot)
                 ids.add(slot)
         self.assertEqual(len(ids), 42)
-        for timestamp in ("2026-09-19T09:30", "2026-09-23T09:30", "2026-09-14T09:41"):
-            self.assertIsNone(runner.due_slot(schedule, datetime.fromisoformat(timestamp).replace(tzinfo=ZoneInfo("America/Chicago"))))
+        first, last = schedule["planned_trading_dates"][0], schedule["planned_trading_dates"][-1]
+        before = datetime.fromisoformat(first + "T00:00").replace(tzinfo=ZoneInfo(schedule["timezone"])) - timedelta(minutes=1)
+        after = datetime.fromisoformat(last + "T23:59").replace(tzinfo=ZoneInfo(schedule["timezone"])) + timedelta(minutes=2)
+        between = datetime.fromisoformat(first + "T02:00").replace(tzinfo=ZoneInfo(schedule["timezone"]))
+        for moment in (before, after, between):
+            self.assertIsNone(runner.due_slot(schedule, moment))
 
     def test_bilingual_schedule_matches(self):
         en = json.loads((ROOT / "03-定时任务-routines/schedule.json").read_text())

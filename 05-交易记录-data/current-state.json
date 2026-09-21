@@ -2,17 +2,17 @@
   "experiment_name": "7-day Binance demo crypto Spot paper trading experiment",
   "mode": "paper_trading_only_binance_demo",
   "start_date": "2026-09-21",
-  "end_date": "2026-09-29",
+  "end_date": "2026-09-27",
   "planned_trading_dates": [
     "2026-09-21",
     "2026-09-22",
     "2026-09-23",
     "2026-09-24",
     "2026-09-25",
-    "2026-09-28",
-    "2026-09-29"
+    "2026-09-26",
+    "2026-09-27"
   ],
-  "trading_day_index": 0,
+  "trading_day_index": 1,
   "starting_capital_usdt": 5000,
   "cash_usdt": 5000,
   "equity_usdt": 5000,
@@ -30,12 +30,16 @@
     "XRPUSDT"
   ],
   "last_run": {
-    "run_id": "manual_20260921T084131660145",
-    "timestamp": "2026-09-21T00:41:31.660718+00:00",
-    "mode": "observation_only",
+    "run_id": "setup_check_24h_no_trade",
+    "timestamp": "2026-09-21T00:51:21.123124+00:00",
+    "mode": "autonomous_demo_paper",
     "demo_api_verified": true,
-    "orders_placed": false
+    "orders_placed": false,
+    "demo_order_sent": false,
+    "paper_action": "no_trade",
+    "paper_result": "no_trade"
   },
-  "next_task_focus": "Demo readiness verified on 2026-09-21. Start with the 2026-09-21 07:45 Central pre-market check. Live trading remains disabled.",
-  "human_confirmation_needed": []
+  "next_task_focus": "Refresh market evidence and reassess the demo paper position at the next scheduled check. Live trading remains disabled.",
+  "human_confirmation_needed": [],
+  "ledger_date": "2026-09-21"
 }

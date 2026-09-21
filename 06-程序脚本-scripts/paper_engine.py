@@ -11,8 +11,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from binance_readiness_check import HOSTS, check_demo_spot, get_json, load_config, update_readiness
-from demo_orders import DemoOrderError, market_order
-from paper_ledger import PaperLedger, PaperLedgerError, atomic_json, decimal_value
+from demo_orders import DemoOrderError, cancel_exit_oco, exit_status, market_order, place_exit_oco
+from paper_ledger import PaperLedger, PaperLedgerError, atomic_json, decimal_value, floor_step
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "09-API密钥-仅本地" / "binance-api.env"
@@ -67,6 +67,7 @@ def fetch_snapshot(symbol, now):
     rule = matches[0]
     filters = {item.get("filterType"): item for item in rule.get("filters", []) if isinstance(item, dict)}
     lot, notional = filters.get("LOT_SIZE", {}), filters.get("NOTIONAL", {})
+    tick = filters.get("PRICE_FILTER", {}).get("tickSize")
     tradable = rule.get("status") == "TRADING" and rule.get("isSpotTradingAllowed") is True
     return {
         # Spot rules mapped onto the rule shape the ledger validates.
@@ -79,6 +80,7 @@ def fetch_snapshot(symbol, now):
             "maxQty": filters.get("MARKET_LOT_SIZE", {}).get("maxQty") or lot.get("maxQty"),
             "minNotional": notional.get("minNotional"),
             "maxNotional": notional.get("maxNotional"),
+            "tickSize": tick,
         },
         "quote": {
             "symbol": symbol,
@@ -126,37 +128,70 @@ def execute(decision, run_id, now=None):
     now = datetime.now(timezone.utc)
     ledger = build_ledger()
     ledger.validate_readiness(now)
+    ledger.roll_day(now)
     snapshot = fetch_snapshot(symbol, now)
-    # Without this readiness switch the fill is simulated locally and no demo order is sent.
-    executor = None
-    if ledger.readiness.get("demo_order_execution_enabled") is True:
-        executor = lambda order_symbol, side, quantity: market_order(config, order_symbol, side, quantity)
     action = decision["action"]
+    # Without this readiness switch fills are simulated locally and nothing is sent to the demo account.
+    demo = ledger.readiness.get("demo_order_execution_enabled") is True
+
+    positions = ledger.state.get("positions", [])
+    protection = positions[0].get("demo_exit_orders") if positions else None
+    if demo and protection:
+        # The exchange may have triggered the stop or target since the last check: book that first.
+        done = exit_status(config, positions[0]["symbol"], protection)
+        if done and done["fill"]:
+            event = ledger.record_exit(done["fill"], done["reason"], now, run_id)
+            if action != "open_long":
+                return {"status": "exchange_exit_reconciled", "event": event, "snapshot": snapshot}
+            protection = None
+        elif done:
+            ledger.set_protection(None, now)
+            protection = None
+
+    def executor(order_symbol, side, quantity):
+        if side == "SELL" and protection:
+            cancel_exit_oco(config, order_symbol, protection)
+        return market_order(config, order_symbol, side, quantity)
+
+    execute_order = executor if demo else None
     if action == "no_trade":
         return {"status": "no_trade", "event": None, "snapshot": snapshot}
     if action == "open_long":
+        # Exchange trigger prices must sit on the symbol's price tick.
+        tick = decimal_value(snapshot["rules"]["tickSize"], "tickSize")
         request = {
             "run_id": run_id,
             "symbol": symbol,
             "quote": snapshot["quote"],
             "rules": snapshot["rules"],
-            "stop_price": decision.get("stop_price"),
-            "target_price": decision.get("target_price"),
+            "stop_price": str(floor_step(decimal_value(decision.get("stop_price"), "stop_price"), tick)),
+            "target_price": str(floor_step(decimal_value(decision.get("target_price"), "target_price"), tick)),
             "thesis": decision.get("thesis", ""),
             "evidence": decision.get("evidence"),
         }
-        event = ledger.open_long(request, now, executor)
+        event = ledger.open_long(request, now, execute_order)
+        if demo:
+            position = ledger.state["positions"][0]
+            try:
+                orders = place_exit_oco(config, symbol, position["quantity"], position["stop_price"], position["target_price"])
+            except DemoOrderError:
+                # Never hold a position the exchange is not protecting: leave at market straight away.
+                later = datetime.now(timezone.utc)
+                ledger.close({"run_id": run_id, "quote": fetch_snapshot(symbol, later)["quote"],
+                              "reason": "protection_failed"}, later, execute_order)
+                raise PaperEngineError("Exit orders could not be placed; the position was closed at market") from None
+            ledger.set_protection(orders, datetime.now(timezone.utc), run_id)
     elif action == "manage":
-        event = ledger.mark({"run_id": run_id, "quote": snapshot["quote"]}, now, evaluate=True, execute=executor)
+        event = ledger.mark({"run_id": run_id, "quote": snapshot["quote"]}, now, evaluate=True, execute=execute_order)
     else:
         event = ledger.close({"run_id": run_id, "quote": snapshot["quote"],
-                              "reason": decision.get("reason", "end_of_day")}, now, executor)
+                              "reason": decision.get("reason", "end_of_day")}, now, execute_order)
     return {"status": "executed", "event": event, "snapshot": snapshot}
 
 
 def write_records(run_id, decision, result, now):
     ledger = build_ledger()
-    local = now.astimezone(ZoneInfo("America/Chicago"))
+    local = now.astimezone(ZoneInfo(ledger.config["timezone"]))
     state = ledger.state
     event = result.get("event") or {}
     demo_order = event.get("demo_order")
@@ -171,7 +206,7 @@ def write_records(run_id, decision, result, now):
         "paper_result": result["status"],
     }
     state["next_task_focus"] = (
-        "Refresh market evidence and reassess the demo paper position at the next scheduled Central-time check. "
+        "Refresh market evidence and reassess the demo paper position at the next scheduled check. "
         "Live trading remains disabled."
     )
     atomic_json(ROOT / "05-交易记录-data" / "current-state.json", state)

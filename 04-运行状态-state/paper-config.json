@@ -9,9 +9,10 @@
   "readiness_max_age_hours": "24",
   "minimum_evidence_categories": 2,
   "minimum_reward_risk": "1.5",
-  "regular_session_open_ct": "08:30",
-  "new_entry_cutoff_ct": "11:30",
-  "regular_session_close_ct": "15:00",
   "one_position_at_a_time": true,
-  "allow_overnight": false
+  "timezone": "Asia/Kuala_Lumpur",
+  "entry_window_open": "00:00",
+  "entry_window_close": "23:59",
+  "max_hold_hours": "24",
+  "exchange_side_stop_and_target": true
 }
