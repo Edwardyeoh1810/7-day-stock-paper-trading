@@ -49,6 +49,15 @@ Use these category names in every decision file, exactly as written, so the revi
 
 Two items of the same category count as one category. Evidence must be independent: a moving average and a trend line drawn over the same candles are one observation, not two.
 
+## Demo Price Artifacts
+
+The demo exchange is a simulation and sometimes prints prices the real market never traded, for example a single candle with a wick of many percent that none of the other four contracts shows. This is a defect of the demo environment, not market structure, and this rule should not be carried into any live use.
+
+- Before using a high or low as a level, compare the same candle across the watchlist. An isolated extreme that the other contracts do not show, or a wick several times the size of the candle's body and of neighbouring candles, is an artifact: exclude it from support, resistance, range and 24 hour high/low figures, and never anchor a stop or target to it.
+- Record every artifact you exclude in the evidence file, with the contract, candle time and price.
+- If recent artifacts make a contract's structure unreadable, record `no_trade` for that contract.
+- An artifact can still trigger a resting stop or target, because the exchange acts on its own prices. Nothing in the rules can prevent that; the daily review identifies such exits and reports results with and without them.
+
 ## Entry Conditions
 
 An entry may be considered only when all of these hold:

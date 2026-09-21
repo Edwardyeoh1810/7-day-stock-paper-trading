@@ -68,7 +68,7 @@ evidence (with sample size), the expected effect, the risk of being wrong, statu
 ## P-003 — Treat demo-host price extremes as unusable for stop placement
 
 - **Date raised:** 2026-09-21 (day 1)
-- **Status:** open
+- **Status:** approved by Edward on 2026-09-21 and implemented the same day: `TRADING-STRATEGY.md` has a "Demo Price Artifacts" section, and the daily review must flag artifact-triggered exits and report results with and without them. No script check was added. Known limit: an artifact can still trigger a resting stop.
 - **What to change:** A note in `TRADING-STRATEGY.md` (and, if wanted, a sanity check in the observation
   script) that single-bar high/low extremes on the demo host are not acceptable structure for a stop or
   target, and that a bar whose wick exceeds some threshold of its own body — or which has no counterpart on

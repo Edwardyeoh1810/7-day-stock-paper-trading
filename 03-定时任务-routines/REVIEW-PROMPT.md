@@ -11,6 +11,7 @@ Work only in the project directory. Never run `paper_engine.py`, `paper_trade.py
 3. Write `reviews/YYYY-MM-DD.md` (local date) with these sections:
    - **Numbers** — today and experiment-to-date, from `stats.json`, always including slot coverage.
    - **Decisions reviewed** — for every entry, exit and no-trade today: was the evidence real and independent, was the stop placed on price structure, did the trade follow the thesis, and what happened next. Judge the decision by what was knowable at the time, not by the outcome.
+   - **Demo artifacts** — for every exit the exchange triggered, compare the trigger candle across the watchlist. If the price that hit the stop or target was an isolated demo print the other contracts do not show, flag the trade as an artifact exit, and report the experiment-to-date net P&L and average R both with and without artifact exits. Also list artifacts the checks excluded from their levels.
    - **Process errors** — rule violations, engine rejections, missed or failed checks, stale data, sloppy evidence. These matter more than P&L.
    - **What worked / what did not** — each point tied to specific trades.
    - **Hypotheses** — patterns worth watching, each with its sample size.
