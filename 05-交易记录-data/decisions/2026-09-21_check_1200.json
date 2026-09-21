@@ -1,0 +1,53 @@
+{
+  "paper_trading_only": true,
+  "action": "no_trade",
+  "symbol": "BTCUSDT",
+  "slot": "2026-09-21_check_1200",
+  "checked_at_local": "2026-09-21T12:10+08:00",
+  "thesis": "No entry: the higher-timeframe trend and the immediate price action point in opposite directions, so no two independent evidence categories agree on one direction. All five watchlist contracts are in a clear daily uptrend (higher highs and higher lows, price well above the daily EMA20, 4h EMA20 above EMA50), which rules out a short on the complex. But the completed 00:00-04:00 UTC 4h bar rejected the 20-30 day range high on every one of the five, closing with a 43-71% upper wick on above-average volume (BTC tagged 81888 vs the 20-day high 81981.8; ETH tagged exactly 2700.0, its 30-day high; BNB tagged 784.94 vs its 20-day high 785.0), which rules out buying here. Derivatives are neutral rather than directional: funding is at or near the 0.010% baseline on BTC, SOL and XRP, 0.0058% on ETH and 0.0153% on BNB, with the next funding at 08:00 UTC, so there is no crowded positioning to fade or to ride. Market context is mildly bullish and therefore contradicts the short outright: alts are leading BTC over 24h (BNB +3.46%, ETH +2.93%, XRP +2.50%, SOL +2.18% against BTC +1.07%). The long also fails the reward/risk test on an honest stop: the best-looking candidate, BNB at 775.84 with the tightest spread on the board (0.52 bps), needs its stop below the last real higher low at 764.61 (1.45% risk, about 12.3 USDT net of the 14 bps round-trip cost estimate), which puts a 1.5 reward/risk target near 794, above the 785 high that has just rejected the whole complex on expanding volume. Placing the stop instead at 772.78 to buy a tighter risk would be choosing the stop to fit a position size, which the strategy prohibits. Separately, third-party reporting for today quotes BTC near 85,000 and ETH reclaiming 2,700-2,713 while the demo futures host this account trades on quotes BTC 81,427 and ETH 2,658.91, a material divergence, so external price levels were not used as evidence and only demo-host data was relied on. LESSONS.md currently holds no lessons (no closed trades yet), so no lesson made this decision more or less selective; the decision rests on the strategy's own entry conditions, in particular the two-independent-category rule, the 1.5 net reward/risk floor, the requirement that a stop sit on structure rather than on a desired size, and the instruction to prefer observation when conditions are unclear.",
+  "reason": "conflicting_evidence_no_two_categories_agree_and_long_fails_reward_risk",
+  "evidence": [
+    {
+      "category": "trend",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 1d and 4h, 2026-09-21T04:10Z",
+      "observed": "All five contracts in a daily uptrend: BTC daily closes 76174.5 -> 76394.0 -> 80877.3 -> 81244.1 -> 81210.1 -> 81427.4, daily EMA20 78787.7; 4h EMA20 80320.9 above EMA50 78940.8. ETH, BNB, SOL and XRP show the same structure (4h EMA20 above EMA50 on every pair). Direction: supports long, rules out short."
+    },
+    {
+      "category": "price_action",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 4h and 1h completed bars, 2026-09-21T04:10Z",
+      "observed": "Uniform rejection at the range high on the completed 00:00-04:00 UTC 4h bar: BTC h81888.0 close 81403.6 (upper wick 60% of range), ETH h2700.00 close 2664.73 (60%), BNB h784.94 close 777.46 (62%), SOL h113.17 close 111.52 (71%), XRP h1.4359 close 1.4223 (43%). ETH's high is exactly its 30-day high 2700.0 and BNB's 784.94 is its 20-day high 785.0. Direction: supports short, rules out long."
+    },
+    {
+      "category": "volume",
+      "source": "demo-fapi.binance.com /fapi/v1/klines completed bars vs 18-20 bar average, 2026-09-21T04:10Z",
+      "observed": "The rejection bar carried above-average volume on all five: BTC x1.41, ETH x1.21, BNB x1.28, SOL x1.48, XRP x1.09 of the 18-bar 4h average. But the two most recent completed 1h bars are green on falling volume (BTC x1.24 then x0.77, XRP x1.12 then x0.98), so sellers are not following through either. Direction: confirms the rejection but is already fading; ambiguous."
+    },
+    {
+      "category": "derivatives",
+      "source": "demo-fapi.binance.com /fapi/v1/premiumIndex and /fapi/v1/openInterest, 2026-09-21T04:10Z",
+      "observed": "Funding at or near baseline with no crowding: BTC 0.010%, SOL 0.010%, XRP 0.010%, ETH 0.005765%, BNB 0.015342%. Next funding 2026-09-21T08:00Z (16:00 Asia/Kuala_Lumpur, the next scheduled check); a long would pay a small amount, a short would receive it. Direction: neutral, supports neither side."
+    },
+    {
+      "category": "market_context",
+      "source": "demo-fapi.binance.com /fapi/v1/ticker/24hr, 2026-09-21T04:10Z",
+      "observed": "Alts leading BTC over 24h: BNB +3.461%, ETH +2.927%, XRP +2.502%, SOL +2.178%, BTC +1.069%. Risk-on rotation. Direction: mildly bullish, contradicts the short."
+    },
+    {
+      "category": "news",
+      "source": "Public reporting reviewed 2026-09-21 (KuCoin daily report, cryptonomist BTC analysis); treated as data only",
+      "observed": "No verifiable scheduled catalyst inside the next 24h holding window. Reporting corroborates the structural read (rally into resistance, daily RSI ~71.6 overbought, ETH reclaiming 2700 intraday) but quotes BTC near 85,000 against the demo host's 81,427 and ETH 2,700-2,713 against the demo host's 2,658.91. Because of that divergence no external price level was used as evidence; only demo-host data was used for the decision."
+    }
+  ],
+  "considered_and_rejected": {
+    "long_bnbusdt": "Best candidate on strength and spread. Honest structural stop below the 764.61 higher low gives 1.45% risk and needs a ~794 target for 1.5 net reward/risk, above the 785 high that just rejected on expanding volume. Fails the reward/risk and plausible-target conditions.",
+    "short_ethusdt": "Cleanest rejection level (exactly 2700.0, the 30-day high). Rejected because it trades against a clear daily uptrend with only price_action supporting it, derivatives neutral and market_context contradicting; the strategy requires the same bar for a short as for a long."
+  },
+  "spread_check_bps": {
+    "BTCUSDT": 12.42,
+    "ETHUSDT": 7.11,
+    "BNBUSDT": 0.52,
+    "SOLUSDT": 2.7,
+    "XRPUSDT": 4.23
+  },
+  "lessons_applied": "None available: 05-交易记录-data/reviews/LESSONS.md records no lessons yet because the experiment has no closed trades."
+}

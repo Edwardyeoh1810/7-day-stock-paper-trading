@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T09:25:29.795872+08:00",
+  "generated_at": "2026-09-21T19:41:48.236335+08:00",
   "sample_warning": "Fewer than 30 closed trades: treat every pattern as a hypothesis, not a finding.",
   "account": {
     "starting_capital_usdt": 5000,
@@ -9,7 +9,9 @@
     "trading_day_index": 1,
     "positions": []
   },
-  "decisions_by_action": {},
+  "decisions_by_action": {
+    "no_trade": 1
+  },
   "overall": {
     "trades": 0
   },

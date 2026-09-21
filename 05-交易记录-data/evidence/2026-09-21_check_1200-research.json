@@ -1,0 +1,57 @@
+{
+  "run_id": "2026-09-21_check_1200-research",
+  "relates_to": ["2026-09-21_check_1200", "2026-09-21_check_1200_paper"],
+  "written_at": "2026-09-21T11:40Z",
+  "purpose": "Research notes plus a post-run correction for the 12:00 slot. The engine-generated journal and evidence exports are deterministic and were not edited; this file carries the correction.",
+
+  "timing_anomaly": {
+    "severity": "high_for_process_not_for_positions",
+    "what_happened": "The run began inside the 12:00 Asia/Kuala_Lumpur slot window: run_observation.py recorded checked_at 2026-09-21T04:10:09Z (12:10 MYT), within the 30-minute grace. The session then stalled for roughly 7.5 hours before the decision was submitted. paper_engine.py executed at 2026-09-21T11:37:20Z, which is 19:37 MYT.",
+    "verification": "Host clock and the demo exchange server clock agree independently: host 2026-09-21T11:37:44Z, demo-fapi /fapi/v1/time 2026-09-21T11:37:44.651Z. The 12:00 slot grace expired at 12:30 MYT, so the decision was submitted about 7 hours after the slot window closed.",
+    "position_impact": "None. No position was open before, during or after the run, the decision was no_trade, no order was sent, and no historical trade was backfilled. Cash and equity are unchanged at 5000 USDT.",
+    "rule_reference": "AUTOMATION-PROMPT.md Verification Boundary: every run must compare the actual host time with the intended slot and must never backfill a historical trade. The comparison was made and is recorded here; nothing was backfilled.",
+    "for_the_reviewer": "The 22:00 review should judge this slot on process, not on the market outcome. The practical question is whether a stalled run should submit a decision at all once the slot grace has expired, or abort and leave the slot unrecorded. Any rule change belongs in reviews/PROPOSALS.md and is the user's call."
+  },
+
+  "correction_to_decision_file": {
+    "claim_corrected": "The 12:00 decision thesis stated that third-party reporting (BTC near 85,000, ETH 2,700-2,713) diverged materially from the demo host (BTC 81,427, ETH 2,658.91), and treated that as a demo-environment data-quality caveat.",
+    "correction": "That claim is wrong. There was no venue divergence; the gap was time, not venue. The demo host's own quotes at 11:37Z were BTC 84,696 and ETH 2,721, which match the reporting closely. The decision's market data was simply about 7.5 hours stale by the time the decision was submitted.",
+    "effect_on_the_decision": "None. The recorded action stays no_trade, which is the safe and correct outcome for stale, conflicting evidence, and it is also what the rules require when data is stale. The reasoning about conflicting evidence was valid for the 04:10Z snapshot it was drawn from; it should not be read as a valid assessment of the 19:37 MYT market."
+  },
+
+  "research_as_of_0410Z": {
+    "note": "This is the snapshot the 12:00 decision was based on. Retained for the record; superseded by the 11:37Z snapshot below.",
+    "read_only_source": "demo-fapi.binance.com public endpoints only; no credentials used, no order endpoint touched",
+    "structure": "All five watchlist contracts in a daily uptrend, consolidating just under 20-30 day range highs after a uniform intraday rejection.",
+    "prices": {"BTCUSDT": "81326.30/81427.40", "ETHUSDT": "2658.53/2660.42", "BNBUSDT": "775.80/775.84", "SOLUSDT": "111.17/111.20", "XRPUSDT": "1.4167/1.4173"},
+    "rejection_bar_0000_0400Z_4h": {
+      "BTCUSDT": {"high": 81888.0, "close": 81403.6, "upper_wick_pct_of_range": 60, "vol_vs_18bar_avg": 1.41},
+      "ETHUSDT": {"high": 2700.0, "close": 2664.73, "upper_wick_pct_of_range": 60, "vol_vs_18bar_avg": 1.21},
+      "BNBUSDT": {"high": 784.94, "close": 777.46, "upper_wick_pct_of_range": 62, "vol_vs_18bar_avg": 1.28},
+      "SOLUSDT": {"high": 113.17, "close": 111.52, "upper_wick_pct_of_range": 71, "vol_vs_18bar_avg": 1.48},
+      "XRPUSDT": {"high": 1.4359, "close": 1.4223, "upper_wick_pct_of_range": 43, "vol_vs_18bar_avg": 1.09}
+    },
+    "funding": {"BTCUSDT": "0.010%", "ETHUSDT": "0.005765%", "BNBUSDT": "0.015342%", "SOLUSDT": "0.010%", "XRPUSDT": "0.010%", "next": "2026-09-21T08:00Z"}
+  },
+
+  "snapshot_as_of_1137Z": {
+    "note": "Captured after the engine ran, for the record only. No decision was made on this data; the 20:00 MYT slot was not yet due at the time of writing and was left to its own scheduled run.",
+    "quotes_and_24h": {
+      "BTCUSDT": {"bid": 84696.3, "ask": 84706.1, "spread_bps": 1.16, "chg24h_pct": 5.330},
+      "ETHUSDT": {"bid": 2721.32, "ask": 2721.83, "spread_bps": 1.87, "chg24h_pct": 5.623},
+      "BNBUSDT": {"bid": 791.49, "ask": 791.75, "spread_bps": 3.28, "chg24h_pct": 5.251},
+      "SOLUSDT": {"bid": 116.28, "ask": 116.39, "spread_bps": 9.46, "chg24h_pct": 7.520},
+      "XRPUSDT": {"bid": 1.4898, "ask": 1.4899, "spread_bps": 0.67, "chg24h_pct": 8.191}
+    },
+    "what_resolved": "Every one of the five broke above the level that rejected it at 04:10Z: BTC through 81888/81981, ETH through 2700 to a 2850 high, BNB through 785 to 791.7, SOL through 113.17 to 116.55, XRP through 1.4359 to 1.4969. The conflicting picture resolved to the upside. In hindsight the long was there; by rule it was not takeable at 12:10 MYT on two conflicting categories and a target that sat above proven resistance.",
+    "funding_now": {"BTCUSDT": "0.001438%", "ETHUSDT": "0.009205%", "BNBUSDT": "0.000000%", "SOLUSDT": "0.010%", "XRPUSDT": "-0.001291%", "next": "2026-09-21T16:00Z"}
+  },
+
+  "data_quality_flags": [
+    "The demo host's BTCUSDT 1h kline opening 2026-09-21T09:00Z reports high 95804.10 against an open of 83753.50 and a close of 84625.90, a roughly 14% wick with no counterpart in the other four contracts. This propagates into the 24h high field (95804.10). It looks like a thin simulated-book print rather than a real move. Treat demo high/low extremes with caution when placing structural stops, since exchange-side stop and target orders on this account trigger on the mark price in the same environment.",
+    "Current-bar volume is not comparable to a bar average while the bar is still forming; completed bars only were used for the volume evidence."
+  ],
+
+  "lessons_applied": "None. 05-交易记录-data/reviews/LESSONS.md holds no lessons yet (no closed trades). Nothing in this run was made less selective.",
+  "credentials_note": "No credential file was opened, printed or copied. BINANCE_ENV unchanged. No script, config, risk limit, watchlist or readiness switch was modified. Nothing under reviews/ was touched."
+}

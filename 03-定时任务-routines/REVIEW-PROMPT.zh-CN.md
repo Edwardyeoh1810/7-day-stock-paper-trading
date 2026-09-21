@@ -4,7 +4,7 @@
 
 ## 任务文案
 
-所有操作仅在项目目录进行。绝不运行 `paper_engine.py`、`paper_trade.py` 或任何下单、账户调用；绝不编辑脚本、测试、`readiness.json`、`paper-config.json`、`current-state.json`、账本、日程或密钥文件。复盘只在 `05-交易记录-data/reviews/` 内写入。
+所有操作仅在项目目录进行。绝不运行 `paper_engine.py`、`paper_trade.py` 或任何下单、账户调用；绝不编辑脚本、测试、`readiness.json`、`paper-config.json`、`current-state.json`、账本、日程或密钥文件。复盘只在 `05-交易记录-data/reviews/` 内写入，并通过 Obsidian 连接器写入第 7 步指定的库文件夹。
 
 1. 运行 `python3 -B 06-程序脚本-scripts/review_stats.py`。它根据账本重建 `reviews/stats.json`：已平仓交易、胜率、平均 R（结果除以开仓时的计划亏损）、回撤、手续费、资金费，以及按合约、方向、平仓原因和证据类别的同类统计。直接使用这些数字，不要手工重算。
 2. 读取当天的 journal、decision 和 evidence 文件，`reviews/LESSONS.md`、`reviews/PROPOSALS.md` 和上一份每日复盘。
@@ -17,7 +17,13 @@
 4. 更新 `reviews/LESSONS.md`：最多 10 条经验，每条注明证据和样本量，最有用的排在最前。只有至少 3 笔交易或 5 次决策支持时才添加；数据不再支持的经验要删除。经验只能让以后的决策更严格（放弃某种形态、要求多一类证据、避开某个时段），绝不能放宽任何规则或风险限制。已平仓交易少于 30 笔时，经验以假设的形式表述。
 5. 如果证据表明应修改规则、限制、观察列表、日程或代码，把建议追加到 `reviews/PROPOSALS.md` 供 Edward 决定。绝不自行实施。
 6. 在实验第 7、14、21、28 天另写 `reviews/weekly-N.md`：本周数字与此前各周的对比，哪些经验被执行以及执行是否有帮助，哪些建议仍待决定，并如实说明目前是否看得出优势，还是结果与随机无法区分。最后一个计划日期之后，以同样形式为整个实验写 `reviews/final.md`。
-7. 最后给 Edward 一份简短报告：当天数字、最重要的一两个发现、新增经验，以及等待他决定的新建议。
+7. 发布到 Obsidian，方便 Edward 在那里阅读经验。只使用 Obsidian 连接器工具（`obsidian_create_note`、`obsidian_read_note`、`obsidian_edit_note`），库为 `obsidian-vault`，文件夹为 `Trading/Futures Paper Trading Experiment/`：
+   - 创建 `Daily Reviews/YYYY-MM-DD.md`，内容为完整的每日复盘，front matter 为 `tags: [trading, trading/review]`，第一行链接回：`[[Home]] · [[Lessons]] · [[Review Log]]`。如果笔记已存在，则替换其内容。
+   - 用当前的 `LESSONS.md` 和 `PROPOSALS.md` 替换 `Lessons.md` 和 `Proposals.md` 的正文，保留各笔记的 front matter、标题和 “Mirror of ...” 一行。
+   - 在 `Review Log.md` 的表格中追加一行：日期、实验第几天、当天交易数、累计交易数、累计净盈亏、胜率、平均 R、一句话的关键发现，以及链接 `[[Daily Reviews/YYYY-MM-DD]]`。同一日期不要出现第二行；如已存在则替换。
+   - 每周和最终复盘写入 `Weekly Reviews/weekly-N.md` 和 `Weekly Reviews/final.md`。
+   - 仓库文件始终是唯一依据；绝不从 Obsidian 读回经验。如果 Obsidian 工具不可用或失败，照常完成复盘并在报告中说明；绝不以其他方式写入库。
+8. 最后给 Edward 一份简短报告：当天数字、最重要的一两个发现、新增经验，以及等待他决定的新建议。
 
 ## 边界
 

@@ -22,7 +22,7 @@
     "Live trading requires explicit human confirmation for a specific order."
   ],
   "binance_demo_api": {
-    "checked_at": "2026-09-21T01:12:47.686705+00:00",
+    "checked_at": "2026-09-21T11:37:20.017202+00:00",
     "environment": "demo",
     "scope": "demo_futures",
     "symbol": "BTCUSDT",
@@ -38,9 +38,9 @@
     "wallet_balance_usdt": "5000.04174826",
     "quote": {
       "symbol": "BTCUSDT",
-      "bidPrice": "81683.10",
-      "askPrice": "81700.00"
+      "bidPrice": "84654.90",
+      "askPrice": "84657.30"
     },
-    "quote_received_at": "2026-09-21T01:12:49.978472+00:00"
+    "quote_received_at": "2026-09-21T11:37:22.488205+00:00"
   }
 }

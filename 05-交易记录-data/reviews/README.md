@@ -7,3 +7,5 @@ The improvement loop of the experiment. See `03-定时任务-routines/REVIEW-PRO
 - `weekly-N.md` — deeper review after days 7, 14, 21 and 28; `final.md` after day 30.
 - `LESSONS.md` — the short list of current lessons. **Every trading check reads this before deciding.**
 - `PROPOSALS.md` — rule or parameter changes the AI suggests. Only Edward can approve and apply them.
+
+The daily review also mirrors the reviews, lessons and proposals to Obsidian (vault `obsidian-vault`, folder `Trading/Futures Paper Trading Experiment/`) for reading. This folder stays the source of truth.
