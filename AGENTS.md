@@ -1,12 +1,12 @@
 # AI Trading Experiment Operating Rules
 
-This project is a 7 trading day crypto Spot research and paper trading experiment on the Binance demo account (virtual funds).
+This project is a 7 day crypto futures research and paper trading experiment on the Binance demo futures account (virtual funds).
 It was forked from a stock/ETF experiment and keeps its risk limits and record keeping; the schedule is 24-hour: six checks a day, every four hours in Asia/Kuala_Lumpur time, on seven consecutive calendar days.
 It is not a live trading system and must not be described as a profitable system.
 
 ## Safety Defaults
 
-- Default mode is paper trading only. "Paper" means the Binance demo account at `demo-api.binance.com`; no script may send an order to any other host.
+- Default mode is paper trading only. "Paper" means the Binance demo futures account at `demo-fapi.binance.com`; no script may send an order to any other host.
 - Live trading is disabled unless the user explicitly authorizes a specific live order in chat.
 - Never place a real-money order without human confirmation.
 - If any readiness check is missing, false, stale, or ambiguous, do not place orders.
@@ -15,7 +15,8 @@ It is not a live trading system and must not be described as a profitable system
 
 ## Platform Scope
 
-- Target platform: Binance demo Spot account, USDT pairs on the approved watchlist in `05-交易记录-data/current-state.json` only.
+- Target platform: Binance demo USDT-perpetual futures account, contracts on the approved watchlist in `05-交易记录-data/current-state.json` only, long or short, one position at a time.
+- Leverage is fixed at 5x isolated by `04-运行状态-state/paper-config.json`; the engine sets it before every entry. Leverage only changes the margin a position ties up: the loss per trade stays capped by the stop and the sizing rule.
 - The demo account holds virtual funds. `BINANCE_ENV` in the local key file must be `demo`; a production key must never be used with this project.
 - The local paper ledger remains the record of fills, cash and risk; with `demo_order_execution_enabled: true` its fills are the actual demo-account fills.
 - Binance API keys must stay local in the root `09-API密钥-仅本地/binance-api.env`; never ask the user to paste keys in chat. The read-only checker reads only this file. Share `09-API密钥-仅本地/binance-api.env.example`, never the completed credential file.
@@ -26,13 +27,13 @@ It is not a live trading system and must not be described as a profitable system
 - Perform read-only account, position, order, and market-data checks when credentials are locally available.
 - Produce watchlists, risk notes, and paper trade records.
 - In paper trading only, autonomously decide whether to buy, sell, reduce, stop out, flatten, hold, or stay in cash according to the strategy and risk limits.
-- Autonomous paper execution requires `autonomous_paper_execution_enabled: true` in readiness and runs only through `06-程序脚本-scripts/paper_engine.py`, which sends MARKET orders to the demo account only and records them in the local ledger.
+- Autonomous paper execution requires `autonomous_paper_execution_enabled: true` in readiness and runs only through `06-程序脚本-scripts/paper_engine.py`, which sends MARKET orders to the demo futures account only and records them in the local ledger.
 - Record no-trade decisions with evidence and reasons.
 
 ## Prohibited Work
 
 - No live orders without explicit user confirmation.
-- No options, futures, margin, leveraged products or tokens, crypto perpetuals, low-liquidity pairs, or any pair outside the approved watchlist.
+- No Spot, options, coin-margined or delivery futures, cross margin, leverage other than the configured 5x isolated, low-liquidity contracts, or any contract outside the approved watchlist. No real-money futures under any circumstances.
 - No orders based on a single news item or a single indicator.
 - No full-account or heavy-position trades.
 - No credential leakage into journal, evidence files, logs, or chat.
@@ -77,8 +78,8 @@ Each journal entry must state:
 
 ## Binance Runtime
 
-- With `BINANCE_ENV=demo` the checker reads Spot `/api/v3/` endpoints on the demo host. `02-项目文档-docs/BINANCE-API.md` and the strategy documents still describe the original Stocks setup; where they conflict with this file, this file wins.
+- With `BINANCE_ENV=demo` the checker reads USDT-perpetual `/fapi/` endpoints on the demo futures host. `02-项目文档-docs/BINANCE-API.md` and the strategy documents still describe the original Stocks setup; where they conflict with this file, this file wins.
 - `06-程序脚本-scripts/run_observation.py` is read-only. The only POST path is `06-程序脚本-scripts/demo_orders.py`, which is hard-wired to the demo host and refuses to run unless `BINANCE_ENV=demo`.
-- The approved paper rules enforce one position, 10% maximum notional, 0.5% maximum planned loss, 2% maximum daily loss, two evidence categories, 1.5 net reward/risk, and a 24-hour maximum hold. Right after an entry fills, the engine places a stop-loss and take-profit (OCO) on the demo exchange, so the stop works between checks; an entry whose exit orders are rejected is closed immediately. Never place, cancel or amend these orders by hand.
+- The approved paper rules enforce one position, 50% maximum notional, 0.5% maximum planned loss, 2% maximum daily loss, a stop no further than 10% from the entry, two evidence categories, 1.5 net reward/risk, and a 24-hour maximum hold. Right after an entry fills, the engine places a reduce-only stop and take-profit trigger order on the demo exchange (mark-price triggered), so the stop works between checks; an entry whose exit orders are rejected is closed immediately. Never place, cancel or amend these orders by hand.
 - Every open position must be closed at the final check of the last planned date.
 - Preserve both languages. Dates in the schedule are provisional until authentication and review pass; do not count setup days as experiment sessions.

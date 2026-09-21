@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Deterministic local paper ledger. This module has no broker write path of its own;
-the engine may inject a demo-account executor so recorded fills are the actual demo fills."""
+"""Deterministic local paper ledger for USDT-perpetual futures, long or short. This module has no
+broker write path of its own; the engine may inject a demo-account executor so recorded fills
+are the actual demo fills."""
 
 import copy
 import json
@@ -176,8 +177,6 @@ class PaperLedger:
         allowed = {"BUY_SELL", "BUY"} if side == "buy" else {"BUY_SELL", "SELL"}
         if rules.get("tradability") not in allowed:
             raise PaperLedgerError("Symbol is not tradable for requested side")
-        if side == "buy" and rules.get("fractionable") is not True:
-            raise PaperLedgerError("Regular-session fractional trading is required")
         return {
             "step": decimal_value(rules.get("stepSize"), "stepSize"),
             "min_qty": decimal_value(rules.get("minQty") or "0", "minQty"),
@@ -197,17 +196,13 @@ class PaperLedger:
         self.ledger["next_sequence"] = sequence + 1
         return "PAPER-%s-%04d" % (now.astimezone(self._zone()).strftime("%Y%m%d"), sequence)
 
-    def _portfolio_values(self, position=None, bid=None):
-        cash = decimal_value(self.state["cash_usdt"], "cash_usdt")
-        if position is None:
-            return cash, Decimal("0"), Decimal("0")
+    def _unrealized(self, position, mark):
+        """Futures accounting: cash is the wallet balance and a position contributes only its P&L."""
         quantity = decimal_value(position["quantity"], "position.quantity")
-        mark = bid if bid is not None else decimal_value(position["mark_price"], "mark_price")
+        direction = 1 if position["side"] == "long" else -1
         fee_rate, _ = self._cost_rates()
-        exit_fee = quantity * mark * fee_rate
-        liquidation = quantity * mark - exit_fee
-        cost_basis = decimal_value(position["cost_basis_usdt"], "cost_basis_usdt")
-        return cash + liquidation, liquidation - cost_basis, exit_fee
+        gross = direction * (mark - decimal_value(position["entry_price"], "entry_price")) * quantity
+        return gross - quantity * mark * fee_rate
 
     def _save_event(self, event):
         event["state_after"] = copy.deepcopy(self.state)
@@ -215,7 +210,7 @@ class PaperLedger:
         atomic_json(self.ledger_path, self.ledger)
         atomic_json(self.state_path, self.state)
 
-    def open_long(self, request, now=None, execute=None):
+    def open_position(self, request, now=None, execute=None):
         now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
         self.validate_readiness(now)
         self._assert_entry_window(now)
@@ -224,84 +219,97 @@ class PaperLedger:
         symbol = str(request.get("symbol", "")).upper()
         if symbol not in self.state.get("watchlist", []):
             raise PaperLedgerError("Symbol is outside the approved watchlist")
+        side = request.get("side")
+        if side not in {"long", "short"}:
+            raise PaperLedgerError("Position side must be long or short")
+        direction = 1 if side == "long" else -1
+        order_side = "buy" if side == "long" else "sell"
         self._validate_evidence(request.get("evidence"))
-        quote = self._validate_quote(symbol, request.get("quote"), now, "buy")
-        rules = self._validate_rules(symbol, request.get("rules"), "buy")
+        quote = self._validate_quote(symbol, request.get("quote"), now, order_side)
+        rules = self._validate_rules(symbol, request.get("rules"), order_side)
         stop = decimal_value(request.get("stop_price"), "stop_price")
         target = decimal_value(request.get("target_price"), "target_price")
         fee_rate, slip_rate = self._cost_rates()
-        entry = quote["ask"] * (1 + slip_rate)
-        stop_fill = stop * (1 - slip_rate)
-        target_fill = target * (1 - slip_rate)
-        if not (0 < stop < entry < target):
-            raise PaperLedgerError("Require stop < entry < target")
-        loss_per_share = entry - stop_fill + entry * fee_rate + stop_fill * fee_rate
-        reward_per_share = target_fill - entry - entry * fee_rate - target_fill * fee_rate
-        if loss_per_share <= 0 or reward_per_share / loss_per_share < decimal_value(
+        # A long buys the ask and exits lower on a stop; a short sells the bid and exits higher.
+        entry = (quote["ask"] if side == "long" else quote["bid"]) * (1 + direction * slip_rate)
+        stop_fill = stop * (1 - direction * slip_rate)
+        target_fill = target * (1 - direction * slip_rate)
+        if not (stop > 0 and target > 0 and direction * (entry - stop) > 0 and direction * (target - entry) > 0):
+            raise PaperLedgerError("Stop and target are on the wrong sides of the entry")
+        if abs(entry - stop) / entry * 100 > decimal_value(self.config["max_stop_distance_percent"], "max_stop_distance_percent"):
+            raise PaperLedgerError("Stop is too far from the entry for the configured leverage")
+        loss_per_unit = direction * (entry - stop_fill) + (entry + stop_fill) * fee_rate
+        reward_per_unit = direction * (target_fill - entry) - (entry + target_fill) * fee_rate
+        if loss_per_unit <= 0 or reward_per_unit / loss_per_unit < decimal_value(
                 self.config["minimum_reward_risk"], "minimum_reward_risk"):
             raise PaperLedgerError("Net reward/risk is below the configured minimum")
         limits = self._limits()
         cash = decimal_value(self.state["cash_usdt"], "cash_usdt")
+        leverage = decimal_value(self.config["leverage"], "leverage")
         daily_loss = max(Decimal("0"), -decimal_value(self.state.get("daily_realized_pnl_usdt", 0), "daily pnl"))
         remaining_daily = limits["daily"] - daily_loss
         if remaining_daily <= 0:
             raise PaperLedgerError("Daily loss limit has been reached")
         quantity = min(
             limits["position"] / entry,
-            limits["trade"] / loss_per_share,
-            remaining_daily / loss_per_share,
-            cash / (entry * (1 + fee_rate)),
-            quote["executable_size"],
+            limits["trade"] / loss_per_unit,
+            remaining_daily / loss_per_unit,
+            cash / (entry * (1 / leverage + fee_rate)),
             rules["max_qty"],
             rules["max_notional"] / entry,
         )
+        if execute is None:
+            # A simulated fill must not exceed the quoted size; a demo order reports its real fill.
+            quantity = min(quantity, quote["executable_size"])
         quantity = floor_step(quantity, rules["step"])
         notional = quantity * entry
         entry_fee = notional * fee_rate
-        planned_loss = quantity * loss_per_share
+        planned_loss = quantity * loss_per_unit
         if quantity <= 0 or quantity < rules["min_qty"] or notional < rules["min_notional"]:
             raise PaperLedgerError("Rounded paper quantity does not meet exchange limits")
         if notional > limits["position"] or planned_loss > limits["trade"]:
             raise PaperLedgerError("Paper order exceeds a risk limit")
-        if notional + entry_fee > cash:
-            raise PaperLedgerError("Insufficient paper cash")
+        if notional / leverage + entry_fee > cash:
+            raise PaperLedgerError("Insufficient paper margin")
         local_date = now.astimezone(self._zone()).date().isoformat()
         recent_closes = [event for event in self.ledger.get("events", [])
                          if event.get("action") == "close" and event.get("trading_date") == local_date]
         if len(recent_closes) >= 2 and all(event.get("reason") == "stop" for event in recent_closes[-2:]):
             raise PaperLedgerError("Two consecutive stops block new entries")
-        cost = notional + entry_fee
         fill = None
         if execute is not None:
             # Every check has passed; from here the demo account's actual fill is authoritative.
-            fill = execute(symbol, "BUY", quantity)
-            quantity = floor_step(decimal_value(fill["net_qty"], "fill.net_qty"), rules["step"])
+            fill = execute(symbol, "BUY" if side == "long" else "SELL", quantity, False)
+            quantity = decimal_value(fill["executed_qty"], "fill.executed_qty")
             entry = decimal_value(fill["avg_price"], "fill.avg_price")
-            cost = decimal_value(fill["net_usdt"], "fill.net_usdt")
             entry_fee = decimal_value(fill["fee_usdt"], "fill.fee_usdt")
-            planned_loss = cost - quantity * stop_fill * (1 - fee_rate)
+            notional = quantity * entry
+            planned_loss = quantity * (direction * (entry - stop_fill) + stop_fill * fee_rate) + entry_fee
         order_id = self._next_id(now)
+        mark = quote["bid"] if side == "long" else quote["ask"]
         position = {
             "symbol": symbol,
-            "side": "long",
+            "side": side,
             "quantity": str(quantity),
             "entry_price": str(entry),
-            "mark_price": str(quote["bid"]),
+            "mark_price": str(mark),
             "stop_price": str(stop),
             "target_price": str(target),
             "entry_time": now.isoformat(),
-            "cost_basis_usdt": str(cost),
+            "notional_usdt": str(notional),
+            "leverage": str(leverage),
+            "margin_usdt": str(notional / leverage),
             "entry_fee_usdt": str(entry_fee),
             "planned_loss_usdt": str(planned_loss),
             "thesis": str(request.get("thesis", "")).strip(),
             "evidence": copy.deepcopy(request["evidence"]),
             "order_id": order_id,
         }
-        self.state["cash_usdt"] = json_number(cash - cost)
+        unrealized = self._unrealized(position, mark)
+        self.state["cash_usdt"] = json_number(cash - entry_fee)
         self.state["positions"] = [position]
         self.state["open_orders"] = []
-        equity, unrealized, _ = self._portfolio_values(position, quote["bid"])
-        self.state["equity_usdt"] = json_number(equity)
+        self.state["equity_usdt"] = json_number(cash - entry_fee + unrealized)
         self.state["unrealized_pnl_usdt"] = json_number(unrealized)
         self.state["daily_open_risk_usdt"] = json_number(planned_loss)
         self.state["paper_fees_paid_usdt"] = json_number(
@@ -309,7 +317,7 @@ class PaperLedger:
         event = {
             "event_id": order_id + "-OPEN",
             "order_id": order_id,
-            "action": "open_long",
+            "action": "open_" + side,
             "trading_date": local_date,
             "timestamp": now.isoformat(),
             "symbol": symbol,
@@ -335,25 +343,26 @@ class PaperLedger:
             raise PaperLedgerError("Exactly one active paper position is required")
         position = positions[0]
         symbol = position["symbol"]
-        quote = self._validate_quote(symbol, request.get("quote"), now, "sell")
-        position["mark_price"] = str(quote["bid"])
+        direction = 1 if position["side"] == "long" else -1
+        quote = self._validate_quote(symbol, request.get("quote"), now, "sell" if direction == 1 else "buy")
+        mark = quote["bid"] if direction == 1 else quote["ask"]
+        position["mark_price"] = str(mark)
         quantity = decimal_value(position["quantity"], "quantity")
         stop = decimal_value(position["stop_price"], "stop")
         fee_rate, slip_rate = self._cost_rates()
-        stop_exit = stop * (1 - slip_rate)
-        stop_fee = quantity * stop_exit * fee_rate
-        cost_basis = decimal_value(position["cost_basis_usdt"], "cost_basis")
-        open_risk = max(Decimal("0"), cost_basis - (quantity * stop_exit - stop_fee))
-        equity, unrealized, _ = self._portfolio_values(position, quote["bid"])
-        self.state["equity_usdt"] = json_number(equity)
+        stop_exit = stop * (1 - direction * slip_rate)
+        entry = decimal_value(position["entry_price"], "entry_price")
+        open_risk = max(Decimal("0"), quantity * (direction * (entry - stop_exit) + stop_exit * fee_rate))
+        unrealized = self._unrealized(position, mark)
+        self.state["equity_usdt"] = json_number(decimal_value(self.state["cash_usdt"], "cash_usdt") + unrealized)
         self.state["unrealized_pnl_usdt"] = json_number(unrealized)
         self.state["daily_open_risk_usdt"] = json_number(open_risk)
         # Exit orders resting on the demo exchange own the stop and target; evaluating them here too
-        # would race the exchange for the same coins.
+        # would race the exchange for the same position.
         protected = bool(position.get("demo_exit_orders"))
-        if evaluate and not protected and quote["bid"] <= stop:
+        if evaluate and not protected and direction * (mark - stop) <= 0:
             return self.close({"quote": request["quote"], "reason": "stop", "run_id": request.get("run_id")}, now, execute)
-        if evaluate and not protected and quote["bid"] >= decimal_value(position["target_price"], "target"):
+        if evaluate and not protected and direction * (mark - decimal_value(position["target_price"], "target")) >= 0:
             return self.close({"quote": request["quote"], "reason": "target", "run_id": request.get("run_id")}, now, execute)
         held_hours = Decimal(str((now - parse_time(position["entry_time"], "entry_time")).total_seconds())) / 3600
         if evaluate and held_hours >= decimal_value(self.config["max_hold_hours"], "max_hold_hours"):
@@ -364,7 +373,7 @@ class PaperLedger:
             "trading_date": now.astimezone(self._zone()).date().isoformat(),
             "timestamp": now.isoformat(),
             "symbol": symbol,
-            "mark_price": str(quote["bid"]),
+            "mark_price": str(mark),
             "quote": request["quote"],
             "reason": "risk_refresh",
         }
@@ -383,25 +392,21 @@ class PaperLedger:
             raise PaperLedgerError("Exactly one active paper position is required")
         position = positions[0]
         symbol = position["symbol"]
-        quote = self._validate_quote(symbol, request.get("quote"), now, "sell")
+        direction = 1 if position["side"] == "long" else -1
+        quote = self._validate_quote(symbol, request.get("quote"), now, "sell" if direction == 1 else "buy")
         quantity = decimal_value(position["quantity"], "quantity")
         fee_rate, slip_rate = self._cost_rates()
-        fill = quote["bid"] * (1 - slip_rate)
-        if quote["executable_size"] < quantity:
-            raise PaperLedgerError("Quoted bid size cannot support the paper exit")
+        fill = (quote["bid"] if direction == 1 else quote["ask"]) * (1 - direction * slip_rate)
+        if execute is None and quote["executable_size"] < quantity:
+            raise PaperLedgerError("Quoted size cannot support the paper exit")
         reason = str(request.get("reason", "manual_exit"))
         if reason not in self.EXIT_REASONS:
             raise PaperLedgerError("Unsupported paper exit reason")
-        proceeds = quantity * fill
-        exit_fee = proceeds * fee_rate
+        exit_fee = quantity * fill * fee_rate
         demo_fill = None
         if execute is not None:
-            demo_fill = execute(symbol, "SELL", quantity)
-            fill = decimal_value(demo_fill["avg_price"], "fill.avg_price")
-            exit_fee = decimal_value(demo_fill["fee_usdt"], "fill.fee_usdt")
-            proceeds = decimal_value(demo_fill["net_usdt"], "fill.net_usdt") + exit_fee
-        return self._settle(position, fill, proceeds, exit_fee, reason, now, request["quote"], demo_fill,
-                            request.get("run_id"))
+            demo_fill = execute(symbol, "SELL" if direction == 1 else "BUY", quantity, True)
+        return self._settle(position, fill, exit_fee, reason, now, request["quote"], demo_fill, request.get("run_id"))
 
     def record_exit(self, demo_fill, reason, now=None, run_id=None):
         """Book an exit the demo exchange already executed (a triggered stop or target order)."""
@@ -411,10 +416,7 @@ class PaperLedger:
             raise PaperLedgerError("Exactly one active paper position is required")
         if reason not in self.EXIT_REASONS:
             raise PaperLedgerError("Unsupported paper exit reason")
-        exit_fee = decimal_value(demo_fill["fee_usdt"], "fill.fee_usdt")
-        proceeds = decimal_value(demo_fill["net_usdt"], "fill.net_usdt") + exit_fee
-        return self._settle(positions[0], decimal_value(demo_fill["avg_price"], "fill.avg_price"), proceeds,
-                            exit_fee, reason, now, None, demo_fill, run_id)
+        return self._settle(positions[0], None, None, reason, now, None, demo_fill, run_id)
 
     def set_protection(self, protection, now=None, run_id=None):
         """Remember (or, with None, forget) the exit orders resting on the demo exchange."""
@@ -439,12 +441,19 @@ class PaperLedger:
         self._save_event(event)
         return event
 
-    def _settle(self, position, fill, proceeds, exit_fee, reason, now, quote, demo_fill, run_id):
+    def _settle(self, position, fill, exit_fee, reason, now, quote, demo_fill, run_id):
+        funding = Decimal("0")
+        if demo_fill is not None:
+            fill = decimal_value(demo_fill["avg_price"], "fill.avg_price")
+            exit_fee = decimal_value(demo_fill["fee_usdt"], "fill.fee_usdt")
+            funding = decimal_value(demo_fill.get("funding_usdt", 0), "fill.funding_usdt")
         symbol = position["symbol"]
+        direction = 1 if position["side"] == "long" else -1
         quantity = decimal_value(position["quantity"], "quantity")
-        cost_basis = decimal_value(position["cost_basis_usdt"], "cost_basis")
-        net_pnl = proceeds - exit_fee - cost_basis
-        cash = decimal_value(self.state["cash_usdt"], "cash") + proceeds - exit_fee
+        gross = direction * (fill - decimal_value(position["entry_price"], "entry_price")) * quantity
+        # The entry fee left the wallet when the position opened; it still belongs to this trade's result.
+        net_pnl = gross - exit_fee - decimal_value(position["entry_fee_usdt"], "entry_fee") + funding
+        cash = decimal_value(self.state["cash_usdt"], "cash") + gross - exit_fee + funding
         self.state["cash_usdt"] = json_number(cash)
         self.state["equity_usdt"] = json_number(cash)
         self.state["realized_pnl_usdt"] = json_number(
@@ -465,9 +474,11 @@ class PaperLedger:
             "trading_date": now.astimezone(self._zone()).date().isoformat(),
             "timestamp": now.isoformat(),
             "symbol": symbol,
+            "side": position["side"],
             "quantity": str(quantity),
             "fill_price": str(fill),
             "fee_usdt": str(exit_fee),
+            "funding_usdt": str(funding),
             "net_pnl_usdt": str(net_pnl),
             "quote": quote,
             "reason": reason,

@@ -101,24 +101,24 @@ class ReadOnlyChecks(unittest.TestCase):
             result = checker.check_stocks(self.config)
         self.assertFalse(result["stock_etf_access_verified"])
 
-    def test_demo_spot_check_is_read_only_and_demo_host_only(self):
+    def test_demo_futures_check_is_read_only_and_demo_host_only(self):
         config = {**self.config, "BINANCE_ENV": "demo"}
-        replies = [({}, None), ({"serverTime": 1000}, None), ({"canTrade": True, "balances": []}, None),
-                   ({"symbols": [{"symbol": "BTCUSDT", "status": "TRADING"}]}, None),
+        replies = [({}, None), ({"serverTime": 1000}, None), ({"totalWalletBalance": "5000"}, None),
+                   ({"symbols": [{"symbol": "BTCUSDT", "status": "TRADING", "contractType": "PERPETUAL"}]}, None),
                    ({"symbol": "BTCUSDT", "bidPrice": "100", "bidQty": "1", "askPrice": "100.01", "askQty": "1"}, None),
                    ({"serverTime": 1000}, None), ([], None)]
         with patch.object(checker, "get_json", side_effect=replies) as request:
-            result = checker.check_demo_spot(config)
+            result = checker.check_demo_futures(config)
         self.assertTrue(result["demo_market_access_verified"])
         self.assertFalse(result["orders_allowed"])
-        self.assertTrue(all(call.args[0].startswith("https://demo-api.binance.com/") for call in request.call_args_list))
+        self.assertNotIn("fake-secret", json.dumps(result))
+        self.assertTrue(all(call.args[0].startswith("https://demo-fapi.binance.com/fapi/") for call in request.call_args_list))
 
-    def test_demo_spot_check_refuses_production(self):
-        replies = [({}, None), ({"serverTime": 1000}, None), ({"canTrade": True, "balances": []}, None)]
-        with patch.object(checker, "get_json", side_effect=replies) as request:
-            result = checker.check_demo_spot(self.config)
+    def test_demo_futures_check_never_contacts_production(self):
+        with patch.object(checker, "get_json") as request:
+            result = checker.check_demo_futures(self.config)
         self.assertFalse(result["demo_market_access_verified"])
-        self.assertEqual(request.call_count, 3)
+        request.assert_not_called()
 
     def test_quote_rejects_nan_infinity_and_crossed_market(self):
         for bid, ask in (("NaN", "10"), ("1", "Infinity"), ("11", "10"), ("0", "1")):

@@ -1,5 +1,5 @@
 {
-  "experiment_name": "7-day Binance demo crypto Spot paper trading experiment",
+  "experiment_name": "7-day Binance demo USDT-perpetual futures paper trading experiment",
   "timezone": "Asia/Kuala_Lumpur",
   "cycle_length_trading_days": 7,
   "max_checks_per_trading_day": 6,
@@ -26,7 +26,7 @@
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, and latest journal.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
         "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
-        "With no position, a new entry is allowed only with at least two independent evidence categories.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
         "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
       ]
     },
@@ -39,7 +39,7 @@
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, and latest journal.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
         "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
-        "With no position, a new entry is allowed only with at least two independent evidence categories.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
         "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
       ]
     },
@@ -52,7 +52,7 @@
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, and latest journal.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
         "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
-        "With no position, a new entry is allowed only with at least two independent evidence categories.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
         "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
       ]
     },
@@ -65,7 +65,7 @@
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, and latest journal.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
         "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
-        "With no position, a new entry is allowed only with at least two independent evidence categories.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
         "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
       ]
     },
@@ -78,7 +78,7 @@
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, and latest journal.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
         "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
-        "With no position, a new entry is allowed only with at least two independent evidence categories.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
         "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
       ]
     },
@@ -91,7 +91,7 @@
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, and latest journal.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
         "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
-        "With no position, a new entry is allowed only with at least two independent evidence categories.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
         "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
       ]
     }

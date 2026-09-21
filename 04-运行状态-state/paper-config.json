@@ -1,8 +1,8 @@
 {
   "version": 1,
   "currency": "USDT",
-  "fee_model": "conservative_simulation_not_actual_binance_fee",
-  "fee_bps_per_side": "10",
+  "fee_model": "sizing_estimate_only_actual_demo_fees_are_recorded",
+  "fee_bps_per_side": "5",
   "slippage_bps_per_side": "2",
   "max_spread_bps": "25",
   "quote_max_age_seconds": "10",
@@ -14,5 +14,9 @@
   "entry_window_open": "00:00",
   "entry_window_close": "23:59",
   "max_hold_hours": "24",
-  "exchange_side_stop_and_target": true
+  "exchange_side_stop_and_target": true,
+  "instrument": "usdt_perpetual_futures",
+  "leverage": "5",
+  "margin_type": "ISOLATED",
+  "max_stop_distance_percent": "10"
 }

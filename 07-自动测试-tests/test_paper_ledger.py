@@ -62,6 +62,8 @@ class PaperLedgerTests(unittest.TestCase):
             "entry_window_open": "08:30",
             "entry_window_close": "11:30",
             "max_hold_hours": "24",
+            "leverage": "5",
+            "max_stop_distance_percent": "10",
         }
         self.ledger_data = {"version": 1, "next_sequence": 1, "events": []}
         self._write_all()
@@ -108,6 +110,7 @@ class PaperLedgerTests(unittest.TestCase):
     def request(self):
         return {
             "symbol": "AAPL",
+            "side": "long",
             "quote": self.quote(),
             "rules": self.rules(),
             "stop_price": "95",
@@ -121,7 +124,7 @@ class PaperLedgerTests(unittest.TestCase):
 
     def test_open_respects_position_and_trade_limits(self):
         ledger = self.make_ledger()
-        event = ledger.open_long(self.request(), self.now)
+        event = ledger.open_position(self.request(), self.now)
         state = json.loads((self.root / "05-交易记录-data/current-state.json").read_text())
         position = state["positions"][0]
         self.assertEqual(event["action"], "open_long")
@@ -134,25 +137,25 @@ class PaperLedgerTests(unittest.TestCase):
         request = self.request()
         request["evidence"] = [{"category": "price_action", "source": "one source"}]
         with self.assertRaisesRegex(PaperLedgerError, "two independent"):
-            self.make_ledger().open_long(request, self.now)
+            self.make_ledger().open_position(request, self.now)
 
     def test_rejects_stale_quote(self):
         request = self.request()
         request["quote"] = self.quote(received_at=self.now - timedelta(seconds=11))
         with self.assertRaisesRegex(PaperLedgerError, "stale"):
-            self.make_ledger().open_long(request, self.now)
+            self.make_ledger().open_position(request, self.now)
 
     def test_rejects_wide_spread(self):
         request = self.request()
         request["quote"] = self.quote(bid="99", ask="100")
         with self.assertRaisesRegex(PaperLedgerError, "Spread"):
-            self.make_ledger().open_long(request, self.now)
+            self.make_ledger().open_position(request, self.now)
 
     def test_live_enabled_blocks_paper_action(self):
         self.readiness["live_trading_enabled"] = True
         self._write_all()
         with self.assertRaisesRegex(PaperLedgerError, "live_trading_enabled"):
-            self.make_ledger().open_long(self.request(), self.now)
+            self.make_ledger().open_position(self.request(), self.now)
 
     def test_after_cutoff_blocks_new_entry(self):
         late = datetime(2026, 9, 15, 18, 0, tzinfo=timezone.utc)
@@ -161,11 +164,11 @@ class PaperLedgerTests(unittest.TestCase):
         request = self.request()
         request["quote"]["received_at"] = late.isoformat()
         with self.assertRaisesRegex(PaperLedgerError, "outside"):
-            self.make_ledger().open_long(request, late)
+            self.make_ledger().open_position(request, late)
 
     def test_stop_exit_updates_realized_pnl(self):
         ledger = self.make_ledger()
-        ledger.open_long(self.request(), self.now)
+        ledger.open_position(self.request(), self.now)
         stop_time = self.now + timedelta(minutes=5)
         ledger.readiness["binance_demo_api"]["checked_at"] = stop_time.isoformat()
         stop_quote = self.quote(bid="94.90", ask="95.00", received_at=stop_time)
@@ -181,57 +184,95 @@ class PaperLedgerTests(unittest.TestCase):
         request = self.request()
         request["quote"] = self.quote(ask_size="1")
         ledger = self.make_ledger()
-        ledger.open_long(request, self.now)
+        ledger.open_position(request, self.now)
         position = ledger.state["positions"][0]
         self.assertLessEqual(Decimal(position["quantity"]), Decimal("1"))
         exit_time = self.now + timedelta(minutes=1)
         ledger.readiness["binance_demo_api"]["checked_at"] = exit_time.isoformat()
-        with self.assertRaisesRegex(PaperLedgerError, "bid size"):
+        with self.assertRaisesRegex(PaperLedgerError, "Quoted size"):
             ledger.close({
                 "quote": self.quote(bid_size="0.5", received_at=exit_time),
                 "reason": "manual_exit",
             }, exit_time)
 
-    def demo_fill(self, side, quantity, price, base_fee="0", quote_fee="0"):
+    def demo_fill(self, side, quantity, price, fee="0", funding=None):
         quantity, price = Decimal(str(quantity)), Decimal(price)
-        gross = quantity * price
-        net = gross + Decimal(quote_fee) if side == "BUY" else gross - Decimal(quote_fee)
-        return {"demo_order_id": "42", "status": "FILLED", "side": side, "executed_qty": str(quantity),
-                "net_qty": str(quantity - Decimal(base_fee)), "avg_price": str(price), "gross_usdt": str(gross),
-                "net_usdt": str(net), "fee_usdt": str(Decimal(base_fee) * price + Decimal(quote_fee))}
+        fill = {"demo_order_id": "42", "side": side, "executed_qty": str(quantity), "avg_price": str(price),
+                "gross_usdt": str(quantity * price), "fee_usdt": fee}
+        if funding is not None:
+            fill["funding_usdt"] = funding
+        return fill
 
     def test_demo_executor_fills_replace_simulated_fills(self):
         orders = []
 
-        def execute(symbol, side, quantity):
-            orders.append((symbol, side, quantity))
-            if side == "BUY":
-                return self.demo_fill(side, quantity, "100.05", base_fee="0.01")
-            return self.demo_fill(side, quantity, "104", quote_fee="1")
+        def execute(symbol, side, quantity, closing):
+            orders.append((symbol, side, quantity, closing))
+            if not closing:
+                return self.demo_fill(side, quantity, "100.05", fee="0.4")
+            return self.demo_fill(side, quantity, "104", fee="0.5", funding="-0.25")
 
         ledger = self.make_ledger()
-        opened = ledger.open_long(self.request(), self.now, execute)
+        opened = ledger.open_position(self.request(), self.now, execute)
         position = ledger.state["positions"][0]
-        # The base-asset commission is not sellable, so the position is smaller than the order.
-        self.assertEqual(Decimal(position["quantity"]), orders[0][2] - Decimal("0.01"))
-        self.assertEqual(Decimal(position["cost_basis_usdt"]), orders[0][2] * Decimal("100.05"))
+        self.assertEqual((position["entry_price"], Decimal(position["quantity"])), ("100.05", orders[0][2]))
+        # Futures accounting: only the fee leaves the wallet at entry, not the notional.
+        self.assertEqual(Decimal(str(ledger.state["cash_usdt"])), Decimal("9999.6"))
         self.assertEqual(opened["demo_order"]["demo_order_id"], "42")
         later = self.now + timedelta(minutes=5)
         ledger.readiness["binance_demo_api"]["checked_at"] = later.isoformat()
         closed = ledger.close({"quote": self.quote(bid="104", ask="104.02", received_at=later), "reason": "target"}, later, execute)
-        self.assertEqual(orders[1][:2], ("AAPL", "SELL"))
-        self.assertEqual(orders[1][2], Decimal(position["quantity"]))
-        expected = orders[1][2] * Decimal("104") - 1 - Decimal(position["cost_basis_usdt"])
-        self.assertEqual(Decimal(closed["net_pnl_usdt"]), expected)
+        self.assertEqual(orders[1], ("AAPL", "SELL", Decimal(position["quantity"]), True))
+        gross = orders[1][2] * (Decimal("104") - Decimal("100.05"))
+        self.assertEqual(Decimal(closed["net_pnl_usdt"]), gross - Decimal("0.5") - Decimal("0.4") - Decimal("0.25"))
+        self.assertEqual(Decimal(str(ledger.state["cash_usdt"])), (Decimal("9999.6") + gross - Decimal("0.75")).quantize(Decimal("0.00000001")))
         self.assertEqual(ledger.state["positions"], [])
 
+    def short_request(self):
+        request = self.request()
+        request.update({"side": "short", "stop_price": "105", "target_price": "91"})
+        return request
+
+    def test_short_profits_when_price_falls_and_stops_out_above_entry(self):
+        ledger = self.make_ledger()
+        event = ledger.open_position(self.short_request(), self.now)
+        self.assertEqual(event["action"], "open_short")
+        position = ledger.state["positions"][0]
+        self.assertLess(Decimal(position["entry_price"]), Decimal("99.98"))
+        self.assertLessEqual(Decimal(position["planned_loss_usdt"]), Decimal("50"))
+        later = self.now + timedelta(minutes=5)
+        ledger.readiness["binance_demo_api"]["checked_at"] = later.isoformat()
+        ledger.mark({"quote": self.quote(bid="96.98", ask="97.00", received_at=later)}, later, evaluate=True)
+        self.assertGreater(ledger.state["unrealized_pnl_usdt"], 0)
+        event = ledger.mark({"quote": self.quote(bid="105.00", ask="105.02", received_at=later)}, later, evaluate=True)
+        self.assertEqual((event["action"], event["reason"], event["side"]), ("close", "stop", "short"))
+        self.assertLess(ledger.state["realized_pnl_usdt"], 0)
+        self.assertGreaterEqual(ledger.state["realized_pnl_usdt"], -51)
+
+    def test_rejects_wrong_sided_or_too_distant_stops(self):
+        for changes, message in (({"side": "short"}, "wrong sides"), ({"side": "flat"}, "long or short"),
+                                 ({"stop_price": "89", "target_price": "125"}, "too far")):
+            request = self.request()
+            request.update(changes)
+            with self.assertRaisesRegex(PaperLedgerError, message):
+                self.make_ledger().open_position(request, self.now)
+
+    def test_margin_limits_size_when_cash_is_short(self):
+        self.state["cash_usdt"] = 100
+        self._write_all()
+        ledger = self.make_ledger()
+        ledger.open_position(self.request(), self.now)
+        position = ledger.state["positions"][0]
+        self.assertLessEqual(Decimal(position["margin_usdt"]) + Decimal(position["entry_fee_usdt"]), Decimal("100"))
+        self.assertGreater(Decimal(position["notional_usdt"]), Decimal("400"))
+
     def test_failed_demo_order_records_nothing(self):
-        def execute(symbol, side, quantity):
+        def execute(symbol, side, quantity, closing):
             raise ValueError("Demo order rejected")
 
         ledger = self.make_ledger()
         with self.assertRaises(ValueError):
-            ledger.open_long(self.request(), self.now, execute)
+            ledger.open_position(self.request(), self.now, execute)
         state = json.loads((self.root / "05-交易记录-data/current-state.json").read_text())
         self.assertEqual(state["positions"], [])
         self.assertEqual(state["cash_usdt"], 10000)
@@ -241,16 +282,16 @@ class PaperLedgerTests(unittest.TestCase):
         request = self.request()
         request["evidence"] = [{"category": "price_action", "source": "one source"}]
         with self.assertRaises(PaperLedgerError):
-            self.make_ledger().open_long(request, self.now, lambda *args: calls.append(args))
+            self.make_ledger().open_position(request, self.now, lambda *args: calls.append(args))
         ledger = self.make_ledger()
-        ledger.open_long(self.request(), self.now)
+        ledger.open_position(self.request(), self.now)
         with self.assertRaisesRegex(PaperLedgerError, "exit reason"):
             ledger.close({"quote": self.quote(), "reason": "because"}, self.now, lambda *args: calls.append(args))
         self.assertEqual(calls, [])
 
     def test_protected_position_leaves_stop_to_exchange_but_enforces_max_hold(self):
         ledger = self.make_ledger()
-        ledger.open_long(self.request(), self.now)
+        ledger.open_position(self.request(), self.now)
         ledger.set_protection({"order_list_id": "1", "stop_order_id": "2", "target_order_id": "3"}, self.now)
         later = self.now + timedelta(minutes=5)
         ledger.readiness["binance_demo_api"]["checked_at"] = later.isoformat()
@@ -264,15 +305,17 @@ class PaperLedgerTests(unittest.TestCase):
 
     def test_record_exit_books_exchange_fill_without_a_quote(self):
         ledger = self.make_ledger()
-        ledger.open_long(self.request(), self.now)
+        ledger.open_position(self.request(), self.now)
         position = ledger.state["positions"][0]
-        fill = self.demo_fill("SELL", position["quantity"], "95", quote_fee="0.5")
+        cash_after_entry = Decimal(str(ledger.state["cash_usdt"]))
+        fill = self.demo_fill("SELL", position["quantity"], "95", fee="0.5", funding="0.1")
         event = ledger.record_exit(fill, "stop", self.now + timedelta(hours=3), "run-1")
-        expected = Decimal(position["quantity"]) * 95 - Decimal("0.5") - Decimal(position["cost_basis_usdt"])
-        self.assertEqual(Decimal(event["net_pnl_usdt"]), expected)
+        gross = Decimal(position["quantity"]) * (Decimal("95") - Decimal(position["entry_price"]))
+        self.assertEqual(Decimal(event["net_pnl_usdt"]), gross - Decimal("0.5") - Decimal(position["entry_fee_usdt"]) + Decimal("0.1"))
         self.assertEqual((event["reason"], event["run_id"], event["quote"]), ("stop", "run-1", None))
         state = json.loads((self.root / "05-交易记录-data/current-state.json").read_text())
         self.assertEqual(state["positions"], [])
+        self.assertAlmostEqual(state["cash_usdt"], float(cash_after_entry + gross - Decimal("0.4")), places=6)
         self.assertLess(state["daily_realized_pnl_usdt"], 0)
 
     def test_roll_day_resets_daily_loss_once_per_planned_day(self):
@@ -288,7 +331,7 @@ class PaperLedgerTests(unittest.TestCase):
         self.assertEqual(ledger.state["daily_realized_pnl_usdt"], -30)
 
     def test_reconcile_restores_last_event_snapshot(self):
-        self.make_ledger().open_long(self.request(), self.now)
+        self.make_ledger().open_position(self.request(), self.now)
         damaged = json.loads((self.root / "05-交易记录-data/current-state.json").read_text())
         damaged["cash_usdt"] = 1
         (self.root / "05-交易记录-data/current-state.json").write_text(json.dumps(damaged), encoding="utf-8")

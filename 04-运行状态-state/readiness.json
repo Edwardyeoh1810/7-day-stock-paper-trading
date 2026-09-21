@@ -3,11 +3,11 @@
   "live_trading_enabled": false,
   "broker_connected": true,
   "human_confirmation_required_for_live_orders": true,
-  "max_position_size_percent": 10,
+  "max_position_size_percent": 50,
   "max_daily_loss_percent": 2,
   "max_single_trade_loss_percent": 0.5,
   "platform": "binance",
-  "asset_scope": "crypto_spot_usdt_pairs_on_binance_demo_only",
+  "asset_scope": "usdt_perpetual_futures_on_binance_demo_only",
   "binance_environment": "demo",
   "binance_demo_api_read_access_verified": true,
   "demo_order_execution_enabled": true,
@@ -16,32 +16,31 @@
   "orders_allowed": false,
   "last_readiness_check": "2026-09-21T00:31:58.303427+00:00",
   "notes": [
-    "Paper trading only: orders go to the Binance demo account (virtual funds) at demo-api.binance.com, never to production.",
+    "Paper trading only: orders go to the Binance demo futures account (virtual funds) at demo-fapi.binance.com, never to production.",
     "orders_allowed and live_trading_enabled refer to real-money orders and must stay false.",
     "If any critical field is missing, malformed, false, or ambiguous, no orders may be placed.",
     "Live trading requires explicit human confirmation for a specific order."
   ],
   "binance_demo_api": {
-    "checked_at": "2026-09-21T00:51:21.125372+00:00",
+    "checked_at": "2026-09-21T01:12:47.686705+00:00",
     "environment": "demo",
+    "scope": "demo_futures",
+    "symbol": "BTCUSDT",
     "credentials_present": true,
     "public_api_reachable": true,
     "signed_account_read_verified": true,
-    "api_key_permissions_verified": false,
-    "stock_etf_access_verified": false,
-    "orders_allowed": false,
-    "errors": [],
-    "scope": "demo_spot",
-    "symbol": "BTCUSDT",
     "rules_read_verified": true,
     "quote_read_verified": true,
     "orders_read_verified": true,
     "demo_market_access_verified": true,
+    "orders_allowed": false,
+    "errors": [],
+    "wallet_balance_usdt": "5000.04174826",
     "quote": {
       "symbol": "BTCUSDT",
-      "bidPrice": "81626.00000000",
-      "askPrice": "81626.01000000"
+      "bidPrice": "81683.10",
+      "askPrice": "81700.00"
     },
-    "quote_received_at": "2026-09-21T00:51:23.049007+00:00"
+    "quote_received_at": "2026-09-21T01:12:49.978472+00:00"
   }
 }

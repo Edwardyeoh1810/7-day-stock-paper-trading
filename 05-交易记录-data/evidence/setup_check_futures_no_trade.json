@@ -1,0 +1,42 @@
+{
+  "run_id": "setup_check_futures_no_trade",
+  "timestamp": "2026-09-21T01:12:47.685771+00:00",
+  "mode": "binance_demo_paper",
+  "live_order_sent": false,
+  "demo_order_sent": false,
+  "decision": {
+    "paper_trading_only": true,
+    "action": "no_trade",
+    "symbol": "BTCUSDT"
+  },
+  "result": {
+    "status": "no_trade",
+    "event": null,
+    "snapshot": {
+      "rules": {
+        "symbol": "BTCUSDT",
+        "tradability": "BUY_SELL",
+        "stepSize": "0.0001",
+        "minQty": "0.0001",
+        "maxQty": "120",
+        "minNotional": "50",
+        "maxNotional": null,
+        "tickSize": "0.10"
+      },
+      "quote": {
+        "symbol": "BTCUSDT",
+        "bid": "81665.90",
+        "ask": "81700.00",
+        "bid_size": "0.0040",
+        "ask_size": "0.6046",
+        "received_at": "2026-09-21T01:12:50.714503+00:00"
+      }
+    }
+  },
+  "state": {
+    "cash_usdt": 5000,
+    "equity_usdt": 5000,
+    "positions": [],
+    "daily_open_risk_usdt": 0
+  }
+}

@@ -30,7 +30,7 @@ def main():
         if args.request:
             request = json.loads(args.request.read_text(encoding="utf-8"))
         if args.action == "open":
-            result = ledger.open_long(request)
+            result = ledger.open_position(request)
         elif args.action == "mark":
             result = ledger.mark(request)
         elif args.action == "evaluate":

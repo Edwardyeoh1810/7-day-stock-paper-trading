@@ -1,5 +1,5 @@
 {
-  "experiment_name": "7-day Binance demo crypto Spot paper trading experiment",
+  "experiment_name": "7-day Binance demo USDT-perpetual futures paper trading experiment",
   "mode": "paper_trading_only_binance_demo",
   "start_date": "2026-09-21",
   "end_date": "2026-09-27",
@@ -30,8 +30,8 @@
     "XRPUSDT"
   ],
   "last_run": {
-    "run_id": "setup_check_24h_no_trade",
-    "timestamp": "2026-09-21T00:51:21.123124+00:00",
+    "run_id": "setup_check_futures_no_trade",
+    "timestamp": "2026-09-21T01:12:47.685771+00:00",
     "mode": "autonomous_demo_paper",
     "demo_api_verified": true,
     "orders_placed": false,

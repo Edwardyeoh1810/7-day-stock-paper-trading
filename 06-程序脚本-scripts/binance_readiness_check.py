@@ -19,7 +19,7 @@ CONFIG = ROOT / "09-API密钥-仅本地" / "binance-api.env"
 HOSTS = {
     "production": "https://api.binance.com",
     "testnet": "https://testnet.binance.vision",
-    "demo": "https://demo-api.binance.com",
+    "demo": "https://demo-fapi.binance.com",
 }
 
 
@@ -202,39 +202,58 @@ def valid_book(book, symbol):
         return False
 
 
-def check_demo_spot(config, symbol="BTCUSDT"):
-    """Read-only checks of the Binance demo Spot account (virtual funds)."""
-    result = check(config)
-    result.update({"scope": "demo_spot", "symbol": symbol, "rules_read_verified": False,
-                   "quote_read_verified": False, "orders_read_verified": False,
-                   "demo_market_access_verified": False})
+def check_demo_futures(config, symbol="BTCUSDT"):
+    """Read-only checks of the Binance demo USDT-perpetual futures account (virtual funds)."""
+    key, secret = config.get("BINANCE_API_KEY", ""), config.get("BINANCE_API_SECRET", "")
+    result = {"checked_at": datetime.now(timezone.utc).isoformat(), "environment": config["BINANCE_ENV"],
+              "scope": "demo_futures", "symbol": symbol, "credentials_present": bool(key and secret),
+              "public_api_reachable": False, "signed_account_read_verified": False, "rules_read_verified": False,
+              "quote_read_verified": False, "orders_read_verified": False, "demo_market_access_verified": False,
+              "orders_allowed": False, "errors": []}
     if config["BINANCE_ENV"] != "demo":
-        result["errors"].append("BINANCE_ENV must be demo; crypto checks never use production")
+        result["errors"].append("BINANCE_ENV must be demo; futures checks never use production")
         return result
-    if not result["signed_account_read_verified"]:
+    if not result["credentials_present"]:
+        result["errors"].append("Fill both credentials in 09-API密钥-仅本地/binance-api.env locally")
         return result
     base = HOSTS["demo"]
-    rules, error = get_json(base + "/api/v3/exchangeInfo?" + urlencode({"symbol": symbol}))
+    headers = {"X-MBX-APIKEY": key}
+
+    def signed(path, params=None):
+        server, error = get_json(base + "/fapi/v1/time")
+        stamp = server.get("serverTime") if isinstance(server, dict) else None
+        if error or type(stamp) is not int or stamp <= 0:
+            return None, error or "Missing serverTime"
+        query = urlencode({**(params or {}), "timestamp": stamp, "recvWindow": 5000})
+        signature = hmac.new(secret.encode(), query.encode(), hashlib.sha256).hexdigest()
+        return get_json(base + path + "?" + query + "&signature=" + signature, headers)
+
+    ping, error = get_json(base + "/fapi/v1/ping")
+    result["public_api_reachable"] = ping == {}
+    if not result["public_api_reachable"]:
+        result["errors"].append("ping: " + (error or "Unexpected response"))
+        return result
+    account, error = signed("/fapi/v3/account")
+    result["signed_account_read_verified"] = isinstance(account, dict) and "totalWalletBalance" in account
+    if not result["signed_account_read_verified"]:
+        result["errors"].append("account: " + (error or "Unexpected account response"))
+        return result
+    result["wallet_balance_usdt"] = account["totalWalletBalance"]
+    rules, error = get_json(base + "/fapi/v1/exchangeInfo")
     symbols = rules.get("symbols") if isinstance(rules, dict) else None
     matches = [s for s in symbols if isinstance(s, dict) and s.get("symbol") == symbol] if isinstance(symbols, list) else []
-    result["rules_read_verified"] = bool(matches) and matches[0].get("status") == "TRADING"
+    result["rules_read_verified"] = (bool(matches) and matches[0].get("status") == "TRADING"
+                                     and matches[0].get("contractType") == "PERPETUAL")
     if not result["rules_read_verified"]:
-        result["errors"].append("rules: " + (error or "Symbol missing or not trading"))
-    book, error = get_json(base + "/api/v3/ticker/bookTicker?" + urlencode({"symbol": symbol}))
+        result["errors"].append("rules: " + (error or "Perpetual contract missing or not trading"))
+    book, error = get_json(base + "/fapi/v1/ticker/bookTicker?" + urlencode({"symbol": symbol}))
     result["quote_read_verified"] = valid_book(book, symbol)
     if result["quote_read_verified"]:
         result["quote"] = {k: book[k] for k in ("symbol", "bidPrice", "askPrice")}
         result["quote_received_at"] = datetime.now(timezone.utc).isoformat()
     else:
         result["errors"].append("quote: " + (error or "Invalid quote"))
-    server, error = get_json(base + "/api/v3/time")
-    stamp = server.get("serverTime") if isinstance(server, dict) else None
-    orders = None
-    if type(stamp) is int and stamp > 0:
-        query = urlencode({"symbol": symbol, "timestamp": stamp, "recvWindow": 5000})
-        signature = hmac.new(config["BINANCE_API_SECRET"].encode(), query.encode(), hashlib.sha256).hexdigest()
-        orders, error = get_json(base + "/api/v3/openOrders?" + query + "&signature=" + signature,
-                                 {"X-MBX-APIKEY": config["BINANCE_API_KEY"]})
+    orders, error = signed("/fapi/v1/openOrders", {"symbol": symbol})
     result["orders_read_verified"] = isinstance(orders, list)
     if not result["orders_read_verified"]:
         result["errors"].append("orders: " + (error or "Unexpected response"))
@@ -250,10 +269,10 @@ def update_readiness(result):
         raise ValueError("Invalid readiness state")
     # A Spot check does not refresh unrelated stock/ETF readiness or its timestamp.
     scope = result.get("scope")
-    state[{"stocks": "binance_stocks_api", "demo_spot": "binance_demo_api"}.get(scope, "binance_spot_api")] = result
+    state[{"stocks": "binance_stocks_api", "demo_futures": "binance_demo_api"}.get(scope, "binance_spot_api")] = result
     if scope == "stocks":
         state["binance_stock_api_read_access_verified"] = result.get("stock_etf_access_verified", False)
-    if scope == "demo_spot":
+    if scope == "demo_futures":
         state["binance_demo_api_read_access_verified"] = result.get("demo_market_access_verified", False)
     state["orders_allowed"] = False
     temporary = None
@@ -283,7 +302,7 @@ def main():
             return 0 if present else 2
         demo = config["BINANCE_ENV"] == "demo" and not args.spot_only and not args.public_only
         if demo:
-            result = check_demo_spot(config)
+            result = check_demo_futures(config)
         else:
             result = (check if args.spot_only else check_stocks)(config, public_only=args.public_only)
         if args.update_readiness:

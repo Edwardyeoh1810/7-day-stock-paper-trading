@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute one autonomous paper-trading decision on the Binance demo account (virtual funds).
+"""Execute one autonomous paper-trading decision on the Binance demo futures account (virtual funds).
 
 Never sends a production order: market data and orders use the demo host only."""
 
@@ -10,8 +10,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from binance_readiness_check import HOSTS, check_demo_spot, get_json, load_config, update_readiness
-from demo_orders import DemoOrderError, cancel_exit_oco, exit_status, market_order, place_exit_oco
+from binance_readiness_check import HOSTS, check_demo_futures, get_json, load_config, update_readiness
+from demo_orders import (DemoOrderError, cancel_exit_orders, exit_status, funding_since, market_order,
+                         place_exit_orders, prepare_symbol)
 from paper_ledger import PaperLedger, PaperLedgerError, atomic_json, decimal_value, floor_step
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,21 +39,21 @@ def load_decision(path):
     if decision.get("paper_trading_only") is not True:
         raise PaperEngineError("Decision must explicitly confirm paper_trading_only")
     action = decision.get("action")
-    if action not in {"open_long", "manage", "close", "no_trade"}:
+    if action not in {"open_long", "open_short", "manage", "close", "no_trade"}:
         raise PaperEngineError("Unsupported paper decision action")
     return decision
 
 
 def fetch_snapshot(symbol, now):
-    """Read current Spot rules and top-of-book from the demo host using public GET endpoints."""
+    """Read current perpetual-contract rules and top-of-book from the demo futures host (public GETs)."""
     symbol = str(symbol).upper()
     base = HOSTS["demo"]
-    rules_data, error = get_json(base + "/api/v3/exchangeInfo?symbol=" + symbol)
+    rules_data, error = get_json(base + "/fapi/v1/exchangeInfo")
     symbols = rules_data.get("symbols") if isinstance(rules_data, dict) else None
     matches = [item for item in symbols if isinstance(item, dict) and item.get("symbol") == symbol] if isinstance(symbols, list) else []
     if not matches:
         raise PaperEngineError("No tradable paper rules for the selected symbol")
-    quote_data, error = get_json(base + "/api/v3/ticker/bookTicker?symbol=" + symbol)
+    quote_data, error = get_json(base + "/fapi/v1/ticker/bookTicker?symbol=" + symbol)
     if not isinstance(quote_data, dict) or quote_data.get("symbol") != symbol:
         raise PaperEngineError("No current paper quote for the selected symbol")
     try:
@@ -66,21 +67,19 @@ def fetch_snapshot(symbol, now):
         raise PaperEngineError("Paper quote is not executable")
     rule = matches[0]
     filters = {item.get("filterType"): item for item in rule.get("filters", []) if isinstance(item, dict)}
-    lot, notional = filters.get("LOT_SIZE", {}), filters.get("NOTIONAL", {})
-    tick = filters.get("PRICE_FILTER", {}).get("tickSize")
-    tradable = rule.get("status") == "TRADING" and rule.get("isSpotTradingAllowed") is True
+    lot = filters.get("MARKET_LOT_SIZE", {})
+    tradable = rule.get("status") == "TRADING" and rule.get("contractType") == "PERPETUAL"
     return {
-        # Spot rules mapped onto the rule shape the ledger validates.
+        # Futures rules mapped onto the rule shape the ledger validates.
         "rules": {
             "symbol": symbol,
             "tradability": "BUY_SELL" if tradable else "NONE",
-            "fractionable": True,
             "stepSize": lot.get("stepSize"),
             "minQty": lot.get("minQty"),
-            "maxQty": filters.get("MARKET_LOT_SIZE", {}).get("maxQty") or lot.get("maxQty"),
-            "minNotional": notional.get("minNotional"),
-            "maxNotional": notional.get("maxNotional"),
-            "tickSize": tick,
+            "maxQty": lot.get("maxQty"),
+            "minNotional": filters.get("MIN_NOTIONAL", {}).get("notional"),
+            "maxNotional": None,
+            "tickSize": filters.get("PRICE_FILTER", {}).get("tickSize"),
         },
         "quote": {
             "symbol": symbol,
@@ -98,7 +97,7 @@ def prior_event(ledger, run_id):
 
 
 def decision_symbol(decision, ledger):
-    if decision["action"] == "open_long":
+    if decision["action"] in {"open_long", "open_short"}:
         return str(decision.get("symbol", "")).upper()
     positions = ledger.state.get("positions", [])
     if positions:
@@ -119,7 +118,7 @@ def execute(decision, run_id, now=None):
     config = load_config(CONFIG)
     if config["BINANCE_ENV"] != "demo":
         raise PaperEngineError("BINANCE_ENV must be demo")
-    readiness = check_demo_spot(config, symbol=symbol)
+    readiness = check_demo_futures(config, symbol=symbol)
     update_readiness(readiness)
     if readiness.get("demo_market_access_verified") is not True:
         raise PaperEngineError("Fresh demo read verification failed")
@@ -135,33 +134,44 @@ def execute(decision, run_id, now=None):
     demo = ledger.readiness.get("demo_order_execution_enabled") is True
 
     positions = ledger.state.get("positions", [])
-    protection = positions[0].get("demo_exit_orders") if positions else None
+    held = positions[0] if positions else None
+    protection = held.get("demo_exit_orders") if held else None
+
+    def with_funding(fill):
+        # Funding paid or received while the position was open belongs to the trade's result.
+        opened_ms = int(datetime.fromisoformat(held["entry_time"]).timestamp() * 1000)
+        return {**fill, "funding_usdt": funding_since(config, held["symbol"], opened_ms)}
+
     if demo and protection:
         # The exchange may have triggered the stop or target since the last check: book that first.
-        done = exit_status(config, positions[0]["symbol"], protection)
+        done = exit_status(config, held["symbol"], held["side"], protection)
         if done and done["fill"]:
-            event = ledger.record_exit(done["fill"], done["reason"], now, run_id)
-            if action != "open_long":
+            event = ledger.record_exit(with_funding(done["fill"]), done["reason"], now, run_id)
+            if action not in {"open_long", "open_short"}:
                 return {"status": "exchange_exit_reconciled", "event": event, "snapshot": snapshot}
             protection = None
         elif done:
             ledger.set_protection(None, now)
             protection = None
 
-    def executor(order_symbol, side, quantity):
-        if side == "SELL" and protection:
-            cancel_exit_oco(config, order_symbol, protection)
-        return market_order(config, order_symbol, side, quantity)
+    def executor(order_symbol, side, quantity, closing):
+        if not closing:
+            prepare_symbol(config, order_symbol, ledger.config["leverage"])
+            return market_order(config, order_symbol, side, quantity)
+        if protection:
+            cancel_exit_orders(config, order_symbol, protection)
+        return with_funding(market_order(config, order_symbol, side, quantity, reduce_only=True))
 
     execute_order = executor if demo else None
     if action == "no_trade":
         return {"status": "no_trade", "event": None, "snapshot": snapshot}
-    if action == "open_long":
+    if action in {"open_long", "open_short"}:
         # Exchange trigger prices must sit on the symbol's price tick.
         tick = decimal_value(snapshot["rules"]["tickSize"], "tickSize")
         request = {
             "run_id": run_id,
             "symbol": symbol,
+            "side": action[len("open_"):],
             "quote": snapshot["quote"],
             "rules": snapshot["rules"],
             "stop_price": str(floor_step(decimal_value(decision.get("stop_price"), "stop_price"), tick)),
@@ -169,11 +179,11 @@ def execute(decision, run_id, now=None):
             "thesis": decision.get("thesis", ""),
             "evidence": decision.get("evidence"),
         }
-        event = ledger.open_long(request, now, execute_order)
+        event = ledger.open_position(request, now, execute_order)
         if demo:
-            position = ledger.state["positions"][0]
+            held = ledger.state["positions"][0]
             try:
-                orders = place_exit_oco(config, symbol, position["quantity"], position["stop_price"], position["target_price"])
+                orders = place_exit_orders(config, symbol, held["side"], held["quantity"], held["stop_price"], held["target_price"])
             except DemoOrderError:
                 # Never hold a position the exchange is not protecting: leave at market straight away.
                 later = datetime.now(timezone.utc)
@@ -227,7 +237,7 @@ def write_records(run_id, decision, result, now):
         "", "## autonomous_paper_" + run_id + " - " + now.isoformat(), "",
         "- What was done: Autonomous local paper decision processed: " + action + ".",
         "- Why it was done: The user authorized autonomous paper-trading decisions within the documented risk limits.",
-        "- Order proposed: " + ("Yes" if action == "open_long" else "No") + ".",
+        "- Order proposed: " + ("Yes" if action in {"open_long", "open_short"} else "No") + ".",
         "- Order placed: " + ("Demo account order " + demo_order["demo_order_id"] + " (virtual funds); no real order."
                               if demo_order else "No real order; local paper ledger only."),
         "- Order filled: " + ("Yes, on the demo account." if demo_order else "Yes, simulated locally." if event else "No."),
