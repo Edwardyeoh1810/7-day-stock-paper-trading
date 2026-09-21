@@ -38,17 +38,16 @@ class PaperLedgerTests(unittest.TestCase):
             "live_trading_enabled": False,
             "broker_connected": True,
             "human_confirmation_required_for_live_orders": True,
-            "binance_stock_trading_eligibility_verified": True,
-            "binance_stock_api_read_access_verified": True,
+            "binance_demo_api_read_access_verified": True,
             "local_paper_ledger_initialized": True,
             "autonomous_paper_execution_enabled": True,
             "orders_allowed": False,
             "max_position_size_percent": 10,
             "max_daily_loss_percent": 2,
             "max_single_trade_loss_percent": 0.5,
-            "binance_stocks_api": {
+            "binance_demo_api": {
                 "checked_at": self.now.isoformat(),
-                "stock_etf_access_verified": True,
+                "demo_market_access_verified": True,
             },
         }
         self.config = {
@@ -155,7 +154,7 @@ class PaperLedgerTests(unittest.TestCase):
 
     def test_after_cutoff_blocks_new_entry(self):
         late = datetime(2026, 9, 15, 18, 0, tzinfo=timezone.utc)
-        self.readiness["binance_stocks_api"]["checked_at"] = late.isoformat()
+        self.readiness["binance_demo_api"]["checked_at"] = late.isoformat()
         self._write_all()
         request = self.request()
         request["quote"]["received_at"] = late.isoformat()
@@ -166,7 +165,7 @@ class PaperLedgerTests(unittest.TestCase):
         ledger = self.make_ledger()
         ledger.open_long(self.request(), self.now)
         stop_time = self.now + timedelta(minutes=5)
-        ledger.readiness["binance_stocks_api"]["checked_at"] = stop_time.isoformat()
+        ledger.readiness["binance_demo_api"]["checked_at"] = stop_time.isoformat()
         stop_quote = self.quote(bid="94.90", ask="95.00", received_at=stop_time)
         event = ledger.mark({"quote": stop_quote}, stop_time, evaluate=True)
         state = json.loads((self.root / "05-交易记录-data/current-state.json").read_text())
@@ -184,12 +183,68 @@ class PaperLedgerTests(unittest.TestCase):
         position = ledger.state["positions"][0]
         self.assertLessEqual(Decimal(position["quantity"]), Decimal("1"))
         exit_time = self.now + timedelta(minutes=1)
-        ledger.readiness["binance_stocks_api"]["checked_at"] = exit_time.isoformat()
+        ledger.readiness["binance_demo_api"]["checked_at"] = exit_time.isoformat()
         with self.assertRaisesRegex(PaperLedgerError, "bid size"):
             ledger.close({
                 "quote": self.quote(bid_size="0.5", received_at=exit_time),
                 "reason": "manual_exit",
             }, exit_time)
+
+    def demo_fill(self, side, quantity, price, base_fee="0", quote_fee="0"):
+        quantity, price = Decimal(str(quantity)), Decimal(price)
+        gross = quantity * price
+        net = gross + Decimal(quote_fee) if side == "BUY" else gross - Decimal(quote_fee)
+        return {"demo_order_id": "42", "status": "FILLED", "side": side, "executed_qty": str(quantity),
+                "net_qty": str(quantity - Decimal(base_fee)), "avg_price": str(price), "gross_usdt": str(gross),
+                "net_usdt": str(net), "fee_usdt": str(Decimal(base_fee) * price + Decimal(quote_fee))}
+
+    def test_demo_executor_fills_replace_simulated_fills(self):
+        orders = []
+
+        def execute(symbol, side, quantity):
+            orders.append((symbol, side, quantity))
+            if side == "BUY":
+                return self.demo_fill(side, quantity, "100.05", base_fee="0.01")
+            return self.demo_fill(side, quantity, "104", quote_fee="1")
+
+        ledger = self.make_ledger()
+        opened = ledger.open_long(self.request(), self.now, execute)
+        position = ledger.state["positions"][0]
+        # The base-asset commission is not sellable, so the position is smaller than the order.
+        self.assertEqual(Decimal(position["quantity"]), orders[0][2] - Decimal("0.01"))
+        self.assertEqual(Decimal(position["cost_basis_usdt"]), orders[0][2] * Decimal("100.05"))
+        self.assertEqual(opened["demo_order"]["demo_order_id"], "42")
+        later = self.now + timedelta(minutes=5)
+        ledger.readiness["binance_demo_api"]["checked_at"] = later.isoformat()
+        closed = ledger.close({"quote": self.quote(bid="104", ask="104.02", received_at=later), "reason": "target"}, later, execute)
+        self.assertEqual(orders[1][:2], ("AAPL", "SELL"))
+        self.assertEqual(orders[1][2], Decimal(position["quantity"]))
+        expected = orders[1][2] * Decimal("104") - 1 - Decimal(position["cost_basis_usdt"])
+        self.assertEqual(Decimal(closed["net_pnl_usdt"]), expected)
+        self.assertEqual(ledger.state["positions"], [])
+
+    def test_failed_demo_order_records_nothing(self):
+        def execute(symbol, side, quantity):
+            raise ValueError("Demo order rejected")
+
+        ledger = self.make_ledger()
+        with self.assertRaises(ValueError):
+            ledger.open_long(self.request(), self.now, execute)
+        state = json.loads((self.root / "05-交易记录-data/current-state.json").read_text())
+        self.assertEqual(state["positions"], [])
+        self.assertEqual(state["cash_usdt"], 10000)
+
+    def test_rejected_request_never_reaches_executor(self):
+        calls = []
+        request = self.request()
+        request["evidence"] = [{"category": "price_action", "source": "one source"}]
+        with self.assertRaises(PaperLedgerError):
+            self.make_ledger().open_long(request, self.now, lambda *args: calls.append(args))
+        ledger = self.make_ledger()
+        ledger.open_long(self.request(), self.now)
+        with self.assertRaisesRegex(PaperLedgerError, "exit reason"):
+            ledger.close({"quote": self.quote(), "reason": "because"}, self.now, lambda *args: calls.append(args))
+        self.assertEqual(calls, [])
 
     def test_reconcile_restores_last_event_snapshot(self):
         self.make_ledger().open_long(self.request(), self.now)

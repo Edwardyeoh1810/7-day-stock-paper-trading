@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from binance_readiness_check import CONFIG, ROOT, check_stocks, load_config, update_readiness
+from binance_readiness_check import CONFIG, ROOT, check_demo_spot, load_config, update_readiness
 from run_store import RunStore, utc_now
 
 STARTUP = ("AGENTS.md", "AGENTS.zh-CN.md", "02-项目文档-docs/TRADING-STRATEGY.md", "02-项目文档-docs/TRADING-STRATEGY.zh-CN.md",
@@ -62,7 +62,7 @@ def export_records(store):
         timestamp = payload["check"]["checked_at"]
         if latest.get("timestamp", "") <= timestamp:
             state["last_run"] = {"run_id": run_id, "timestamp": timestamp, "mode": "observation_only",
-                                 "stock_api_verified": payload["check"].get("stock_etf_access_verified", False), "orders_placed": False}
+                                 "demo_api_verified": payload["check"].get("demo_market_access_verified", False), "orders_placed": False}
             atomic_write(path, json.dumps(state, ensure_ascii=False, indent=2) + "\n")
 
 
@@ -70,15 +70,15 @@ def make_payload(run_id, check, state):
     journal = "\n".join([
         "# Read-only observation / 只读观察", "", "- Run: " + run_id,
         "- Timestamp: " + utc_now(),
-        "- Action / 本次操作: Read Binance Stocks API and record actual verification results.",
+        "- Action / 本次操作: Read Binance demo Spot API and record actual verification results.",
         "- Reason / 原因: Verify data and account access before experiment execution.",
         "- Order proposed / 提出订单: no", "- Order placed / 提交订单: no", "- Order filled / 成交: no",
-        "- Local paper holdings / 本地模拟持仓: " + json.dumps(state.get("positions", []), ensure_ascii=False),
+        "- Paper ledger holdings / 模拟账本持仓: " + json.dumps(state.get("positions", []), ensure_ascii=False),
         "- Local paper cash / 本地模拟现金 USDT: " + str(state.get("cash_usdt")),
         "- Local paper risk / 本地模拟未平仓风险 USDT: " + str(state.get("daily_open_risk_usdt")),
-        "- Real account holdings and cash / 真实账户资产: not reconciled by this checker.",
+        "- Demo account balances / 模拟盘账户资产: not reconciled by this checker.",
         "- Errors / 检查问题: " + json.dumps(check.get("errors", [])),
-        "- Next / 下次重点: Resolve authentication, verify Stocks data and review the stop/fill draft.",
+        "- Next / 下次重点: Resolve authentication, verify demo Spot data and review the stop/fill draft.",
         "- Human input / 人工事项: Local API settings if authentication fails; review stop/fill draft.",
         "- Evidence: ../evidence/" + run_id + ".json", "",
     ])
@@ -123,12 +123,12 @@ def main():
                 print(json.dumps({"status": "duplicate_skipped", "run_id": run_id}))
                 return 0
             state = json.loads((ROOT / "05-交易记录-data" / "current-state.json").read_text())
-            result = check_stocks(load_config(CONFIG))
+            result = check_demo_spot(load_config(CONFIG))
             update_readiness(result)
             store.finish(run_id, make_payload(run_id, result, state))
             export_records(store)
-            print(json.dumps({"run_id": run_id, "stock_api_verified": result["stock_etf_access_verified"], "errors": result["errors"]}, indent=2))
-            return 0 if result["stock_etf_access_verified"] else 2
+            print(json.dumps({"run_id": run_id, "demo_api_verified": result["demo_market_access_verified"], "errors": result["errors"]}, indent=2))
+            return 0 if result["demo_market_access_verified"] else 2
         finally:
             store.close()
 

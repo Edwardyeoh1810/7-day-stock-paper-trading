@@ -7,56 +7,41 @@
   "max_daily_loss_percent": 2,
   "max_single_trade_loss_percent": 0.5,
   "platform": "binance",
-  "asset_scope": "stocks_and_etfs_only",
-  "binance_stock_trading_eligibility_verified": true,
-  "binance_stock_api_read_access_verified": true,
-  "binance_paper_trading_available_verified": false,
+  "asset_scope": "crypto_spot_usdt_pairs_on_binance_demo_only",
+  "binance_environment": "demo",
+  "binance_demo_api_read_access_verified": true,
+  "demo_order_execution_enabled": true,
   "local_paper_ledger_initialized": true,
   "autonomous_paper_execution_enabled": true,
   "orders_allowed": false,
-  "last_readiness_check": "2026-09-15T01:49:58.499586+00:00",
+  "last_readiness_check": "2026-09-21T00:31:58.303427+00:00",
   "notes": [
-    "Default is paper trading only.",
+    "Paper trading only: orders go to the Binance demo account (virtual funds) at demo-api.binance.com, never to production.",
+    "orders_allowed and live_trading_enabled refer to real-money orders and must stay false.",
     "If any critical field is missing, malformed, false, or ambiguous, no orders may be placed.",
     "Live trading requires explicit human confirmation for a specific order."
   ],
-  "binance_stocks_api": {
-    "checked_at": "2026-09-16T00:48:31.930831+00:00",
-    "environment": "production",
+  "binance_demo_api": {
+    "checked_at": "2026-09-21T00:32:15.143361+00:00",
+    "environment": "demo",
     "credentials_present": true,
     "public_api_reachable": true,
     "signed_account_read_verified": true,
-    "api_key_permissions_verified": true,
-    "stock_etf_access_verified": true,
+    "api_key_permissions_verified": false,
+    "stock_etf_access_verified": false,
     "orders_allowed": false,
     "errors": [],
-    "scope": "stocks",
-    "stock_rules_read_verified": true,
-    "stock_quote_read_verified": true,
-    "stock_orders_read_verified": true,
-    "quote_freshness_verified": true,
-    "stock_symbol": "AAPL",
-    "stock_rules": {
-      "symbol": "AAPL",
-      "tradability": "BUY_SELL",
-      "fractionable": true,
-      "fractionableEh": true,
-      "stepSize": "0.000000001",
-      "minQty": null,
-      "minNotional": "5.00000000",
-      "maxNotional": "1000000.00000000"
-    },
+    "scope": "demo_spot",
+    "symbol": "BTCUSDT",
+    "rules_read_verified": true,
+    "quote_read_verified": true,
+    "orders_read_verified": true,
+    "demo_market_access_verified": true,
     "quote": {
-      "symbol": "AAPL",
-      "bidPrice": "331.6",
-      "askPrice": "331.94"
+      "symbol": "BTCUSDT",
+      "bidPrice": "81775.88000000",
+      "askPrice": "81775.89000000"
     },
-    "quote_received_at": "2026-09-16T00:48:32.546259+00:00",
-    "key_permissions": {
-      "ipRestrict": false,
-      "enableReading": true,
-      "enableSpotAndMarginTrading": false,
-      "enableWithdrawals": false
-    }
+    "quote_received_at": "2026-09-21T00:32:17.079150+00:00"
   }
 }

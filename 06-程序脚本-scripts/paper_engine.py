@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Execute one autonomous local paper-trading decision; never sends a broker order."""
+"""Execute one autonomous paper-trading decision on the Binance demo account (virtual funds).
+
+Never sends a production order: market data and orders use the demo host only."""
 
 import argparse
 import copy
@@ -8,7 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from binance_readiness_check import HOSTS, check_stocks, get_json, load_config, update_readiness
+from binance_readiness_check import HOSTS, check_demo_spot, get_json, load_config, update_readiness
+from demo_orders import DemoOrderError, market_order
 from paper_ledger import PaperLedger, PaperLedgerError, atomic_json, decimal_value
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,32 +43,43 @@ def load_decision(path):
     return decision
 
 
-def fetch_snapshot(config, symbol, now):
-    """Read current ordinary-equity rules and quote using GET-only endpoints."""
+def fetch_snapshot(symbol, now):
+    """Read current Spot rules and top-of-book from the demo host using public GET endpoints."""
     symbol = str(symbol).upper()
-    headers = {"X-MBX-APIKEY": config["BINANCE_API_KEY"]}
-    base = HOSTS["production"]
-    rules_data, error = get_json(base + "/sapi/v1/equity/market/exchangeInfo?symbol=" + symbol, headers)
+    base = HOSTS["demo"]
+    rules_data, error = get_json(base + "/api/v3/exchangeInfo?symbol=" + symbol)
     symbols = rules_data.get("symbols") if isinstance(rules_data, dict) else None
     matches = [item for item in symbols if isinstance(item, dict) and item.get("symbol") == symbol] if isinstance(symbols, list) else []
     if not matches:
         raise PaperEngineError("No tradable paper rules for the selected symbol")
-    quote_data, error = get_json(base + "/sapi/v1/equity/market/quote?symbol=" + symbol, headers)
+    quote_data, error = get_json(base + "/api/v3/ticker/bookTicker?symbol=" + symbol)
     if not isinstance(quote_data, dict) or quote_data.get("symbol") != symbol:
         raise PaperEngineError("No current paper quote for the selected symbol")
     try:
         bid = decimal_value(quote_data["bidPrice"], "bidPrice")
         ask = decimal_value(quote_data["askPrice"], "askPrice")
-        bid_size = decimal_value(quote_data["bidSize"], "bidSize")
-        ask_size = decimal_value(quote_data["askSize"], "askSize")
+        bid_size = decimal_value(quote_data["bidQty"], "bidQty")
+        ask_size = decimal_value(quote_data["askQty"], "askQty")
     except (KeyError, PaperLedgerError) as exc:
         raise PaperEngineError("Invalid paper quote shape") from exc
     if not (0 < bid <= ask and bid_size > 0 and ask_size > 0):
         raise PaperEngineError("Paper quote is not executable")
     rule = matches[0]
+    filters = {item.get("filterType"): item for item in rule.get("filters", []) if isinstance(item, dict)}
+    lot, notional = filters.get("LOT_SIZE", {}), filters.get("NOTIONAL", {})
+    tradable = rule.get("status") == "TRADING" and rule.get("isSpotTradingAllowed") is True
     return {
-        "rules": {key: rule.get(key) for key in (
-            "symbol", "tradability", "fractionable", "stepSize", "minQty", "maxQty", "minNotional", "maxNotional")},
+        # Spot rules mapped onto the rule shape the ledger validates.
+        "rules": {
+            "symbol": symbol,
+            "tradability": "BUY_SELL" if tradable else "NONE",
+            "fractionable": True,
+            "stepSize": lot.get("stepSize"),
+            "minQty": lot.get("minQty"),
+            "maxQty": filters.get("MARKET_LOT_SIZE", {}).get("maxQty") or lot.get("maxQty"),
+            "minNotional": notional.get("minNotional"),
+            "maxNotional": notional.get("maxNotional"),
+        },
         "quote": {
             "symbol": symbol,
             "bid": str(bid),
@@ -87,7 +101,7 @@ def decision_symbol(decision, ledger):
     positions = ledger.state.get("positions", [])
     if positions:
         return positions[0]["symbol"]
-    return str(decision.get("symbol", "AAPL")).upper()
+    return str(decision.get("symbol", "BTCUSDT")).upper()
 
 
 def execute(decision, run_id, now=None):
@@ -101,16 +115,22 @@ def execute(decision, run_id, now=None):
     if not symbol:
         raise PaperEngineError("A symbol is required")
     config = load_config(CONFIG)
-    readiness = check_stocks(config, symbol=symbol)
+    if config["BINANCE_ENV"] != "demo":
+        raise PaperEngineError("BINANCE_ENV must be demo")
+    readiness = check_demo_spot(config, symbol=symbol)
     update_readiness(readiness)
-    if readiness.get("stock_etf_access_verified") is not True:
-        raise PaperEngineError("Fresh Stocks read verification failed")
+    if readiness.get("demo_market_access_verified") is not True:
+        raise PaperEngineError("Fresh demo read verification failed")
 
     # The API check itself takes time; use a post-refresh timestamp for freshness validation.
     now = datetime.now(timezone.utc)
     ledger = build_ledger()
     ledger.validate_readiness(now)
-    snapshot = fetch_snapshot(config, symbol, now)
+    snapshot = fetch_snapshot(symbol, now)
+    # Without this readiness switch the fill is simulated locally and no demo order is sent.
+    executor = None
+    if ledger.readiness.get("demo_order_execution_enabled") is True:
+        executor = lambda order_symbol, side, quantity: market_order(config, order_symbol, side, quantity)
     action = decision["action"]
     if action == "no_trade":
         return {"status": "no_trade", "event": None, "snapshot": snapshot}
@@ -125,12 +145,12 @@ def execute(decision, run_id, now=None):
             "thesis": decision.get("thesis", ""),
             "evidence": decision.get("evidence"),
         }
-        event = ledger.open_long(request, now)
+        event = ledger.open_long(request, now, executor)
     elif action == "manage":
-        event = ledger.mark({"run_id": run_id, "quote": snapshot["quote"]}, now, evaluate=True)
+        event = ledger.mark({"run_id": run_id, "quote": snapshot["quote"]}, now, evaluate=True, execute=executor)
     else:
         event = ledger.close({"run_id": run_id, "quote": snapshot["quote"],
-                              "reason": decision.get("reason", "end_of_day")}, now)
+                              "reason": decision.get("reason", "end_of_day")}, now, executor)
     return {"status": "executed", "event": event, "snapshot": snapshot}
 
 
@@ -138,25 +158,29 @@ def write_records(run_id, decision, result, now):
     ledger = build_ledger()
     local = now.astimezone(ZoneInfo("America/Chicago"))
     state = ledger.state
+    event = result.get("event") or {}
+    demo_order = event.get("demo_order")
     state["last_run"] = {
         "run_id": run_id,
         "timestamp": now.isoformat(),
-        "mode": "autonomous_local_paper",
-        "stock_api_verified": True,
+        "mode": "autonomous_demo_paper",
+        "demo_api_verified": True,
         "orders_placed": False,
+        "demo_order_sent": bool(demo_order),
         "paper_action": decision["action"],
         "paper_result": result["status"],
     }
     state["next_task_focus"] = (
-        "Refresh market evidence and reassess the local paper position at the next scheduled Central-time check. "
+        "Refresh market evidence and reassess the demo paper position at the next scheduled Central-time check. "
         "Live trading remains disabled."
     )
     atomic_json(ROOT / "05-交易记录-data" / "current-state.json", state)
     evidence = {
         "run_id": run_id,
         "timestamp": now.isoformat(),
-        "mode": "local_paper_only",
+        "mode": "binance_demo_paper",
         "live_order_sent": False,
+        "demo_order_sent": bool(demo_order),
         "decision": decision,
         "result": result,
         "state": {key: state.get(key) for key in ("cash_usdt", "equity_usdt", "positions", "daily_open_risk_usdt")},
@@ -164,20 +188,20 @@ def write_records(run_id, decision, result, now):
     atomic_json(ROOT / "05-交易记录-data" / "evidence" / (run_id + ".json"), evidence)
     journal_path = ROOT / "05-交易记录-data" / "journal" / (local.date().isoformat() + ".md")
     action = decision["action"]
-    event = result.get("event") or {}
     lines = [
         "", "## autonomous_paper_" + run_id + " - " + now.isoformat(), "",
         "- What was done: Autonomous local paper decision processed: " + action + ".",
         "- Why it was done: The user authorized autonomous paper-trading decisions within the documented risk limits.",
         "- Order proposed: " + ("Yes" if action == "open_long" else "No") + ".",
-        "- Order placed: No real order; local paper ledger only.",
-        "- Order filled: " + ("Yes, simulated locally." if event else "No."),
+        "- Order placed: " + ("Demo account order " + demo_order["demo_order_id"] + " (virtual funds); no real order."
+                              if demo_order else "No real order; local paper ledger only."),
+        "- Order filled: " + ("Yes, on the demo account." if demo_order else "Yes, simulated locally." if event else "No."),
         "- Current holdings: " + json.dumps(state.get("positions", []), ensure_ascii=False) + ".",
         "- Current cash: " + str(state.get("cash_usdt")) + " USDT paper cash.",
         "- Current risk: " + str(state.get("daily_open_risk_usdt")) + " USDT open risk.",
         "- Evidence captured: `05-交易记录-data/evidence/" + run_id + ".json`.",
         "- Next task focus: Refresh read-only quote and reassess the paper position or no-trade state.",
-        "- Human confirmations needed: None for local paper trading; live trading remains disabled.",
+        "- Human confirmations needed: None for demo paper trading; live trading remains disabled.",
     ]
     with journal_path.open("a", encoding="utf-8") as file:
         file.write("\n".join(lines) + "\n")
@@ -195,9 +219,9 @@ def main():
         write_records(args.run_id, decision, result, now)
         print(json.dumps({"paper_trading": True, "live_order_sent": False, **result}, ensure_ascii=False, indent=2))
         return 0
-    except (OSError, ValueError, PaperLedgerError, PaperEngineError) as exc:
+    except (OSError, ValueError, PaperLedgerError, PaperEngineError, DemoOrderError) as exc:
         print(json.dumps({"paper_trading": True, "live_order_sent": False,
-                          "error": "Paper decision rejected; no broker order was sent.",
+                          "error": "Paper decision rejected; no production order was sent.",
                           "reason": str(exc)}))
         return 2
 

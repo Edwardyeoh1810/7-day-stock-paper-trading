@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Deterministic local paper ledger. This module has no broker write path."""
+"""Deterministic local paper ledger. This module has no broker write path of its own;
+the engine may inject a demo-account executor so recorded fills are the actual demo fills."""
 
 import copy
 import json
@@ -78,8 +79,7 @@ class PaperLedger:
             "live_trading_enabled": False,
             "broker_connected": True,
             "human_confirmation_required_for_live_orders": True,
-            "binance_stock_trading_eligibility_verified": True,
-            "binance_stock_api_read_access_verified": True,
+            "binance_demo_api_read_access_verified": True,
             "local_paper_ledger_initialized": True,
             "autonomous_paper_execution_enabled": True,
             "orders_allowed": False,
@@ -87,14 +87,14 @@ class PaperLedger:
         for key, expected in required.items():
             if self.readiness.get(key) is not expected:
                 raise PaperLedgerError("Unsafe or missing readiness field: " + key)
-        check = self.readiness.get("binance_stocks_api")
-        if not isinstance(check, dict) or check.get("stock_etf_access_verified") is not True:
-            raise PaperLedgerError("Fresh Binance Stocks read verification is required")
+        check = self.readiness.get("binance_demo_api")
+        if not isinstance(check, dict) or check.get("demo_market_access_verified") is not True:
+            raise PaperLedgerError("Fresh Binance demo read verification is required")
         checked_at = parse_time(check.get("checked_at"), "readiness.checked_at")
         max_age = decimal_value(self.config["readiness_max_age_hours"], "readiness_max_age_hours")
         age_hours = Decimal(str((now - checked_at).total_seconds())) / Decimal("3600")
         if age_hours < 0 or age_hours > max_age:
-            raise PaperLedgerError("Binance Stocks readiness is stale")
+            raise PaperLedgerError("Binance demo readiness is stale")
         for key in ("max_position_size_percent", "max_daily_loss_percent", "max_single_trade_loss_percent"):
             if key not in self.readiness:
                 raise PaperLedgerError("Missing risk limit: " + key)
@@ -201,7 +201,7 @@ class PaperLedger:
         atomic_json(self.ledger_path, self.ledger)
         atomic_json(self.state_path, self.state)
 
-    def open_long(self, request, now=None):
+    def open_long(self, request, now=None, execute=None):
         now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
         self.validate_readiness(now)
         self._assert_entry_window(now)
@@ -256,6 +256,16 @@ class PaperLedger:
                          if event.get("action") == "close" and event.get("trading_date") == local_date]
         if len(recent_closes) >= 2 and all(event.get("reason") == "stop" for event in recent_closes[-2:]):
             raise PaperLedgerError("Two consecutive stops block new entries")
+        cost = notional + entry_fee
+        fill = None
+        if execute is not None:
+            # Every check has passed; from here the demo account's actual fill is authoritative.
+            fill = execute(symbol, "BUY", quantity)
+            quantity = floor_step(decimal_value(fill["net_qty"], "fill.net_qty"), rules["step"])
+            entry = decimal_value(fill["avg_price"], "fill.avg_price")
+            cost = decimal_value(fill["net_usdt"], "fill.net_usdt")
+            entry_fee = decimal_value(fill["fee_usdt"], "fill.fee_usdt")
+            planned_loss = cost - quantity * stop_fill * (1 - fee_rate)
         order_id = self._next_id(now)
         position = {
             "symbol": symbol,
@@ -266,14 +276,14 @@ class PaperLedger:
             "stop_price": str(stop),
             "target_price": str(target),
             "entry_time": now.isoformat(),
-            "cost_basis_usdt": str(notional + entry_fee),
+            "cost_basis_usdt": str(cost),
             "entry_fee_usdt": str(entry_fee),
             "planned_loss_usdt": str(planned_loss),
             "thesis": str(request.get("thesis", "")).strip(),
             "evidence": copy.deepcopy(request["evidence"]),
             "order_id": order_id,
         }
-        self.state["cash_usdt"] = json_number(cash - notional - entry_fee)
+        self.state["cash_usdt"] = json_number(cash - cost)
         self.state["positions"] = [position]
         self.state["open_orders"] = []
         equity, unrealized, _ = self._portfolio_values(position, quote["bid"])
@@ -296,12 +306,14 @@ class PaperLedger:
             "quote": request["quote"],
             "reason": "strategy_entry",
         }
+        if fill is not None:
+            event["demo_order"] = fill
         if request.get("run_id"):
             event["run_id"] = str(request["run_id"])
         self._save_event(event)
         return event
 
-    def mark(self, request, now=None, evaluate=False):
+    def mark(self, request, now=None, evaluate=False, execute=None):
         now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
         self.validate_readiness(now)
         positions = self.state.get("positions", [])
@@ -323,9 +335,9 @@ class PaperLedger:
         self.state["unrealized_pnl_usdt"] = json_number(unrealized)
         self.state["daily_open_risk_usdt"] = json_number(open_risk)
         if evaluate and quote["bid"] <= stop:
-            return self.close({"quote": request["quote"], "reason": "stop", "run_id": request.get("run_id")}, now)
+            return self.close({"quote": request["quote"], "reason": "stop", "run_id": request.get("run_id")}, now, execute)
         if evaluate and quote["bid"] >= decimal_value(position["target_price"], "target"):
-            return self.close({"quote": request["quote"], "reason": "target", "run_id": request.get("run_id")}, now)
+            return self.close({"quote": request["quote"], "reason": "target", "run_id": request.get("run_id")}, now, execute)
         event = {
             "event_id": self._next_id(now) + "-MARK",
             "action": "mark",
@@ -341,7 +353,7 @@ class PaperLedger:
         self._save_event(event)
         return event
 
-    def close(self, request, now=None):
+    def close(self, request, now=None, execute=None):
         now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
         self.validate_readiness(now)
         positions = self.state.get("positions", [])
@@ -355,8 +367,17 @@ class PaperLedger:
         fill = quote["bid"] * (1 - slip_rate)
         if quote["executable_size"] < quantity:
             raise PaperLedgerError("Quoted bid size cannot support the paper exit")
+        reason = str(request.get("reason", "manual_exit"))
+        if reason not in {"stop", "target", "thesis_invalid", "time_exit", "end_of_day", "manual_exit"}:
+            raise PaperLedgerError("Unsupported paper exit reason")
         proceeds = quantity * fill
         exit_fee = proceeds * fee_rate
+        demo_fill = None
+        if execute is not None:
+            demo_fill = execute(symbol, "SELL", quantity)
+            fill = decimal_value(demo_fill["avg_price"], "fill.avg_price")
+            exit_fee = decimal_value(demo_fill["fee_usdt"], "fill.fee_usdt")
+            proceeds = decimal_value(demo_fill["net_usdt"], "fill.net_usdt") + exit_fee
         cost_basis = decimal_value(position["cost_basis_usdt"], "cost_basis")
         net_pnl = proceeds - exit_fee - cost_basis
         cash = decimal_value(self.state["cash_usdt"], "cash") + proceeds - exit_fee
@@ -372,9 +393,6 @@ class PaperLedger:
         self.state["open_orders"] = []
         self.state["paper_fees_paid_usdt"] = json_number(
             decimal_value(self.state.get("paper_fees_paid_usdt", 0), "fees") + exit_fee)
-        reason = str(request.get("reason", "manual_exit"))
-        if reason not in {"stop", "target", "thesis_invalid", "time_exit", "end_of_day", "manual_exit"}:
-            raise PaperLedgerError("Unsupported paper exit reason")
         order_id = self._next_id(now)
         event = {
             "event_id": order_id + "-CLOSE",
@@ -390,6 +408,8 @@ class PaperLedger:
             "quote": request["quote"],
             "reason": reason,
         }
+        if demo_fill is not None:
+            event["demo_order"] = demo_fill
         if request.get("run_id"):
             event["run_id"] = str(request["run_id"])
         self._save_event(event)

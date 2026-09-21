@@ -1,36 +1,47 @@
 {
-  "status": "gpt_heartbeat_active_local_paper_engine_enabled_github_hosted_runner_blocked_http_451",
-  "name": "7-day paper trading observation",
+  "status": "claude_local_scheduled_tasks_active_binance_demo_crypto",
+  "name": "7-day Binance demo crypto paper trading",
   "requested_initial_status": "ACTIVE",
-  "project_path": "/Users/a123/Desktop/7天股票交易实验",
+  "project_path": "/Users/edwardmacmini/Projects/7-day-stock-paper-trading",
   "repository_layout": "numbered_chinese_categories",
   "repository_layout_updated_on": "2026-09-16",
   "timezone": "America/Chicago",
   "planned_checks": 42,
   "recurrence_validated_offline": true,
-  "scheduler_execution_verified": true,
-  "repository": "yomislight/7-day-stock-paper-trading",
-  "first_github_run_id": "34930058749",
-  "reason": "GitHub Actions accepted and executed the workflow, but the hosted runner received HTTP 451 from Binance public endpoints. A supported-region self-hosted runner or VPS is required for Binance connectivity.",
-  "activation_blockers": ["GitHub-hosted runner receives HTTP 451 from Binance; use the local GPT heartbeat for the experiment"],
-  "gpt_mobile_heartbeat": {
-    "automation_id": "7",
-    "name": "7天股票实验 六时段手机报告",
-    "status": "ACTIVE",
-    "target": "current_gpt_thread",
-    "schedule_type": "42_explicit_utc_occurrences",
-    "scheduled_occurrences": 42,
-    "planned_trading_dates": [
-      "2026-09-15",
-      "2026-09-16",
-      "2026-09-17",
-      "2026-09-18",
-      "2026-09-21",
-      "2026-09-22",
-      "2026-09-23"
-    ],
-    "central_times": ["07:45", "08:35", "11:00", "13:00", "14:15", "14:45"],
-    "delivery_note": "Reports are posted to the current GPT thread. Mobile push display requires the same account and enabled ChatGPT/Codex mobile notifications."
-  },
-  "rebase_dates_if_start_delayed": true
+  "scheduler_execution_verified": false,
+  "repository": "Edwardyeoh1810/7-day-stock-paper-trading",
+  "reason": "Fork reset on 2026-09-21 and moved to Binance demo crypto Spot. GitHub-hosted runners receive HTTP 451 from Binance, so the six daily checks run as local Claude scheduled tasks.",
+  "activation_blockers": [],
+  "rebase_dates_if_start_delayed": true,
+  "claude_scheduled_tasks": {
+    "host_timezone": "UTC+8",
+    "note": "Tasks only run while the Claude desktop app is open. Each run starts with run_observation.py --dry-run and exits quietly when no slot is due. Disable the tasks after 2026-10-01.",
+    "tasks": [
+      {
+        "task_id": "paper-trading-0745ct-premarket",
+        "central_time": "07:45",
+        "local_cron": "45 20 22-30 9 *"
+      },
+      {
+        "task_id": "paper-trading-0835ct-open-review",
+        "central_time": "08:35",
+        "local_cron": "35 21 22-30 9 *"
+      },
+      {
+        "task_id": "paper-trading-1100ct-late-morning",
+        "central_time": "11:00",
+        "local_cron": "0 0 1,23-30 9,10 *"
+      },
+      {
+        "task_id": "paper-trading-1300ct-midday",
+        "central_time": "13:00",
+        "local_cron": "0 2 1,23-30 9,10 *"
+      },
+      {
+        "task_id": "paper-trading-1415-1445ct-close",
+        "central_time": "14:15 and 14:45",
+        "local_cron": "15,45 3 1,23-30 9,10 *"
+      }
+    ]
+  }
 }

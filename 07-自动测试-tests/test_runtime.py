@@ -68,7 +68,7 @@ class RuntimeTests(unittest.TestCase):
             store = RunStore(root / "runs.db")
             self.addCleanup(store.close)
             store.begin("one")
-            store.finish("one", {"journal": "one entry", "check": {"checked_at": "2026-09-14T00:00:00+00:00", "stock_etf_access_verified": False}})
+            store.finish("one", {"journal": "one entry", "check": {"checked_at": "2026-09-14T00:00:00+00:00", "demo_market_access_verified": False}})
             with patch.object(runner, "ROOT", root):
                 runner.export_records(store)
                 runner.export_records(store)

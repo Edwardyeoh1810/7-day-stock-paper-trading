@@ -19,6 +19,7 @@ CONFIG = ROOT / "09-API密钥-仅本地" / "binance-api.env"
 HOSTS = {
     "production": "https://api.binance.com",
     "testnet": "https://testnet.binance.vision",
+    "demo": "https://demo-api.binance.com",
 }
 
 
@@ -45,7 +46,7 @@ def load_config(path):
             raise ValueError("Invalid setting format at line %d" % number)
         values[key] = value
     if values.get("BINANCE_ENV") not in HOSTS:
-        raise ValueError("BINANCE_ENV must be production or testnet")
+        raise ValueError("BINANCE_ENV must be production, testnet or demo")
     return values
 
 
@@ -191,15 +192,69 @@ def check_stocks(config, public_only=False, symbol="AAPL"):
     return result
 
 
+def valid_book(book, symbol):
+    if not isinstance(book, dict) or book.get("symbol") != symbol:
+        return False
+    try:
+        values = [Decimal(str(book[k])) for k in ("bidPrice", "askPrice", "bidQty", "askQty")]
+        return all(v.is_finite() and v > 0 for v in values) and values[0] <= values[1]
+    except (KeyError, InvalidOperation, TypeError, ValueError):
+        return False
+
+
+def check_demo_spot(config, symbol="BTCUSDT"):
+    """Read-only checks of the Binance demo Spot account (virtual funds)."""
+    result = check(config)
+    result.update({"scope": "demo_spot", "symbol": symbol, "rules_read_verified": False,
+                   "quote_read_verified": False, "orders_read_verified": False,
+                   "demo_market_access_verified": False})
+    if config["BINANCE_ENV"] != "demo":
+        result["errors"].append("BINANCE_ENV must be demo; crypto checks never use production")
+        return result
+    if not result["signed_account_read_verified"]:
+        return result
+    base = HOSTS["demo"]
+    rules, error = get_json(base + "/api/v3/exchangeInfo?" + urlencode({"symbol": symbol}))
+    symbols = rules.get("symbols") if isinstance(rules, dict) else None
+    matches = [s for s in symbols if isinstance(s, dict) and s.get("symbol") == symbol] if isinstance(symbols, list) else []
+    result["rules_read_verified"] = bool(matches) and matches[0].get("status") == "TRADING"
+    if not result["rules_read_verified"]:
+        result["errors"].append("rules: " + (error or "Symbol missing or not trading"))
+    book, error = get_json(base + "/api/v3/ticker/bookTicker?" + urlencode({"symbol": symbol}))
+    result["quote_read_verified"] = valid_book(book, symbol)
+    if result["quote_read_verified"]:
+        result["quote"] = {k: book[k] for k in ("symbol", "bidPrice", "askPrice")}
+        result["quote_received_at"] = datetime.now(timezone.utc).isoformat()
+    else:
+        result["errors"].append("quote: " + (error or "Invalid quote"))
+    server, error = get_json(base + "/api/v3/time")
+    stamp = server.get("serverTime") if isinstance(server, dict) else None
+    orders = None
+    if type(stamp) is int and stamp > 0:
+        query = urlencode({"symbol": symbol, "timestamp": stamp, "recvWindow": 5000})
+        signature = hmac.new(config["BINANCE_API_SECRET"].encode(), query.encode(), hashlib.sha256).hexdigest()
+        orders, error = get_json(base + "/api/v3/openOrders?" + query + "&signature=" + signature,
+                                 {"X-MBX-APIKEY": config["BINANCE_API_KEY"]})
+    result["orders_read_verified"] = isinstance(orders, list)
+    if not result["orders_read_verified"]:
+        result["errors"].append("orders: " + (error or "Unexpected response"))
+    result["demo_market_access_verified"] = all(result[k] for k in (
+        "rules_read_verified", "quote_read_verified", "orders_read_verified"))
+    return result
+
+
 def update_readiness(result):
     path = ROOT / "04-运行状态-state" / "readiness.json"
     state = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(state, dict):
         raise ValueError("Invalid readiness state")
     # A Spot check does not refresh unrelated stock/ETF readiness or its timestamp.
-    state["binance_stocks_api" if result.get("scope") == "stocks" else "binance_spot_api"] = result
-    if result.get("scope") == "stocks":
+    scope = result.get("scope")
+    state[{"stocks": "binance_stocks_api", "demo_spot": "binance_demo_api"}.get(scope, "binance_spot_api")] = result
+    if scope == "stocks":
         state["binance_stock_api_read_access_verified"] = result.get("stock_etf_access_verified", False)
+    if scope == "demo_spot":
+        state["binance_demo_api_read_access_verified"] = result.get("demo_market_access_verified", False)
     state["orders_allowed"] = False
     temporary = None
     try:
@@ -226,13 +281,18 @@ def main():
             present = bool(config.get("BINANCE_API_KEY") and config.get("BINANCE_API_SECRET"))
             print(json.dumps({"config_valid": True, "credentials_present": present}))
             return 0 if present else 2
-        result = (check if args.spot_only else check_stocks)(config, public_only=args.public_only)
+        demo = config["BINANCE_ENV"] == "demo" and not args.spot_only and not args.public_only
+        if demo:
+            result = check_demo_spot(config)
+        else:
+            result = (check if args.spot_only else check_stocks)(config, public_only=args.public_only)
         if args.update_readiness:
             update_readiness(result)
         print(json.dumps(result, indent=2))
         if not result["public_api_reachable"]:
             return 3
-        passed = result["signed_account_read_verified"] if args.spot_only else result["stock_etf_access_verified"]
+        passed = (result["demo_market_access_verified"] if demo else
+                  result["signed_account_read_verified"] if args.spot_only else result["stock_etf_access_verified"])
         return 0 if args.public_only or passed else 2
     except (OSError, ValueError):
         print(json.dumps({"error": "Check local config/state file existence and format; details suppressed to protect credentials"}))
