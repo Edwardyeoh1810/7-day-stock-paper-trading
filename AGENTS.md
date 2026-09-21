@@ -79,7 +79,7 @@ Each journal entry must state:
 
 ## Binance Runtime
 
-- With `BINANCE_ENV=demo` the checker reads USDT-perpetual `/fapi/` endpoints on the demo futures host. `02-项目文档-docs/BINANCE-API.md` and the strategy documents still describe the original Stocks setup; where they conflict with this file, this file wins.
+- With `BINANCE_ENV=demo` the checker reads USDT-perpetual `/fapi/` endpoints on the demo futures host. `02-项目文档-docs/BINANCE-API.md` still describes the original Stocks setup; where it conflicts with this file or the trading strategy, they win.
 - `06-程序脚本-scripts/run_observation.py` is read-only. The only POST path is `06-程序脚本-scripts/demo_orders.py`, which is hard-wired to the demo host and refuses to run unless `BINANCE_ENV=demo`.
 - The approved paper rules enforce one position, 50% maximum notional, 0.5% maximum planned loss, 2% maximum daily loss, a stop no further than 10% from the entry, two evidence categories, 1.5 net reward/risk, and a 24-hour maximum hold. Right after an entry fills, the engine places a reduce-only stop and take-profit trigger order on the demo exchange (mark-price triggered), so the stop works between checks; an entry whose exit orders are rejected is closed immediately. Never place, cancel or amend these orders by hand.
 - Every open position must be closed at the final check of the last planned date.

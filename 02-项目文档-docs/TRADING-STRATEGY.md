@@ -1,152 +1,123 @@
-# 7 Day Conservative Stock/ETF Paper Trading Strategy
+# 30 Day Conservative Crypto Futures Paper Trading Strategy
 
 ## Purpose
 
-Run a controlled 7 U.S. trading day experiment to test whether AI-assisted research can manage a small, explainable paper portfolio using news, market data, price action, and volume. The goal is process quality, traceability, and risk discipline, not proof of profitability.
+Run a controlled 30 day experiment to test whether AI-assisted research can manage a small, explainable futures paper portfolio, long or short, using market structure, price action, volume, derivatives data and news. The goal is process quality, traceability, risk discipline and learning through review, not proof of profitability. A profitable month on this sample size is not evidence of a profitable system.
 
 ## Capital And Mode
 
-- Starting capital: 10000 USDT equivalent.
-- Default execution: paper trading only.
-- Live trading: disabled unless explicitly authorized by the user for a specific order.
-- Accounting currency: USDT for experiment tracking; convert to USD equivalent when market data or stock trading requires USD/USDC notation.
+- Starting capital: 5000 USDT of virtual funds on the Binance demo futures account.
+- Execution: paper trading only. Orders go to the demo futures account through `06-程序脚本-scripts/paper_engine.py` and nowhere else.
+- Live trading: disabled. Nothing in this strategy authorizes a real-money order, a transfer or an account-setting change.
+- Accounting: futures style. Cash is the wallet balance; only fees leave it at entry, and profit or loss, fees and funding settle when the position closes.
 
 ## Paper Trading Autonomy
 
-Within paper trading only, the AI may independently decide to buy, sell, reduce, stop out, flatten, hold, or stay in cash. The user does not need to approve each paper trade.
+Within the demo account only, the AI may independently decide to open a long, open a short, hold, close, or stay flat. The user does not need to approve each paper trade. Every decision must still satisfy this strategy, `AGENTS.md`, readiness, evidence, sizing, stop and daily loss rules, and the current `05-交易记录-data/reviews/LESSONS.md`.
 
-This autonomy applies only to the local paper ledger. It does not authorize live orders, real-money execution, transfers, account setting changes, or enabling trading permissions. Every autonomous paper decision must still satisfy the strategy, readiness, evidence, position sizing, stop loss, and daily loss rules.
+## Tradable Instruments
 
-## Tradable Assets
+Only USDT-margined perpetual contracts on the watchlist in `05-交易记录-data/current-state.json`:
 
-Only consider highly liquid U.S.-listed stocks or ETFs available through the user's eligible Binance stock/ETF access.
+- BTCUSDT, ETHUSDT, BNBUSDT, SOLUSDT, XRPUSDT
 
-Preferred universe:
+One position at a time, long or short. These five contracts move together most of the time: they are five ways to express one view on the crypto market, not five independent opportunities. Prefer the contract where the evidence is clearest and the spread tightest.
 
-- Broad ETFs: SPY, QQQ, DIA, IWM, VOO, IVV
-- Mega-cap liquid stocks: AAPL, MSFT, NVDA, AMZN, META, GOOGL, TSLA, JPM, XOM, UNH
-- Other stocks only if they have high average daily dollar volume, tight spreads, clear news context, and are supported by the platform.
+## Prohibited
 
-## Prohibited Assets
+- Spot, options, coin-margined or delivery futures
+- Cross margin, or any leverage other than the configured 5x isolated
+- Contracts outside the watchlist, low-liquidity contracts
+- Adding to a position, averaging down, hedging with a second position
+- Placing, cancelling or amending exchange orders by hand; changing leverage or margin mode by hand
+- Any real-money order under any circumstances
 
-Do not trade:
+## Leverage And Margin
 
-- Options
-- Futures
-- Margin or leveraged positions
-- Leveraged ETFs, inverse ETFs, or 2x/3x products
-- Low-liquidity stocks
-- Penny stocks or highly speculative microcaps
-- Crypto, perpetuals, or tokenized securities not clearly approved for this experiment
-- Any product whose legal status, region eligibility, settlement, fees, or underlying exposure is unclear
+Leverage is fixed at 5x isolated by `04-运行状态-state/paper-config.json`; the engine sets it before every entry. Leverage does not change the risk of a trade: the loss is set by the stop distance and the position size, and the engine sizes the position so that the planned loss stays inside the risk budget. Leverage only changes how much margin the position ties up and where liquidation would sit. With 5x isolated, liquidation is roughly 18-19% from the entry, and stops further than 10% from the entry are rejected, so the stop always comes first.
+
+## Evidence Categories
+
+Use these category names in every decision file, exactly as written, so the review statistics stay comparable:
+
+- `trend` — direction and structure on a higher timeframe (4h, daily): higher highs and lows, or lower; position relative to major moving averages.
+- `price_action` — behaviour at a specific level: break and retest of a range, rejection at support or resistance, failed breakout.
+- `volume` — participation compared with recent average: expansion on the move, drying up on the pullback.
+- `derivatives` — funding rate, open interest and its change, long/short positioning, liquidation clusters.
+- `market_context` — what BTC and the wider market are doing, relative strength of the contract against BTC, correlation with risk assets.
+- `news` — a verifiable scheduled event, macro release, regulatory or exchange announcement, with a source link. Never a single social post or rumour.
+
+Two items of the same category count as one category. Evidence must be independent: a moving average and a trend line drawn over the same candles are one observation, not two.
 
 ## Entry Conditions
 
-A paper trade may be considered only when all required conditions are met:
+An entry may be considered only when all of these hold:
 
-- `04-运行状态-state/readiness.json` allows paper trading and does not allow live trading.
-- Asset is in the permitted universe and is supported by Binance stock/ETF access or the local paper ledger.
-- At least two independent evidence categories support the trade idea, such as:
-  - Market trend or sector context
-  - Price action relative to prior range, VWAP, moving average, or support/resistance
-  - Volume confirmation compared with recent average
-  - Relevant news, earnings, macro release, or official announcement
-- The trade has a defined entry, stop, exit target or exit condition, and maximum loss.
-- Position size stays within the risk limits below.
-- The reason to avoid the trade has been considered and recorded.
+- `04-运行状态-state/readiness.json` allows paper trading and does not allow live trading, and the demo account was verified in this run.
+- No position is open, and the contract is on the watchlist.
+- At least two independent evidence categories support the same direction. For a short the bar is the same as for a long: shorting is not a reaction to a red candle.
+- The stop is placed where the thesis is wrong, on price structure (beyond the level that defines the setup), and is within 10% of the entry. Do not choose a stop to fit a desired position size.
+- The target is a level the market can plausibly reach within the 24 hour holding limit, and the net reward/risk after fees is at least 1.5.
+- The spread is normal and the move is not so fast that a controlled stop cannot be defined.
+- Funding has been checked: note the current rate and the next funding time, and whether the position would pay or receive.
+- The reasons not to take the trade have been considered and recorded.
+- Every applicable lesson in `LESSONS.md` has been applied and named in the thesis.
 
-Do not enter if the decision relies on only one headline, one social post, one indicator, or an unverified quote.
+Do not enter on a single headline, a single indicator, an unverified quote, or because the last trade lost. When in doubt, record `no_trade`: staying flat is a valid and common outcome.
 
-## Exit Conditions
+## Exits
 
-Exit a paper position when any of the following occurs:
+A position ends in one of these ways:
 
-- Stop loss is reached.
-- The original trade thesis is invalidated.
-- Price fails to follow through after entry and risk/reward deteriorates.
-- A scheduled risk reduction window begins.
-- The position is not explicitly allowed to remain overnight.
-- Daily loss limit is reached.
-- Market data, account data, or execution status becomes unreliable.
+- **Stop or target on the exchange.** Right after the entry fills, the engine places a reduce-only stop and a reduce-only take-profit on the demo exchange, triggered by the mark price. They work between checks; the next check books the result from the real fill.
+- **Thesis invalid.** At any check, close with reason `thesis_invalid` when the evidence that justified the entry is gone, even if the stop has not been reached.
+- **Time.** The engine closes a position at the first check after it has been held for 24 hours.
+- **End of experiment.** At the final check of the last planned date, close with reason `end_of_day`.
+- **Protection failure.** If the exit orders cannot be placed, the engine closes the position at market immediately.
 
-## Stop Loss Rules
+Stops and targets are not moved after entry. If the thesis changes, close the position.
 
-- Every paper trade must have a stop level before entry.
-- Maximum planned loss per trade: 0.5% of starting capital.
-- With 10000 USDT starting capital, maximum planned single-trade loss is 50 USDT equivalent.
-- If this loss limit makes a position impractically small, do not trade.
-- Stops must be based on both price structure and risk budget, not only an arbitrary percentage.
+## Position Sizing And Loss Limits
 
-## Position Sizing
+All limits are percentages of the 5000 USDT starting capital and are enforced by the engine, which chooses the size; the AI never sets the quantity.
 
-- Maximum position size: 10% of starting capital per position.
-- With 10000 USDT starting capital, maximum position notional is 1000 USDT equivalent.
-- Prefer one active position at a time.
-- Never use the full account.
-- Do not average down.
-- Do not increase exposure after 1:00 p.m. Central.
+- Maximum planned loss per trade: 0.5% = 25 USDT, including estimated fees and slippage.
+- Maximum position notional: 50% = 2500 USDT.
+- Maximum daily loss: 2% = 100 USDT of realized loss per local day; once reached, no new entries that day.
+- Two consecutive stop-outs on the same local day block new entries for the rest of that day.
+- Net reward/risk at least 1.5; spread at most 25 basis points; stop at most 10% from the entry.
 
-## Daily Loss Limit
+A stop that triggers sells or buys at market, so in a fast move the realized loss can exceed the planned loss. If the risk budget makes a position impractically small, do not trade.
 
-- Maximum daily loss: 2% of starting capital.
-- With 10000 USDT starting capital, maximum daily loss is 200 USDT equivalent.
-- If realized plus open risk reaches this limit, stop trading for the day and record a risk stop.
+## Holding Period And Funding
 
-## Single Trade Loss Limit
-
-- Maximum single-trade loss: 0.5% of starting capital.
-- With 10000 USDT starting capital, maximum single-trade loss is 50 USDT equivalent.
-- If fees, spreads, or minimum order size make this impossible, the system must observe only.
-
-## Overnight Policy
-
-Default: close intraday paper positions before the end of the session.
-
-Overnight holding is allowed only when all are true:
-
-- The strategy file is updated with a specific overnight thesis.
-- The asset is a high-liquidity stock or ETF.
-- Event risk is known and acceptable.
-- Position size is small enough to survive a gap without breaching the daily loss limit.
-- The journal explains why holding overnight is safer than exiting.
+Positions may be held across midnight, up to 24 hours. Perpetual contracts pay or receive funding every eight hours; the engine books the funding of each trade when it closes. A high funding rate against the position is a cost and a crowding signal worth recording; it is not by itself a reason to trade the other way.
 
 ## Must Stop Trading
 
-Stop all trading and switch to observation when:
+Record `no_trade` and open nothing when:
 
-- `readiness.json` is missing, malformed, or has unsafe values.
-- Live trading appears enabled unexpectedly.
-- Human confirmation would be needed for a real order and has not been obtained.
-- Account, order, position, or market data cannot be reconciled.
-- Daily loss limit is reached.
-- Two consecutive paper trades hit planned stops on the same day.
-- News or market conditions are chaotic, contradictory, or impossible to verify.
-- The platform product type is unclear.
-- The scheduler misses a critical risk-management check while positions are open.
-
-## Observation Only
-
-Only observe and record when:
-
-- Binance stock/ETF eligibility or API capability is not verified.
-- Paper trading capability is not verified and the local paper ledger is not initialized.
-- Market is closed, halted, or abnormal.
-- Spreads are wide relative to the trade risk.
-- Volume is insufficient.
-- Price is moving too quickly to define a controlled stop.
-- The trade requires more than 10% position size to be meaningful.
-- The likely loss including spread and fees exceeds 50 USDT equivalent.
-- Evidence is incomplete or relies on one source.
+- `readiness.json` is missing, malformed or unsafe, or live trading appears enabled.
+- The demo account, orders, position or market data cannot be verified or reconciled, or the ledger and the exchange disagree.
+- The daily loss limit is reached, or two consecutive stops occurred today.
+- News or market conditions are chaotic, contradictory or impossible to verify.
+- A scheduled check was missed while a position was open and the state has not been reconciled yet.
+- The engine rejected a decision. Record the reason; do not retry with loosened parameters.
 
 ## Evidence Requirements
 
-For every proposed trade or no-trade decision, save:
+For every entry, exit and no-trade decision, save:
 
-- Timestamp and market session
-- Asset symbol
-- Current price and source
-- Volume context
-- News or event links
-- Entry/exit/stop levels if applicable
-- Risk calculation
+- Timestamp and check id
+- Contract and direction
+- Current price, spread and source
+- The evidence items with their category, source and what they showed
+- Funding rate and next funding time
+- Entry, stop and target levels and why the stop sits where it does
+- The engine's result: size, fill, fees, planned loss, or the rejection reason
+- Which lessons applied
 - Final decision and reason
+
+## Review
+
+The daily review (`03-定时任务-routines/REVIEW-PROMPT.md`) measures results with `06-程序脚本-scripts/review_stats.py`, judges decisions by what was knowable at the time, and maintains `LESSONS.md`. Lessons can only make decisions more selective. Changes to this strategy, the limits, the leverage, the watchlist, the schedule or the code are proposed in `05-交易记录-data/reviews/PROPOSALS.md` and take effect only when the user approves them.

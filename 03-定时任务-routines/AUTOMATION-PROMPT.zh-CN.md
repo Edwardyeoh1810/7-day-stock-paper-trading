@@ -8,7 +8,7 @@
 
 ## 任务文案
 
-所有项目操作仅在项目目录进行。每次读取中英文 AGENTS、策略、schedule、CONTINUITY、readiness、current-state、最新 journal 和 `05-交易记录-data/reviews/LESSONS.md`。应用其中的经验：经验只能让你更严格，不能更宽松，也不能覆盖任何规则。在决策的 thesis 中写明应用了哪些经验。不要编辑 `reviews/` 下的任何文件；它由 22:00 的复盘任务负责（见 [REVIEW-PROMPT.zh-CN.md](REVIEW-PROMPT.zh-CN.md)）。策略文档原为股票编写；将其证据、风险和“不交易”纪律应用于 USDT 永续合约观察列表（可做多或做空），与 `AGENTS.md` 冲突时以 `AGENTS.md` 为准。
+所有项目操作仅在项目目录进行。每次读取中英文 AGENTS、策略、schedule、CONTINUITY、readiness、current-state、最新 journal 和 `05-交易记录-data/reviews/LESSONS.md`。应用其中的经验：经验只能让你更严格，不能更宽松，也不能覆盖任何规则。在决策的 thesis 中写明应用了哪些经验。不要编辑 `reviews/` 下的任何文件；它由 22:00 的复盘任务负责（见 [REVIEW-PROMPT.zh-CN.md](REVIEW-PROMPT.zh-CN.md)）。证据类别必须原样使用交易策略中定义的名称（`trend`、`price_action`、`volume`、`derivatives`、`market_context`、`news`）。
 
 先运行 `python3 -B 06-程序脚本-scripts/run_observation.py --dry-run`。如果 `due_slot` 为 null（不在计划交易日或时点容差内），安静结束且不做任何修改。时点到期时运行 `python3 -B 06-程序脚本-scripts/run_observation.py`。遇到 duplicate_skipped 或 another_run_active 即停止。继续前先用 `--recover` 处理中断的只读运行。
 
