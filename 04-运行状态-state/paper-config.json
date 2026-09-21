@@ -19,5 +19,6 @@
   "leverage": "5",
   "margin_type": "ISOLATED",
   "max_stop_distance_percent": "10",
-  "decision_max_age_minutes": "45"
+  "decision_max_age_minutes": "45",
+  "day_rollover_hour": "6"
 }

@@ -92,12 +92,17 @@ All limits are percentages of the 5000 USDT starting capital and are enforced by
 
 - Maximum planned loss per trade: 0.5% = 25 USDT, including estimated fees and slippage.
 - Maximum position notional: 50% = 2500 USDT.
-- Maximum daily loss: 2% = 100 USDT of realized loss per local day; once reached, no new entries that day.
-- Two consecutive stop-outs on the same local day block new entries for the rest of that day.
+- Maximum daily loss: 2% = 100 USDT of realized loss per trading day; once reached, no new entries that day.
+- Two consecutive stop-outs on the same trading day block new entries for the rest of that day.
+- A trading day runs from 06:00 to 06:00 Asia/Kuala_Lumpur, the quietest point of the day, so one active session is one day and the limits never reset in the middle of it.
 - Net reward/risk at least 1.5; spread at most 25 basis points; stop at most 10% from the entry.
 - An entry must be submitted within 45 minutes of its scheduled check. A run that stalled or overran never enters; it may still manage or close an open position.
 
 A stop that triggers sells or buys at market, so in a fast move the realized loss can exceed the planned loss. If the risk budget makes a position impractically small, do not trade.
+
+## Session Timing
+
+Checks run at 09:00, 16:00, 20:00, 21:00, 22:00, 23:00, 00:00 and 02:00 Asia/Kuala_Lumpur. Volume and range peak from about 20:00 to 03:00, centred on the 21:30 US open; 03:00 to 08:00 and 11:00 to 15:00 are the quietest hours. The first minutes after the US open are erratic: a breakout at 21:00 that has not held is not evidence yet. Activity makes setups and clean fills more likely; it is not itself a reason to trade, and hourly checks are not a reason to trade hourly.
 
 ## Holding Period And Funding
 

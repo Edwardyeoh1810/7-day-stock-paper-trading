@@ -38,7 +38,7 @@ class RuntimeTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 second.begin("second")
 
-    def test_all_180_slots_and_japan_conversion(self):
+    def test_all_240_slots_and_japan_conversion(self):
         schedule = json.loads((ROOT / "03-定时任务-routines" / "schedule.json").read_text())
         ids = set()
         for day in schedule["planned_trading_dates"]:
@@ -47,11 +47,11 @@ class RuntimeTests(unittest.TestCase):
                 slot = runner.due_slot(schedule, now.astimezone(ZoneInfo("Asia/Tokyo")))
                 self.assertIsNotNone(slot)
                 ids.add(slot)
-        self.assertEqual((len(schedule["planned_trading_dates"]), len(ids)), (30, 180))
+        self.assertEqual((len(schedule["planned_trading_dates"]), len(ids)), (30, 240))
         first, last = schedule["planned_trading_dates"][0], schedule["planned_trading_dates"][-1]
         before = datetime.fromisoformat(first + "T00:00").replace(tzinfo=ZoneInfo(schedule["timezone"])) - timedelta(minutes=1)
         after = datetime.fromisoformat(last + "T23:59").replace(tzinfo=ZoneInfo(schedule["timezone"])) + timedelta(minutes=2)
-        between = datetime.fromisoformat(first + "T02:00").replace(tzinfo=ZoneInfo(schedule["timezone"]))
+        between = datetime.fromisoformat(first + "T05:00").replace(tzinfo=ZoneInfo(schedule["timezone"]))
         for moment in (before, after, between):
             self.assertIsNone(runner.due_slot(schedule, moment))
 

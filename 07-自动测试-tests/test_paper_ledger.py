@@ -62,6 +62,7 @@ class PaperLedgerTests(unittest.TestCase):
             "entry_window_open": "08:30",
             "entry_window_close": "11:30",
             "max_hold_hours": "24",
+            "day_rollover_hour": "0",
             "leverage": "5",
             "max_stop_distance_percent": "10",
         }
@@ -329,6 +330,20 @@ class PaperLedgerTests(unittest.TestCase):
         self.assertEqual(ledger.state["daily_realized_pnl_usdt"], -30)
         ledger.roll_day(self.now + timedelta(days=30))
         self.assertEqual(ledger.state["daily_realized_pnl_usdt"], -30)
+
+    def test_trading_day_rolls_over_at_the_configured_hour_not_at_midnight(self):
+        self.config["day_rollover_hour"] = "6"
+        self.state.update({"planned_trading_dates": ["2026-09-15", "2026-09-16"], "daily_realized_pnl_usdt": -80})
+        self._write_all()
+        ledger = self.make_ledger()
+        ledger.roll_day(self.now)  # 09:00 local on 09-15
+        self.assertEqual((ledger.state["ledger_date"], ledger.state["daily_realized_pnl_usdt"]), ("2026-09-15", 0))
+        ledger.state["daily_realized_pnl_usdt"] = -60
+        ledger.roll_day(datetime(2026, 9, 16, 7, 0, tzinfo=timezone.utc))  # 02:00 local on 09-16: still the 09-15 session
+        self.assertEqual((ledger.state["ledger_date"], ledger.state["daily_realized_pnl_usdt"]), ("2026-09-15", -60))
+        ledger.roll_day(datetime(2026, 9, 16, 11, 30, tzinfo=timezone.utc))  # 06:30 local: new trading day
+        self.assertEqual((ledger.state["ledger_date"], ledger.state["trading_day_index"], ledger.state["daily_realized_pnl_usdt"]),
+                         ("2026-09-16", 2, 0))
 
     def test_reconcile_restores_last_event_snapshot(self):
         self.make_ledger().open_position(self.request(), self.now)

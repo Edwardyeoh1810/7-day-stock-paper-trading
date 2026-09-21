@@ -2,7 +2,7 @@
   "experiment_name": "30-day Binance demo USDT-perpetual futures paper trading experiment",
   "timezone": "Asia/Kuala_Lumpur",
   "cycle_length_trading_days": 30,
-  "max_checks_per_trading_day": 6,
+  "max_checks_per_trading_day": 8,
   "late_start_grace_minutes": 30,
   "activation_status": "claude_local_scheduled_tasks_active_binance_demo_crypto",
   "planned_trading_dates": [
@@ -38,13 +38,13 @@
     "2026-10-20"
   ],
   "default_mode": "paper_trading_only",
-  "note": "Crypto trades around the clock: six checks a day, every four hours in Asia/Kuala_Lumpur time, on thirty consecutive calendar days, plus a daily review at 22:00 (see REVIEW-PROMPT.md). Stops and targets rest on the demo exchange between checks.",
+  "note": "Checks follow crypto activity in Asia/Kuala_Lumpur time: hourly through the US-session peak (20:00 to 23:00), then 00:00 and 02:00, plus 09:00 (Asia morning) and 16:00 (Europe open), on thirty consecutive calendar days, with a daily review at 22:00 (see REVIEW-PROMPT.md). The trading day for loss limits runs 06:00 to 06:00. Stops and targets rest on the demo exchange between checks.",
   "tasks": [
     {
       "id": "check_0000",
       "time": "00:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "Four-hourly check 00:00",
+      "label": "Session check 00:00",
       "instructions": [
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
@@ -54,10 +54,10 @@
       ]
     },
     {
-      "id": "check_0400",
-      "time": "04:00",
+      "id": "check_0200",
+      "time": "02:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "Four-hourly check 04:00",
+      "label": "Session check 02:00",
       "instructions": [
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
@@ -67,23 +67,10 @@
       ]
     },
     {
-      "id": "check_0800",
-      "time": "08:00",
+      "id": "check_0900",
+      "time": "09:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "Four-hourly check 08:00",
-      "instructions": [
-        "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
-        "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
-        "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
-        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
-        "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
-      ]
-    },
-    {
-      "id": "check_1200",
-      "time": "12:00",
-      "timezone": "Asia/Kuala_Lumpur",
-      "label": "Four-hourly check 12:00",
+      "label": "Session check 09:00",
       "instructions": [
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
@@ -96,7 +83,7 @@
       "id": "check_1600",
       "time": "16:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "Four-hourly check 16:00",
+      "label": "Session check 16:00",
       "instructions": [
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
@@ -109,7 +96,46 @@
       "id": "check_2000",
       "time": "20:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "Four-hourly check 20:00",
+      "label": "Session check 20:00",
+      "instructions": [
+        "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
+        "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
+        "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
+        "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
+      ]
+    },
+    {
+      "id": "check_2100",
+      "time": "21:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "Session check 21:00",
+      "instructions": [
+        "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
+        "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
+        "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
+        "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
+      ]
+    },
+    {
+      "id": "check_2200",
+      "time": "22:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "Session check 22:00",
+      "instructions": [
+        "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
+        "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",
+        "Manage an open position: hold, or close when the thesis is invalid; positions are closed after 24 hours.",
+        "With no position, a new long or short entry is allowed only with at least two independent evidence categories.",
+        "Record the decision, evidence, holdings, cash, risk and next focus. Demo account only."
+      ]
+    },
+    {
+      "id": "check_2300",
+      "time": "23:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "Session check 23:00",
       "instructions": [
         "Read AGENTS.md, strategy, schedule, continuity, readiness, current-state, latest journal and reviews/LESSONS.md.",
         "Let the engine reconcile any stop or target the demo exchange triggered since the last check.",

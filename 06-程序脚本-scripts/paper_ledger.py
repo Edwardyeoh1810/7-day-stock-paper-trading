@@ -7,7 +7,7 @@ import copy
 import json
 import os
 import tempfile
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation, ROUND_DOWN
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -103,9 +103,15 @@ class PaperLedger:
     def _zone(self):
         return ZoneInfo(self.config["timezone"])
 
+    def _trading_date(self, now):
+        """The trading day starts at day_rollover_hour local time, so one active session is one day
+        and the daily loss limit does not reset in the middle of it."""
+        shifted = now.astimezone(self._zone()) - timedelta(hours=int(self.config["day_rollover_hour"]))
+        return shifted.date().isoformat()
+
     def roll_day(self, now):
-        """Start a new local day: the daily loss counter resets and the experiment day index moves on."""
-        today = now.astimezone(self._zone()).date().isoformat()
+        """Start a new trading day: the daily loss counter resets and the experiment day index moves on."""
+        today = self._trading_date(now)
         dates = self.state.get("planned_trading_dates", [])
         if today not in dates or self.state.get("ledger_date") == today:
             return
@@ -125,7 +131,7 @@ class PaperLedger:
 
     def _assert_entry_window(self, now):
         local = now.astimezone(self._zone())
-        if local.date().isoformat() not in self.state.get("planned_trading_dates", []):
+        if self._trading_date(now) not in self.state.get("planned_trading_dates", []):
             raise PaperLedgerError("Not a planned trading date")
         open_hour, open_minute = map(int, self.config["entry_window_open"].split(":"))
         cut_hour, cut_minute = map(int, self.config["entry_window_close"].split(":"))
@@ -271,7 +277,7 @@ class PaperLedger:
             raise PaperLedgerError("Paper order exceeds a risk limit")
         if notional / leverage + entry_fee > cash:
             raise PaperLedgerError("Insufficient paper margin")
-        local_date = now.astimezone(self._zone()).date().isoformat()
+        local_date = self._trading_date(now)
         recent_closes = [event for event in self.ledger.get("events", [])
                          if event.get("action") == "close" and event.get("trading_date") == local_date]
         if len(recent_closes) >= 2 and all(event.get("reason") == "stop" for event in recent_closes[-2:]):
@@ -370,7 +376,7 @@ class PaperLedger:
         event = {
             "event_id": self._next_id(now) + "-MARK",
             "action": "mark",
-            "trading_date": now.astimezone(self._zone()).date().isoformat(),
+            "trading_date": self._trading_date(now),
             "timestamp": now.isoformat(),
             "symbol": symbol,
             "mark_price": str(mark),
@@ -431,7 +437,7 @@ class PaperLedger:
         event = {
             "event_id": self._next_id(now) + "-PROTECT",
             "action": "protect",
-            "trading_date": now.astimezone(self._zone()).date().isoformat(),
+            "trading_date": self._trading_date(now),
             "timestamp": now.isoformat(),
             "symbol": positions[0]["symbol"],
             "demo_exit_orders": protection,
@@ -471,7 +477,7 @@ class PaperLedger:
             "event_id": order_id + "-CLOSE",
             "order_id": order_id,
             "action": "close",
-            "trading_date": now.astimezone(self._zone()).date().isoformat(),
+            "trading_date": self._trading_date(now),
             "timestamp": now.isoformat(),
             "symbol": symbol,
             "side": position["side"],

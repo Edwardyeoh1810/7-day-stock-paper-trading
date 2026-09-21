@@ -83,7 +83,7 @@ class ProtectionFlowTests(unittest.TestCase):
                             "minimum_evidence_categories": 2, "minimum_reward_risk": "1.5",
                             "timezone": "Asia/Kuala_Lumpur", "entry_window_open": "00:00",
                             "entry_window_close": "23:59", "max_hold_hours": "24", "leverage": "5",
-                            "decision_max_age_minutes": "45",
+                            "decision_max_age_minutes": "45", "day_rollover_hour": "0",
                             "max_stop_distance_percent": "10"},
             "ledger.json": {"version": 1, "next_sequence": 1, "events": []},
         }

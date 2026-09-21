@@ -53,8 +53,8 @@
     "XRPUSDT"
   ],
   "last_run": {
-    "run_id": "2026-09-21_check_1200_paper",
-    "timestamp": "2026-09-21T11:37:20.015707+00:00",
+    "run_id": "2026-09-21_check_2000_paper",
+    "timestamp": "2026-09-21T12:23:21.178340+00:00",
     "mode": "autonomous_demo_paper",
     "demo_api_verified": true,
     "orders_placed": false,
@@ -62,7 +62,7 @@
     "paper_action": "no_trade",
     "paper_result": "no_trade"
   },
-  "next_task_focus": "Refresh market evidence and reassess the demo paper position at the next scheduled check. Live trading remains disabled.",
+  "next_task_focus": "Futures, long or short, 5x isolated, positions up to 50% of capital. Eight checks a day at 09:00, 16:00, 20:00, 21:00, 22:00, 23:00, 00:00 and 02:00 Asia/Kuala_Lumpur, 2026-09-21 to 2026-10-20, with a daily review at 22:00. Read reviews/LESSONS.md before deciding. Live trading remains disabled.",
   "human_confirmation_needed": [],
   "ledger_date": "2026-09-21"
 }

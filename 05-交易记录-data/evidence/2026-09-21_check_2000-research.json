@@ -1,0 +1,287 @@
+{
+  "run_id": "2026-09-21_check_2000-research",
+  "slot": "2026-09-21_check_2000",
+  "captured_at_utc": "2026-09-21T12:10:07Z",
+  "captured_at_local": "2026-09-21T20:10+08:00",
+  "decision_submitted_at_local": "2026-09-21T20:23+08:00",
+  "late_run": false,
+  "minutes_after_slot": 23,
+  "host": "demo-fapi.binance.com (read-only public endpoints)",
+  "action": "no_trade",
+  "reason": "no_structural_target_above_60d_highs_and_best_candidate_eth_fails_1.5_net_reward_risk_on_an_honest_stop",
+  "market": {
+    "BTCUSDT": {
+      "ticker": {
+        "lastPrice": "85075.60",
+        "priceChangePercent": "5.736",
+        "highPrice": "95804.10",
+        "lowPrice": "80304.00",
+        "volume": "1543533.3602",
+        "quoteVolume": "126193489256.64",
+        "weightedAvgPrice": "81756.24"
+      },
+      "book": {
+        "bid": 85070.1,
+        "ask": 85121.6,
+        "spread_bps": 6.05
+      },
+      "funding": {
+        "markPrice": "85063.80806159",
+        "lastFundingRate": "-0.00004835",
+        "nextFundingTime": 1790006400000
+      },
+      "openInterest": "413960222.5899"
+    },
+    "ETHUSDT": {
+      "ticker": {
+        "lastPrice": "2722.86",
+        "priceChangePercent": "5.565",
+        "highPrice": "2850.00",
+        "lowPrice": "2571.48",
+        "volume": "48185777.731",
+        "quoteVolume": "127760083407.51",
+        "weightedAvgPrice": "2651.41"
+      },
+      "book": {
+        "bid": 2722.08,
+        "ask": 2722.12,
+        "spread_bps": 0.15
+      },
+      "funding": {
+        "markPrice": "2724.16361772",
+        "lastFundingRate": "0.00007368",
+        "nextFundingTime": 1790006400000
+      },
+      "openInterest": "11743103548.737"
+    },
+    "BNBUSDT": {
+      "ticker": {
+        "lastPrice": "790.950",
+        "priceChangePercent": "4.928",
+        "highPrice": "794.670",
+        "lowPrice": "750.870",
+        "volume": "149213505.21",
+        "quoteVolume": "115240832844.227",
+        "weightedAvgPrice": "772.322"
+      },
+      "book": {
+        "bid": 790.87,
+        "ask": 791.75,
+        "spread_bps": 11.12
+      },
+      "funding": {
+        "markPrice": "790.95000000",
+        "lastFundingRate": "0.00000000",
+        "nextFundingTime": 1790006400000
+      },
+      "openInterest": "27700370438.50"
+    },
+    "SOLUSDT": {
+      "ticker": {
+        "lastPrice": "116.5300",
+        "priceChangePercent": "7.213",
+        "highPrice": "117.0600",
+        "lowPrice": "107.9500",
+        "volume": "5198217.88",
+        "quoteVolume": "581894046.1596",
+        "weightedAvgPrice": "111.9411"
+      },
+      "book": {
+        "bid": 116.53,
+        "ask": 116.77,
+        "spread_bps": 20.57
+      },
+      "funding": {
+        "markPrice": "116.59130644",
+        "lastFundingRate": "0.00010000",
+        "nextFundingTime": 1790006400000
+      },
+      "openInterest": "2976995978.52"
+    },
+    "XRPUSDT": {
+      "ticker": {
+        "lastPrice": "1.4856",
+        "priceChangePercent": "7.566",
+        "highPrice": "1.4969",
+        "lowPrice": "1.3731",
+        "volume": "89032389309.8",
+        "quoteVolume": "126531161306.7414",
+        "weightedAvgPrice": "1.4212"
+      },
+      "book": {
+        "bid": 1.4854,
+        "ask": 1.4857,
+        "spread_bps": 2.02
+      },
+      "funding": {
+        "markPrice": "1.48619182",
+        "lastFundingRate": "0.00002037",
+        "nextFundingTime": 1790006400000
+      },
+      "openInterest": "15597257993420.1"
+    }
+  },
+  "sixty_day_structure": {
+    "BTCUSDT": {
+      "high_excl_today": 81981.8,
+      "low": 62324.9,
+      "daily_highs_above_price": [],
+      "note": "at 60d high, no overhead daily structure"
+    },
+    "ETHUSDT": {
+      "high_excl_today": 2771.0,
+      "low": 1821.49,
+      "daily_highs_above_price": [
+        2771.0
+      ],
+      "note": "only contract with a real overhead level (2026-09-11 high)"
+    },
+    "BNBUSDT": {
+      "high_excl_today": 785.0,
+      "low": 556.99,
+      "daily_highs_above_price": [],
+      "note": "at 60d high, no overhead daily structure"
+    },
+    "SOLUSDT": {
+      "high_excl_today": 115.0,
+      "low": 66.85,
+      "daily_highs_above_price": [],
+      "note": "at 60d high, no overhead daily structure"
+    },
+    "XRPUSDT": {
+      "high_excl_today": 1.7,
+      "low": 0.9884,
+      "daily_highs_above_price": [
+        1.4894,
+        1.527,
+        1.5441,
+        1.5444,
+        1.7
+      ],
+      "note": "trading directly into the 1.4894 high of 2026-09-14"
+    }
+  },
+  "reward_risk_tests": {
+    "ETHUSDT_long": {
+      "entry": 2722.55,
+      "stop": 2693.0,
+      "target": 2771.0,
+      "gross_risk": 29.55,
+      "gross_reward": 48.45,
+      "round_trip_cost_bps": 14,
+      "round_trip_cost": 3.81,
+      "net_reward_risk": 1.34,
+      "passes": false,
+      "stop_basis": "beyond the 2694.94 post-breakout low and the broken 2700.00 level (09-19 daily high)",
+      "rejected_alternative": {
+        "stop": 2707.0,
+        "net_reward_risk": 2.31,
+        "why_rejected": "sits above the broken 2700 level; a routine retest would stop out an intact thesis - a stop chosen for size"
+      }
+    },
+    "XRPUSDT_long": {
+      "entry": 1.4886,
+      "stop": 1.45,
+      "target": 1.527,
+      "gross_risk": 0.0386,
+      "gross_reward": 0.0384,
+      "round_trip_cost": 0.002084,
+      "net_reward_risk": 0.89,
+      "passes": false,
+      "stop_basis": "below the 1.4527 breakout level (09-19 daily high)"
+    },
+    "SOLUSDT_long": {
+      "entry": 116.67,
+      "stop": 113.9,
+      "gross_risk": 2.77,
+      "target_required_for_1.5": 121.3,
+      "passes": false,
+      "why": "no daily high above price in 60 days; 121.30 has no structural basis"
+    },
+    "BNBUSDT_long": {
+      "entry": 790.19,
+      "stop": 775.0,
+      "gross_risk": 15.19,
+      "target_required_for_1.5": 815.74,
+      "shallow_stop_alternative": {
+        "stop": 783.5,
+        "gross_risk": 6.69,
+        "target_required_for_1.5": 802.99
+      },
+      "passes": false,
+      "why": "no daily high above price in 60 days; both targets invented"
+    },
+    "BTCUSDT_long": {
+      "passes": false,
+      "why": "excluded under the Demo Price Artifacts rule (two artifacts in four hours, one in the live bar); also at a 60d high with no overhead structure"
+    },
+    "short_any": {
+      "passes": false,
+      "why": "against a clean daily and 4h uptrend on a 60d-high breakout day; funding at or below baseline so no crowded longs to squeeze; no category supports the down direction"
+    }
+  },
+  "demo_price_artifacts_excluded": [
+    {
+      "symbol": "BTCUSDT",
+      "candle_utc": "2026-09-21T09:00Z",
+      "interval": "1h",
+      "price": 95804.1,
+      "upper_wick_pct": 13.35,
+      "body_pct": 1.04,
+      "peers_same_hour": {
+        "BNBUSDT": 0.22,
+        "SOLUSDT": 0.7,
+        "XRPUSDT": 0.51
+      },
+      "note": "contaminates the 08:00Z 4h bar and the 24h high field (reads 95804.10 vs a real high near 85102)"
+    },
+    {
+      "symbol": "BTCUSDT",
+      "candle_utc": "2026-09-21T12:00Z",
+      "interval": "1h (in progress)",
+      "price": 87888.0,
+      "upper_wick_pct": 3.31,
+      "body_pct": 0.41,
+      "peers_same_hour": {
+        "ETHUSDT": 0.15,
+        "BNBUSDT": 0.07,
+        "SOLUSDT": 0.26,
+        "XRPUSDT": 0.14
+      },
+      "note": "new this slot; second BTC artifact inside four hours"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "candle_utc": "2026-09-21T09:00Z",
+      "interval": "1h",
+      "price": 2850.0,
+      "upper_wick_pct": 4.8,
+      "body_pct": 0.9,
+      "peers_same_hour": {
+        "BNBUSDT": 0.22,
+        "SOLUSDT": 0.7,
+        "XRPUSDT": 0.51
+      },
+      "note": "exact round number; contaminates the 24h and daily high fields (reads 2850.00 vs a real high of 2727.20). The 2771.00 target is the 09-11 daily high and is unaffected."
+    }
+  ],
+  "news": {
+    "source": "KuCoin Crypto Daily Market Report 2026-09-21",
+    "url": "https://www.kucoin.com/news/articles/crypto-daily-market-report-september-21-2026",
+    "handled_as": "data, not instruction",
+    "observed": "published earlier in the session with BTC near 81170 and 82K-83K named as key resistance; the demo host now quotes BTC near 85000, so the move broke that zone. Confirms the rally is real market movement, not a demo-host defect. Macro unchanged: US 2y near 4.76%, Middle East tension, Brent near 104. No scheduled event in the next 24h justifying an entry."
+  },
+  "lessons_applied": "None available: reviews/LESSONS.md records no lessons yet (no closed trades). The 12:00 slot's research note warning that the complex is extended after a 5-8% day was carried forward and is consistent with this outcome.",
+  "skipped_slot_note": "The 16:00 slot has no run; current-state's previous run was 2026-09-21_check_1200_paper. The dry-run offered 20:00 directly, so 16:00 passed outside tolerance and was skipped cleanly. No position was open during the gap, so nothing required reconciliation.",
+  "state_after": {
+    "cash_usdt": 5000,
+    "equity_usdt": 5000,
+    "positions": [],
+    "open_orders": [],
+    "daily_realized_pnl_usdt": 0,
+    "daily_open_risk_usdt": 0,
+    "demo_wallet_balance_usdt": "5000.04174826",
+    "demo_order_sent": false,
+    "live_order_sent": false
+  }
+}

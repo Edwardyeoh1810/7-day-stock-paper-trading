@@ -1,13 +1,13 @@
 # 复盘流程与保存文案
 
-复盘是本实验改进的方式。每天 Asia/Kuala_Lumpur 时间 22:00 由独立的定时任务（`paper-trading-daily-review`）运行一次，位于 20:00 与 00:00 两次交易检查之间。复盘从不交易。英文版 [REVIEW-PROMPT.md](REVIEW-PROMPT.md) 内容相同；如有差异，以英文版为准。
+复盘是本实验改进的方式。每天 Asia/Kuala_Lumpur 时间 22:00 由独立的定时任务（`paper-trading-daily-review`）运行一次；它比 22:00 的交易检查早几分钟开始，可能与之重叠，但两者写入不同的文件夹，因此是安全的。每次复盘覆盖上一次复盘以来的全部内容。账本的交易日为 06:00 至次日 06:00。复盘从不交易。英文版 [REVIEW-PROMPT.md](REVIEW-PROMPT.md) 内容相同；如有差异，以英文版为准。
 
 ## 任务文案
 
 所有操作仅在项目目录进行。绝不运行 `paper_engine.py`、`paper_trade.py` 或任何下单、账户调用；绝不编辑脚本、测试、`readiness.json`、`paper-config.json`、`current-state.json`、账本、日程或密钥文件。复盘只在 `05-交易记录-data/reviews/` 内写入，并通过 Obsidian 连接器写入第 7 步指定的库文件夹。
 
 1. 运行 `python3 -B 06-程序脚本-scripts/review_stats.py`。它根据账本重建 `reviews/stats.json`：时点覆盖率（应运行的检查与已记录决策的检查，以及错过了哪些）、已平仓交易、胜率、平均 R（结果除以开仓时的计划亏损）、回撤、手续费、资金费，以及按合约、方向、平仓原因和证据类别的同类统计。直接使用这些数字，不要手工重算。
-2. 读取当天的 journal、decision 和 evidence 文件，`reviews/LESSONS.md`、`reviews/PROPOSALS.md` 和上一份每日复盘。
+2. 读取上一次复盘以来写入的 journal、decision 和 evidence 文件，`reviews/LESSONS.md`、`reviews/PROPOSALS.md` 和上一份每日复盘。
 3. 写入 `reviews/YYYY-MM-DD.md`（本地日期），包含以下部分：
    - **数字** — 当天和实验至今，来自 `stats.json`，必须包含时点覆盖率。
    - **决策复盘** — 当天每一次开仓、平仓和不交易：证据是否真实且相互独立，止损是否基于价格结构，交易是否遵循原逻辑，之后发生了什么。按当时可知的信息评判决策，而不是按结果。

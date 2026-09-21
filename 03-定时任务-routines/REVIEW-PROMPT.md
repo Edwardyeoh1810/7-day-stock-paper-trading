@@ -1,13 +1,13 @@
 # Review Process and Saved Prompt
 
-The review is how the experiment improves. It runs once a day at 22:00 Asia/Kuala_Lumpur as its own scheduled task (`paper-trading-daily-review`), between the 20:00 and 00:00 trading checks. It never trades.
+The review is how the experiment improves. It runs once a day at 22:00 Asia/Kuala_Lumpur as its own scheduled task (`paper-trading-daily-review`); it starts a few minutes before the 22:00 trading check and may overlap with it, which is safe because the two write to different folders. Each review covers everything since the previous review. The ledger's trading day runs 06:00 to 06:00. It never trades.
 
 ## Saved Prompt
 
 Work only in the project directory. Never run `paper_engine.py`, `paper_trade.py` or any order or account call; never edit scripts, tests, `readiness.json`, `paper-config.json`, `current-state.json`, the ledger, the schedule, or the key file. The review only writes inside `05-交易记录-data/reviews/` and, through the Obsidian connector, inside the vault folder named in step 7.
 
 1. Run `python3 -B 06-程序脚本-scripts/review_stats.py`. It rebuilds `reviews/stats.json` from the ledger: slot coverage (checks due against checks with a recorded decision, and which were missed), closed trades, win rate, average R (result divided by the loss planned at entry), drawdown, fees, funding, and the same figures by symbol, side, exit reason and evidence category. Use these numbers; do not recompute them by hand.
-2. Read today's journal, decision and evidence files, `reviews/LESSONS.md`, `reviews/PROPOSALS.md` and the previous daily review.
+2. Read the journal, decision and evidence files written since the previous review, `reviews/LESSONS.md`, `reviews/PROPOSALS.md` and the previous daily review.
 3. Write `reviews/YYYY-MM-DD.md` (local date) with these sections:
    - **Numbers** — today and experiment-to-date, from `stats.json`, always including slot coverage.
    - **Decisions reviewed** — for every entry, exit and no-trade today: was the evidence real and independent, was the stop placed on price structure, did the trade follow the thesis, and what happened next. Judge the decision by what was knowable at the time, not by the outcome.

@@ -2,7 +2,7 @@
   "experiment_name": "30 天 Binance 模拟盘 USDT 永续合约 paper trading 实验",
   "timezone": "Asia/Kuala_Lumpur",
   "cycle_length_trading_days": 30,
-  "max_checks_per_trading_day": 6,
+  "max_checks_per_trading_day": 8,
   "late_start_grace_minutes": 30,
   "activation_status": "claude_local_scheduled_tasks_active_binance_demo_crypto",
   "planned_trading_dates": [
@@ -38,13 +38,13 @@
     "2026-10-20"
   ],
   "default_mode": "paper_trading_only",
-  "note": "加密货币全天交易：每天六次检查，按 Asia/Kuala_Lumpur 时间每四小时一次，连续三十个自然日，另有每天 22:00 的复盘（见 REVIEW-PROMPT.zh-CN.md）。两次检查之间由模拟盘上的止损/止盈委托保护仓位。",
+  "note": "检查时间按加密市场活跃度安排（Asia/Kuala_Lumpur 时间）：美盘高峰期间每小时一次（20:00 至 23:00），随后 00:00 和 02:00，另有 09:00（亚洲早盘）和 16:00（欧洲开盘），连续三十个自然日，每天 22:00 复盘（见 REVIEW-PROMPT.zh-CN.md）。用于亏损限制的交易日为 06:00 至次日 06:00。两次检查之间由模拟盘上的止损/止盈委托保护仓位。",
   "tasks": [
     {
       "id": "check_0000",
       "time": "00:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "每四小时检查 00:00",
+      "label": "交易时段检查 00:00",
       "instructions": [
         "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
         "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
@@ -54,10 +54,10 @@
       ]
     },
     {
-      "id": "check_0400",
-      "time": "04:00",
+      "id": "check_0200",
+      "time": "02:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "每四小时检查 04:00",
+      "label": "交易时段检查 02:00",
       "instructions": [
         "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
         "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
@@ -67,23 +67,10 @@
       ]
     },
     {
-      "id": "check_0800",
-      "time": "08:00",
+      "id": "check_0900",
+      "time": "09:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "每四小时检查 08:00",
-      "instructions": [
-        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
-        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
-        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
-        "没有仓位时，只有至少两类独立证据支持才允许开新的多仓或空仓。",
-        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
-      ]
-    },
-    {
-      "id": "check_1200",
-      "time": "12:00",
-      "timezone": "Asia/Kuala_Lumpur",
-      "label": "每四小时检查 12:00",
+      "label": "交易时段检查 09:00",
       "instructions": [
         "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
         "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
@@ -96,7 +83,7 @@
       "id": "check_1600",
       "time": "16:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "每四小时检查 16:00",
+      "label": "交易时段检查 16:00",
       "instructions": [
         "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
         "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
@@ -109,7 +96,46 @@
       "id": "check_2000",
       "time": "20:00",
       "timezone": "Asia/Kuala_Lumpur",
-      "label": "每四小时检查 20:00",
+      "label": "交易时段检查 20:00",
+      "instructions": [
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新的多仓或空仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
+      ]
+    },
+    {
+      "id": "check_2100",
+      "time": "21:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "交易时段检查 21:00",
+      "instructions": [
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新的多仓或空仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
+      ]
+    },
+    {
+      "id": "check_2200",
+      "time": "22:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "交易时段检查 22:00",
+      "instructions": [
+        "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
+        "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
+        "管理已有仓位：继续持有，或在交易逻辑失效时平仓；持仓满 24 小时必须平仓。",
+        "没有仓位时，只有至少两类独立证据支持才允许开新的多仓或空仓。",
+        "记录决策、证据、持仓、现金、风险和下一步重点。仅限模拟盘。"
+      ]
+    },
+    {
+      "id": "check_2300",
+      "time": "23:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "label": "交易时段检查 23:00",
       "instructions": [
         "读取 AGENTS、策略、日程、连续性规则、readiness、current-state、最新 journal 和 reviews/LESSONS.md。",
         "由引擎对账上次检查以来模拟盘已触发的止损或止盈。",
