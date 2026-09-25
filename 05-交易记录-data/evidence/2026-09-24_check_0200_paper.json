@@ -1,0 +1,425 @@
+{
+  "run_id": "2026-09-24_check_0200_paper",
+  "timestamp": "2026-09-23T18:13:45.992387+00:00",
+  "mode": "binance_demo_paper",
+  "live_order_sent": false,
+  "demo_order_sent": false,
+  "decision": {
+    "paper_trading_only": true,
+    "action": "no_trade",
+    "symbol": "BNBUSDT",
+    "slot": "2026-09-24_check_0200",
+    "checked_at_local": "2026-09-24T02:14+08:00",
+    "run_on_time": true,
+    "late_run": false,
+    "thesis": "NO TRADE. THE 00:00 NOTE'S FALSIFIABLE QUESTION IS ANSWERED, AND THE ANSWER IS 'RECLAIMED, THEN LOST AGAIN' - SO THE SHORT'S PREMISE IS GONE AND THE LONG THAT REPLACES IT FAILS ON FOUR INDEPENDENT GROUNDS. The 00:00 note asked of the 16:05Z bounce: did it build a HIGHER LOW above 760.09 and RECLAIM 766.72, or fail underneath it and roll over? BOTH BRANCHES PARTLY FIRED AND THE NOTE'S INSTRUCTION FOR THE RECLAIM BRANCH IS THE ONE THAT BINDS. Trace since 16:05Z: the 760.09 low HELD; 16:20Z-17:10Z did make lower highs under the level (766.65 -> 766.03 -> 766.08 -> 766.07 -> 765.17 -> 765.94 -> 764.31 -> 763.79) with a 762.63 low at 17:05Z, which is the failure branch the note wanted; but the 17:15Z 5m bar then went 763.74 -> 766.44 as a 0.354% body on 998,020 volume, and 766.72 WAS RECLAIMED AND HELD: 17:25Z closed 766.89 above it, 17:45Z (L767.11) and 17:50Z (L767.09) traded ENTIRELY above it, and 17:50Z printed 767.92, the highest since 15:15Z. The 18:00Z bar then failed back under (L765.63, C765.98) and price is 766.00-766.66 now, PINNED ON THE LEVEL. PER THE 00:00 NOTE'S OWN INSTRUCTION - 'if instead 766.72 is reclaimed and HELD, say explicitly that the short's premise is gone' - I SAY IT EXPLICITLY: THE BNB SHORT'S PREMISE IS GONE. The lower-high sequence 769.49->769.03->768.27->766.70->764.05->762.97->761.64 that was the short's ONLY premise ended at 16:05Z, was briefly re-formed 16:20Z-17:10Z, and was then REPLACED BY A HIGHER-HIGH SEQUENCE 766.44 -> 766.92 -> 767.26 -> 767.30 -> 767.57 -> 767.92. No short is priced this check. AND 766.72 IS NOW A MAGNET, WHICH L-002 ADDRESSES DIRECTLY ('the same applies to a stop that sits just above or below a level the market keeps touching'): it has been touched or crossed at 15:20Z L766.74, 15:25Z O766.74, 15:30Z H766.69, 15:35Z H766.70, 16:20Z H766.65, 17:20Z H766.92, 17:25Z C766.89, 17:30Z O766.89, 17:55Z L766.18, 18:00Z C765.98 and the live quote - ELEVEN TOUCHES IN 165 MINUTES. Any stop anchored there is unusable in either direction. THE ONLY CANDIDATE THIS CHECK HAD WAS THEREFORE A BNBUSDT LONG, AND IT IS REFUSED FOUR TIMES OVER. (1) L-004 TARGET VALIDITY - THE PRIMARY REFUSAL, RUN BEFORE ANY RATIO. The only target that can pay 1.5 net from a noise-safe stop is 777.18 (the 12:00Z/13:00Z 1h lows, broken support turned resistance). It is reached ONLY BY JUMPING TWO LEVELS THAT BOTH REJECTED TODAY: 767.92, rejected TWENTY MINUTES BEFORE THIS CHECK, and 769.03, rejected three hours before it en route to the 760.09 low. The lesson is explicit that a target reached only by jumping intervening structure is not a target, and this is the cleanest instance yet because one of the two jumped levels rejected INSIDE THE SAME HOUR AS THE DECISION. (2) L-004 SPAN SCREEN ON THE HONEST TIGHT STOP - REFUSED BY 0.283 PERCENTAGE POINTS, a FOURTEEN-FOLD wider miss than the 0.020pp of 00:00. The structurally honest stop for a 'reclaim + higher low' long is below 762.63, the 17:05Z low from which the reclaim leg launched; use 762.40. The NEAREST structural target above is 769.03. Span = 6.63 points on a 766.51 entry = 0.865%. Required = 2.5N + 0.14% drag = 2.5 x 0.403 + 0.14 = 1.148%. THE STRUCTURE OFFERS 0.865% WHERE 1.148% IS NEEDED. Priced out, that construction pays NET 0.35. (3) L-003 REQUOTE, MATERIAL FOR A TENTH CONSECUTIVE CHECK, AND IN THE LEGITIMATE DIRECTION THIS TIME. On the FIXED honest wide construction (stop 759.90 below the 24h low, target 777.18), four quotes across 303 seconds: ask 765.98 -> 766.51 -> 766.70 -> 766.50 took NET RR 1.666 -> 1.452 -> 1.383 -> 1.455. THE FIRST QUOTE WAS THE ONLY ONE THAT CLEARED THE 1.5 FLOOR, AND IT CLEARED IT BY 0.166. HAD THIS CHECK ACTED ON ITS FIRST QUOTE IT WOULD HAVE TAKEN A TRADE THAT ITS NEXT THREE QUOTES ALL REFUSE. This is the lesson's LEGITIMATE form, the mirror of the RESCUE form recorded at 00:00: price advanced AWAY from the stop, so risk GREW 6.08 -> 6.80 points while reward shrank 11.20 -> 10.48, and chasing it would mean widening risk to hold the same target. Note that even the best of the four, 1.452, is BELOW the floor; only the pre-requote 1.666 ever passed. Clock stays at ZERO. (4) L-005 EXECUTION, REFUSING INDEPENDENTLY OF ALL GEOMETRY FOR A NINTH CONSECUTIVE CHECK. Five sweeps in 303 seconds and NOT ONE OF THE FIVE CONTRACTS HELD BOTH SIDES QUOTED ACROSS ALL FIVE. BNB IS THE BINDING ONE BECAUSE A LONG BUYS INTO THE ASK, AND BNB'S ASK PRINTED 7.67 USDT (0.01 BNB) AT SAMPLE 4 - a maximum 2,500 USDT market buy is 326x THE ENTIRE VISIBLE ASK - at a spread of 0.522 bps, and its bid (the exit side of that long) then fell to 39,979 USDT at sample 5 from 4,973,531 at sample 3, a 124x collapse. BNB had held both sides across samples 1-3 and was the only contract to do so; IT FAILED AT SAMPLE 4, so three healthy samples again meant nothing. XRPUSDT IS THE STRONGEST PERSISTENCE INSTANCE OF THE EXPERIMENT: its bid was unquoted on FOUR CONSECUTIVE SAMPLES (267.47 / 247.07 / 247.17 / 22.29 USDT) - not a collapse-and-recover but a book that never returned inside the check. BTCUSDT was gone on the ask at THREE of five (84.20 / 70,831 / 33.70 USDT) while quoting 0.012 bps at sample 4, the tightest spread of the check on an ask worth 70k and then 34 dollars, and its bid collapsed 24,070,823 -> 244,485 USDT in 78 seconds. SOLUSDT was unquoted on BOTH sides at sample 5 (bid 19.42, ask 51.42). ETHUSDT's ask printed 29.31 USDT at sample 2 AT 0.60 bps - the same pathology as 00:00 but on the opposite side, so ETH has now been caught unquoted on the bid (00:00, five of five) and on the ask (this check). L-002 IS WHY NO TIGHTER STOP RESCUES THE RATIO. N is stated three ways below; the honest figure is 0.403%, the 17:15Z reclaim bar, which IS the setup-defining bar - the honest case where the two coincide. The only stop that would lift the tight construction over the floor is 765.20, below the 17:35Z low: that is 0.171% = 0.42x N, SUB-NOISE, and it sits inside the 18:00Z bar's own range. Both ends of L-004's predicted trade-off observed again: the noise-safe stop kills the ratio, the ratio-passing stop is a position size. L-006 CONTRAST CASE - A WINDOW MOVED AND THE READING DID NOT DISSOLVE, THE FIRST SUCH INSTANCE. The 00:00 note forecast IN WRITING that both of its defining bars (15:35Z 0.415%, 16:05Z which closed at 0.541%) would age out of the preceding hour by ~17:05Z and that N would fall toward 0.20-0.27% IF NOTHING NEW PRINTED. They did age out. N MEASURED 0.403%, NOT 0.20-0.27% - because something new DID print: the 17:15Z reclaim bar, a genuine 0.403% directional move on 998,020 volume, 2.5x the ~400k average of its neighbours. THE FORECAST'S ARITHMETIC AND ITS CONDITIONAL WERE BOTH CORRECT, AND FOR THE FIRST TIME UNDER THIS LESSON A RE-MEASUREMENT SURVIVED. Whether that advances L-006's clock is THE REVIEW'S CALL, NOT THIS CHECK'S; the lesson binds in full here and every figure below is measured against the setup-containing window. L-001 SCAN AT 5m/1h/4h/DAILY ON ALL FIVE. BTCUSDT EXCLUDED AN EIGHTEENTH CONSECUTIVE CHECK and the 4h and daily contamination HAS NOT MOVED AT ALL: the 09-21 20:00Z 4h bar still reads H90,389.80 on an 86,588.90 open, a 4.390% upper wick on a 0.076% body = 58.0x, range 4.717% = 4.5x its frame median; the 09-21 daily bar still reads H95,804.10 on an 81,144.10 open, an 11.437% wick and an 18.147% range = ~12x median. SOLUSDT EXCLUDED AN EIGHTH: 106.67 is STILL THE LIVE low24h against a 114.13 last and a real session floor of 113.03, and SOL's 24h quote volume is 477,336,640 USDT against 102-137 BILLION for the other four, ~250x smaller. XRPUSDT EXCLUDED: the 09-23 04:00Z 4h bar still carries a 4.191% upper wick on a 0.124% body = 33.9x, and high24h STILL READS 1.6855 against a 1.4951 last. The 00:00 note said that print exits the 24h window at 09-24 04:00Z; CORRECTION FOR THE RECORD - 04:00Z on 09-24 is 12:00 LOCAL, which is AFTER the 09:00 local check, not between 02:00 and 09:00 as that note stated. ETHUSDT AND BNBUSDT CLEAN ON ALL FOUR FRAMES, as at 23:00 and 00:00. THE EVIDENCE GATE IS NOT PASSED THIS CHECK, WHICH BREAKS A RUN OF TWO AND IS WORTH REPORTING. For the long I can claim price_action (760.09 held, 766.72 reclaimed and held 17:25Z-17:55Z) and volume (the 17:15Z reclaim bar at 2.5x neighbouring volume, and 16:05Z at 883,150). But TREND RUNS FIRMLY AGAINST THE LONG - daily closes 799.71 -> 788.70 -> 766.29, 24h -2.861%, lower highs and lower lows on 4h since 09-21 - and market_context runs against it too, with all five contracts down 2.677% to 4.958% on the day and all five having made fresh 24h lows four hours ago. TWO CATEGORIES SUPPORT THE DIRECTION AND TWO CONTRADICT IT. The minimum is two INDEPENDENT categories supporting the SAME direction; I will not claim a gate passed on a bare count while the two strongest categories point the other way. derivatives NOT claimed: funding is clamped at +0.010000% on BTC/ETH/SOL/XRP and 0.00000000 on BNB, which the 00:00 check established is not a usable input on this host, and open interest was sampled once. news RECORDED NOT CLAIMED: the Trump-Xi summit and state dinner are TODAY, 2026-09-24, and under the 24-hour maximum hold anything opened at 02:00 would be held THROUGH the event - I would have to justify the trade THROUGH it, not around it, and on this geometry there is nothing to justify. AGAINST INTEREST, AND IT RUNS IN FAVOUR OF THE 00:00 REFUSAL: THE BNB SHORT THAT THE 00:00 CHECK DECLINED WOULD HAVE STOPPED OUT. Its stop was 766.72; the high since that decision is 767.92 (17:50Z), and 766.72 was exceeded at 17:20Z (H766.92) and four more times after. Its 757.90 target was never approached - the low since the decision is 762.63. The declined drifted construction at 764.89 carried the same 766.72 stop and stops out too. This does NOT advance L-002's re-test tally, which counts declined setups that would have WON; the tally stands at ONE OF THREE. The two 23:00 constructions are BOTH STILL LIVE: the declined short (766.74 / 780.90 / 757.90) saw a high of 767.92 and a low of 760.09, neither level; the declined long (766.85 / 758.55 / 780.90) saw the same extremes, neither level, and its stop was again missed by 0.20%. Retiring or loosening a lesson is the review's call, not this check's.",
+    "reason": "No trade. The 00:00 note asked whether the 16:05Z bounce reclaimed 766.72 or failed under it; the answer is that it reclaimed the level at 17:15Z-17:25Z, held entirely above it for two bars, printed 767.92, and then lost it again on the 18:00Z bar. Per that note's own instruction the BNB short's premise is therefore gone and no short was priced. The replacement long was refused four times over: the only target that pays 1.5 net (777.18) is reached only by jumping 767.92 and 769.03, both of which rejected today and one of them twenty minutes before the check (L-004 target validity); the honest tight-stop construction offers 0.865% of span where 1.148% is required (L-004 span screen); four quotes across 303 seconds took net RR 1.666 -> 1.452 -> 1.383 -> 1.455, so only the first quote ever cleared the floor and it cleared it by 0.166 (L-003, legitimate form, tenth consecutive material check); and BNB's ask - the side a long entry must cross - printed 7.67 USDT at sample 4, 326x smaller than a single maximum order, with not one of the five contracts holding both sides quoted across all five sweeps (L-005, ninth consecutive check). The evidence gate was NOT passed: two categories support the long and the two strongest, trend and market_context, contradict it. BTC, SOL and XRP remain excluded on artifacts that are still sitting in live 24h, 4h and daily fields. Account stays flat at 5000 USDT.",
+    "evidence": [
+      {
+        "category": "price_action",
+        "source": "demo-fapi.binance.com /fapi/v1/klines BNBUSDT 5m, 2026-09-23T18:04:50Z",
+        "observation": "766.72 was RECLAIMED AND THEN LOST inside forty minutes. 17:15Z 763.74->766.44 (0.354% body, 998,020 vol); 17:25Z C766.89, the first close above; 17:45Z (L767.11) and 17:50Z (L767.09) traded ENTIRELY above the level; 17:50Z H767.92, highest since 15:15Z; 18:00Z then L765.63 C765.98, back under. Price now pinned on the level. The 760.09 24h low HELD, with higher lows 762.63 (17:05Z) -> 765.33 (17:35Z) -> 767.09 (17:50Z). SUPPORTS THE LONG.",
+        "supports": "long"
+      },
+      {
+        "category": "volume",
+        "source": "demo-fapi.binance.com /fapi/v1/klines BNBUSDT 5m, 2026-09-23T18:04:50Z",
+        "observation": "The 17:15Z reclaim bar printed 998,020.2 against a ~400k average for its neighbours (166,189 / 196,723 / 384,280 / 647,013), i.e. ~2.5x. The 16:05Z bounce bar printed 883,150.4. Participation expanded on the reclaim. SUPPORTS THE LONG.",
+        "supports": "long"
+      },
+      {
+        "category": "trend",
+        "source": "demo-fapi.binance.com /fapi/v1/klines BNBUSDT 1h/4h/1d, 2026-09-23T18:04:50Z",
+        "observation": "CONTRADICTS THE LONG AND IS RECORDED AS SUCH. Daily closes 799.71 -> 788.70 -> 766.29 (09-23 still forming); 24h change -2.861%; the 09-23 12:00Z 4h bar is a 2.788% body straight down to 761.25; 4h has printed lower highs and lower lows since the 09-21 20:00Z bar. A long here is counter-trend on every higher frame.",
+        "supports": "short"
+      },
+      {
+        "category": "market_context",
+        "source": "demo-fapi.binance.com /fapi/v1/ticker/24hr all five, 2026-09-23T18:04:48Z",
+        "observation": "CONTRADICTS THE LONG AND IS RECORDED AS SUCH. All five contracts are down on the day - BTC -2.677%, ETH -3.219%, BNB -2.861%, SOL -3.206%, XRP -4.958% - and all five made fresh 24h lows in the 14:00Z-16:00Z window, roughly four hours before this check. Nothing in the wider tape supports buying the first bounce.",
+        "supports": "short"
+      }
+    ],
+    "evidence_gate": {
+      "passed": false,
+      "detail": "Two categories (price_action, volume) support the long; the two strongest categories (trend, market_context) contradict it. The rule requires at least two INDEPENDENT categories supporting the SAME direction. This check declines to claim the gate on a bare count while trend and market_context point the other way. This BREAKS a run of two consecutive checks in which evidence passed and geometry refused - report to the review.",
+      "derivatives_not_claimed": "Funding clamped at +0.010000% on BTCUSDT/ETHUSDT/SOLUSDT/XRPUSDT and 0.00000000 on BNBUSDT. The 00:00 check established that a prediction of a clamped value is not a prediction and that funding is not a usable derivatives input on this host. Open interest sampled once only.",
+      "news_recorded_not_claimed": "The Trump-Xi summit and state dinner are today, 2026-09-24. Under the 24-hour maximum hold anything opened at this 02:00 check would be held THROUGH the event, so it would have to be justified THROUGH it, not around it. No verifiable scheduled release ties to the 17:15Z reclaim."
+    },
+    "artifacts_excluded": [
+      {
+        "symbol": "BTCUSDT",
+        "candle": "2026-09-21T20:00Z 4h",
+        "price": 90389.8,
+        "detail": "UNCHANGED AND STILL IN THE 4h FRAME. O86,588.90 H90,389.80 L86,305.50 C86,523.40: a 4.390% upper wick on a 0.076% body = 58.0x, range 4.717% against a ~1.05% frame median = 4.5x. Both legs of the artifact test pass. This print has never left the 4h window."
+      },
+      {
+        "symbol": "BTCUSDT",
+        "candle": "2026-09-21T00:00Z 1d",
+        "price": 95804.1,
+        "detail": "UNCHANGED AND STILL IN THE DAILY FRAME. O81,144.10 H95,804.10 L81,079.00 C86,523.40: an 11.437% upper wick and an 18.147% range against a ~1.5% daily median, roughly 12x. Eighteenth consecutive check with BTCUSDT excluded."
+      },
+      {
+        "symbol": "SOLUSDT",
+        "candle": "2026-09-22T19:00Z 1h",
+        "price": 106.67,
+        "detail": "STILL THE LIVE low24h FIELD. SOL's ticker reports low24h 106.67 against a 114.13 last and a real session floor of 113.03 (09-23 14:00Z 1h low). The 24h low field is contaminated at the moment of this decision. Eighth consecutive check excluded. SOL's 24h quote volume is also 477,336,640 USDT against 102-137 billion for the other four, ~250x smaller."
+      },
+      {
+        "symbol": "XRPUSDT",
+        "candle": "2026-09-23T04:00Z 4h",
+        "price": 1.6855,
+        "detail": "STILL THE LIVE high24h FIELD. O1.6177 H1.6855 L1.6043 C1.6157: a 4.191% upper wick on a 0.124% body = 33.9x. The ticker reports high24h 1.6855 against a 1.4951 last. CORRECTION TO THE 00:00 NOTE: it stated the print exits the 24h window at 09-24 04:00Z which is 'between the 02:00 and 09:00 checks'; 04:00Z on 09-24 is 12:00 LOCAL, which is AFTER the 09:00 local check (01:00Z), not between them. The print is still in the window now."
+      }
+    ],
+    "artifacts_clean": {
+      "ETHUSDT": "Clean on 5m, 1h, 4h and daily. Highest 4h wick/body 9.2x (09-22 12:00Z) on a 1.423% range = 1.24x frame median, failing the range leg; highest 1h 23.2x (09-22 23:00Z) on a 0.664% range = ~1.1x median, failing the range leg; 5m 58.2x (16:40Z) on a 0.174% range, failing the range leg. Nothing passes both legs.",
+      "BNBUSDT": "Clean on 5m, 1h, 4h and daily. Highest daily wick/body 19.4x (09-19) but on a 2.046% range that is BELOW the ~3.1% daily median - a doji day, not an artifact. Highest 4h 9.3x (09-21 20:00Z) on a 1.152% range = ~1x median. The 09-23 14:00Z 1h bar is 2.725%, 4.5x median, but its body is 1.835% at 0.4x wick/body - a genuine directional bar. The 17:10Z 5m bar reads 9999x only because its body is zero on a 0.056% range with 3,570 volume - a dead bar, not an artifact."
+    },
+    "execution_check": {
+      "samples_utc": [
+        "2026-09-23T18:04:48Z",
+        "2026-09-23T18:06:46Z",
+        "2026-09-23T18:07:14Z",
+        "2026-09-23T18:08:33Z",
+        "2026-09-23T18:09:51Z"
+      ],
+      "span_seconds": 303,
+      "bid_notional_usdt": {
+        "BTCUSDT": [
+          45418874.38,
+          44892622.11,
+          44804354.97,
+          24070822.75,
+          244484.78
+        ],
+        "ETHUSDT": [
+          4798091.3,
+          1075374.09,
+          342354.66,
+          3211593.57,
+          98597.74
+        ],
+        "BNBUSDT": [
+          851314.38,
+          554693.05,
+          4973531.33,
+          2325946.77,
+          39979.08
+        ],
+        "SOLUSDT": [
+          2904.1,
+          255712.52,
+          26271.57,
+          2204.83,
+          19.42
+        ],
+        "XRPUSDT": [
+          4241387.84,
+          267.47,
+          247.07,
+          247.17,
+          22.29
+        ]
+      },
+      "ask_notional_usdt": {
+        "BTCUSDT": [
+          2562733.8,
+          84.2,
+          35520058.66,
+          70831.41,
+          33.7
+        ],
+        "ETHUSDT": [
+          13001462.92,
+          29.31,
+          4957169.75,
+          29959830.76,
+          1001040.14
+        ],
+        "BNBUSDT": [
+          1499536.07,
+          28311491.43,
+          9000084.48,
+          7.67,
+          1199503.52
+        ],
+        "SOLUSDT": [
+          17.14,
+          11.41,
+          116027.66,
+          115040.4,
+          51.42
+        ],
+        "XRPUSDT": [
+          1398557.49,
+          1386095.11,
+          1386085.24,
+          22355882.45,
+          1489597.19
+        ]
+      },
+      "spread_bps": {
+        "BTCUSDT": [
+          0.059,
+          1.853,
+          5.047,
+          0.012,
+          0.047
+        ],
+        "ETHUSDT": [
+          4.621,
+          0.6,
+          0.188,
+          0.263,
+          1.125
+        ],
+        "BNBUSDT": [
+          0.131,
+          0.13,
+          0.261,
+          0.522,
+          0.391
+        ],
+        "SOLUSDT": [
+          12.261,
+          1.753,
+          3.504,
+          1.751,
+          2.626
+        ],
+        "XRPUSDT": [
+          11.368,
+          2.674,
+          4.679,
+          1.337,
+          16.032
+        ]
+      },
+      "max_order_notional_usdt": 2500,
+      "verdict": "NOT ONE OF THE FIVE CONTRACTS HELD BOTH SIDES QUOTED ACROSS ALL FIVE SAMPLES. Ninth consecutive check. BNBUSDT is the BINDING one because a long BUYS INTO THE ASK: its ask printed 7.67 USDT (0.01 BNB) at sample 4, so a maximum 2,500 USDT market buy is 326x the entire visible ask, and it printed that at 0.522 bps. BNB had held both sides across samples 1-3 and was the ONLY contract to do so - three healthy samples again meant nothing, which is the lesson's core claim. Its bid then fell 4,973,531 -> 39,979 USDT, 124x, between samples 3 and 5. XRPUSDT is the strongest PERSISTENCE instance of the experiment: bid unquoted on FOUR CONSECUTIVE samples (267.47 / 247.07 / 247.17 / 22.29 USDT), a book that never returned inside the check rather than a collapse-and-recover. BTCUSDT was gone on the ask at THREE of five (84.20 / 70,831 / 33.70 USDT) while quoting 0.012 bps at sample 4 - the tightest spread of the check on a 70k then 34 dollar ask - and its bid collapsed 24,070,823 -> 244,485 USDT in 78 seconds. SOLUSDT was unquoted on BOTH sides at sample 5 (bid 19.42, ask 51.42). ETHUSDT's ask printed 29.31 USDT at 0.60 bps at sample 2, the same pathology as the 00:00 check but on the OPPOSITE side - ETH has now been caught unquoted on the bid (00:00, five of five) and on the ask (this check). No contract breached the 25 bps cap this check; the cap is again blind to all of it."
+    },
+    "noise_floor": {
+      "contract": "BNBUSDT",
+      "window": "FULL preceding hour, 17:05Z-18:05Z, twelve closed 5m bars",
+      "bar_ranges_pct": [
+        0.234,
+        0.056,
+        0.403,
+        0.064,
+        0.085,
+        0.163,
+        0.106,
+        0.244,
+        0.06,
+        0.108,
+        0.129,
+        0.207
+      ],
+      "N_full_preceding_hour_pct": 0.403,
+      "N_setup_defining_bar_pct": 0.403,
+      "N_excluding_setup_bar_pct": 0.244,
+      "N_wider_window_incl_1605Z_bounce_pct": 0.541,
+      "note": "THE HONEST CASE WHERE THE TWO COINCIDE. The largest bar of the full preceding hour IS the setup-defining bar - the 17:15Z reclaim bar, 763.74 -> 766.44 on 998,020 volume. L-002 warns that the setup bar is usually the largest in the window and that a shorter measurement flatters exactly the setups most likely to be taken; here no flattery is possible because the two measurements are the same number. Everything in this decision is priced against 0.403%, not the 0.244% that excluding the setup bar would give."
+    },
+    "l006_window_check": {
+      "forecast_made_at": "2026-09-24_check_0000",
+      "forecast": "Both defining bars (15:35Z breakdown 0.415%, 16:05Z bounce, which closed at 0.541%) age out of the preceding hour by ~17:05Z; IF NOTHING NEW PRINTS, N falls toward 0.20-0.27% and the same 766.72 stop looks like 2.5x N on unchanged structure.",
+      "measured": "Both bars did age out. N measured 0.403%, NOT 0.20-0.27%.",
+      "verdict": "THE FIRST NON-DISSOLVING INSTANCE EXAMINED UNDER L-006. The forecast's arithmetic was right and its CONDITIONAL was correctly stated: something new did print - the 17:15Z reclaim bar, a genuine 0.403% directional move on 998,020 volume, ~2.5x its neighbours. The window moved AND real structure replaced what left, so the re-measurement SURVIVED. Recorded as a factual contrast case only. WHETHER THIS ADVANCES L-006'S RE-TEST CLOCK IS THE REVIEW'S CALL, NOT THIS CHECK'S; the lesson binds in full here and every window-derived figure in this decision was re-measured against the setup-containing window."
+    },
+    "rejected_candidates": [
+      {
+        "symbol": "BNBUSDT",
+        "direction": "short",
+        "status": "NOT PRICED - PREMISE GONE",
+        "detail": "Per the 00:00 note's explicit instruction, stated explicitly: the BNB short's premise is gone. The lower-high sequence 769.49->769.03->768.27->766.70->764.05->762.97->761.64 ended at 16:05Z, briefly re-formed 16:20Z-17:10Z (766.65 -> 763.79 with a 762.63 low), and was then REPLACED BY A HIGHER-HIGH SEQUENCE 766.44 -> 766.92 -> 767.26 -> 767.30 -> 767.57 -> 767.92. 766.72 was reclaimed at 17:25Z and two bars traded entirely above it. Separately, 766.72 has been touched or crossed ELEVEN TIMES IN 165 MINUTES and is a magnet, so no stop can be anchored there in either direction (L-002)."
+      },
+      {
+        "symbol": "BNBUSDT",
+        "direction": "long",
+        "construction": "honest tight stop",
+        "entry_quote": 766.51,
+        "stop_considered": 762.4,
+        "target_considered": 769.03,
+        "stop_vs_noise": "1.33x N (0.536% against N 0.403%) - noise-safe",
+        "span_available_pct": 0.865,
+        "span_required_pct": 1.148,
+        "net_rr": 0.35,
+        "refused_by": "L-004 span screen. Stop 762.40 is below the 17:05Z low from which the reclaim leg launched, i.e. where the thesis is simply wrong. Nearest structural target 769.03. Span 6.63 points = 0.865% where 2.5N + 0.14% = 1.148% is required. REFUSED BY 0.283 PERCENTAGE POINTS, a fourteen-fold wider miss than the 0.020pp of the 00:00 check."
+      },
+      {
+        "symbol": "BNBUSDT",
+        "direction": "long",
+        "construction": "honest wide stop below the 24h low",
+        "entry_quotes": [
+          765.98,
+          766.51,
+          766.7,
+          766.5
+        ],
+        "entry_quote_times_utc": [
+          "18:04:48Z",
+          "18:07:14Z",
+          "18:08:33Z",
+          "18:09:51Z"
+        ],
+        "stop_considered": 759.9,
+        "target_considered": 777.18,
+        "stop_vs_noise": "2.14x N (0.862% against N 0.403%) - comfortably noise-safe",
+        "span_available_pct": 2.255,
+        "span_required_pct": 1.148,
+        "net_rr_sequence": [
+          1.666,
+          1.452,
+          1.383,
+          1.455
+        ],
+        "refused_by": "TWO INDEPENDENT GROUNDS. (a) L-004 TARGET VALIDITY: 777.18 (the 12:00Z/13:00Z 1h lows, broken support turned resistance) is reached ONLY BY JUMPING 767.92, which rejected TWENTY MINUTES BEFORE THIS CHECK, and 769.03, which rejected three hours before it en route to the 760.09 low. A target reached only by jumping intervening structure is not a target, and one of the jumped levels rejected inside the same hour as the decision. (b) L-003 REQUOTE: net RR 1.666 -> 1.452 -> 1.383 -> 1.455 across 303 seconds on a FIXED stop and target. ONLY THE FIRST QUOTE EVER CLEARED THE 1.5 FLOOR, by 0.166; the three that followed all failed it. This is the LEGITIMATE form - price advanced AWAY from the stop, so risk GREW 6.08 -> 6.80 points while reward shrank 11.20 -> 10.48 - and chasing it would mean widening risk to hold the same target, which is equally a refusal."
+      },
+      {
+        "symbol": "BNBUSDT",
+        "direction": "long",
+        "construction": "ratio-rescuing tight stop",
+        "entry_quote": 766.51,
+        "stop_considered": 765.2,
+        "stop_vs_noise": "0.42x N (0.171% against N 0.403%) - SUB-NOISE",
+        "refused_by": "L-002 outright. The only stop that would lift the tight construction over the floor is below the 17:35Z low at 765.20; that is a position size, not a stop, and it sits INSIDE the 18:00Z bar's own range (L765.63). Both ends of L-004's predicted trade-off observed again in one check: the noise-safe stop kills the ratio, the ratio-passing stop is sub-noise."
+      },
+      {
+        "symbol": "ETHUSDT",
+        "direction": "either",
+        "refused_by": "L-005. ETH is one of the two readable contracts on artifacts but its ask printed 29.31 USDT at 0.60 bps at sample 2 and its bid fell to 98,598 USDT at sample 5. Having been caught unquoted on the bid at 00:00 (five of five samples) and now on the ask, ETH is out on execution regardless of geometry, as the 00:00 note instructed."
+      },
+      {
+        "symbol": "BTCUSDT",
+        "direction": "either",
+        "refused_by": "L-001 - artifacts unchanged in the 4h and daily frames, eighteenth consecutive check. Also L-005: ask gone at three of five samples."
+      },
+      {
+        "symbol": "SOLUSDT",
+        "direction": "either",
+        "refused_by": "L-001 - 106.67 is still the live low24h field, eighth consecutive check. Also L-005: both sides unquoted at sample 5."
+      },
+      {
+        "symbol": "XRPUSDT",
+        "direction": "either",
+        "refused_by": "L-001 - 1.6855 is still the live high24h field. Also L-005: bid unquoted on four consecutive samples, the strongest persistence instance of the experiment."
+      }
+    ],
+    "structure_map_bnbusdt": {
+      "above": {
+        "767.92": "17:00Z hour high, made 17:50Z, ALREADY REJECTED twenty minutes before this check",
+        "769.03": "15:00Z hour high, ALREADY REJECTED - price fell from it to 760.09",
+        "777.18/777.24": "12:00Z and 13:00Z 1h lows, broken support turned resistance - the nearest UNTESTED level above",
+        "781.56": "13:00Z close / 14:00Z open",
+        "783.46": "12:00Z 1h high"
+      },
+      "below": {
+        "765.63": "18:00Z low",
+        "762.63": "17:00Z 1h low, origin of the reclaim leg",
+        "760.09": "24h low, 09-23 daily low, made 16:00Z",
+        "757.90": "09-19 daily low",
+        "747.64": "09-20 daily low"
+      }
+    },
+    "funding": {
+      "next_funding_utc": "2026-09-24T00:00Z",
+      "next_funding_local": "2026-09-24T08:00+08:00",
+      "no_check_sits_on_this_settlement": true,
+      "rates_pct": {
+        "BTCUSDT": 0.01,
+        "ETHUSDT": 0.01,
+        "BNBUSDT": 0.0,
+        "SOLUSDT": 0.01,
+        "XRPUSDT": 0.01
+      },
+      "note": "Four of five clamped at +0.010000% and BNB at exactly 0.00000000. The 00:00 check ran the forecast-vs-outcome test and established that funding is NOT a usable derivatives input on this host while four of five are pinned, and that the test need not be repeated. It is not repeated here and derivatives is not claimed."
+    },
+    "open_interest_single_sample": {
+      "_ts": "2026-09-23T18:04:48Z",
+      "BTCUSDT": 417151436.5166,
+      "ETHUSDT": 11845627060.888,
+      "BNBUSDT": 28003818664.92,
+      "SOLUSDT": 2985224987.67,
+      "XRPUSDT": 15796911994816.0
+    },
+    "against_interest": {
+      "summary": "THE 00:00 CHECK'S DECLINED SHORT WOULD HAVE STOPPED OUT, WHICH RUNS IN FAVOUR OF ITS REFUSAL.",
+      "detail": "The 00:00 check declined a BNBUSDT short with stop 766.72 and target 757.90, at entries 761.52 and (drifted) 764.89. Since that decision the high is 767.92 (17:50Z) and 766.72 was exceeded at 17:20Z (H766.92) and four more times after; the low is 762.63, so 757.90 was never approached. BOTH the original and the drifted construction stop out. L-002'S RE-TEST TALLY IS NOT ADVANCED - it counts declined setups that would have WON, and stands at ONE OF THREE.",
+      "still_live": [
+        {
+          "from": "2026-09-23_check_2300",
+          "direction": "short",
+          "entry": 766.74,
+          "stop": 780.9,
+          "target": 757.9,
+          "high_since": 767.92,
+          "low_since": 760.09,
+          "resolution": "NEITHER - still live, ~0.10% in profit at 766.00"
+        },
+        {
+          "from": "2026-09-23_check_2300",
+          "direction": "long",
+          "entry": 766.85,
+          "stop": 758.55,
+          "target": 780.9,
+          "high_since": 767.92,
+          "low_since": 760.09,
+          "resolution": "NEITHER - still live; stop missed by 0.20% again, ~0.11% underwater at 766.00"
+        }
+      ]
+    },
+    "lessons_applied": [
+      "L-001 - applied, scan run at 5m, 1h, 4h AND daily on all five contracts. BTCUSDT excluded an EIGHTEENTH consecutive check with the 09-21 4h (90,389.80, 58.0x wick/body on a 4.5x-median range) and daily (95,804.10, 11.437% wick on an 18.147% range) contamination UNCHANGED - it has never left either frame. SOLUSDT excluded an EIGHTH: 106.67 is still the LIVE low24h against a 114.13 last and a 113.03 real floor. XRPUSDT excluded: high24h still reads 1.6855 against a 1.4951 last, and the 09-23 04:00Z 4h bar still carries a 33.9x wick/body; a correction to the 00:00 note's exit-time arithmetic is recorded. ETHUSDT and BNBUSDT clean on all four frames.",
+      "L-002 - applied and DECISIVE FOR A NINTH CONSECUTIVE CHECK. N stated four ways with the honest figure 0.403%, which IS the setup-defining bar (the 17:15Z reclaim) - the honest case where the full-hour and setup-bar measurements coincide, so no flattery is arithmetically possible. The only stop that would rescue the tight long construction, 765.20, is 0.42x N and sits inside the 18:00Z bar's own range: refused. Separately the lesson's magnet clause bit hard - 766.72 has been touched or crossed ELEVEN TIMES IN 165 MINUTES, so no stop can be anchored there in either direction. Re-test tally NOT advanced, still one of three.",
+      "L-003 - applied, MATERIAL FOR A TENTH CONSECUTIVE CHECK, this time in the LEGITIMATE direction. Four quotes across 303 seconds took net RR 1.666 -> 1.452 -> 1.383 -> 1.455 on a fixed stop and target. ONLY THE FIRST QUOTE CLEARED THE 1.5 FLOOR, by 0.166; had this check acted on it, it would have taken a trade its next three quotes all refuse. Price advanced AWAY from the stop so risk GREW 6.08 -> 6.80 points while reward shrank - chasing it means widening risk to hold the target, which is equally a refusal. Clock stays at ZERO.",
+      "L-004 - applied FIRST, before any ratio, and is THE PRIMARY REFUSAL in both of its forms. Target validity: the only 1.5-paying target, 777.18, is reached only by jumping 767.92 (rejected TWENTY MINUTES before the check) and 769.03 (rejected three hours before) - the cleanest instance yet, because a jumped level rejected inside the decision's own hour. Span screen: the honest tight construction offers 0.865% where 1.148% is required, refused by 0.283pp, a fourteen-fold wider miss than 00:00's 0.020pp. Both ends of the lesson's predicted trade-off observed again on one contract.",
+      "L-005 - applied with FIVE sweeps across 303 seconds, refusing every candidate independently of all geometry for a NINTH consecutive check. Not one of the five contracts held both sides quoted across all five. BNB is binding because a long buys into the ask and BNB's ask printed 7.67 USDT - 326x smaller than a single maximum order - after holding both sides across samples 1-3, so three healthy samples again meant nothing. XRP's bid was unquoted on FOUR CONSECUTIVE samples, the strongest persistence instance of the experiment. ETH has now been caught unquoted on both sides on consecutive checks.",
+      "L-006 - applied to every window-derived figure. The 00:00 note's written forecast that N would collapse to 0.20-0.27% once its two defining bars aged out was tested: the bars DID age out and N measured 0.403%, because the 17:15Z reclaim bar genuinely replaced them. THE FIRST NON-DISSOLVING RE-MEASUREMENT EXAMINED UNDER THIS LESSON. It is recorded as a factual contrast case ONLY; whether it advances the clock is the review's call, not this check's, and the lesson bound in full here."
+    ],
+    "no_lesson_loosened": "No lesson was loosened, reinterpreted, retired or overridden, and no rule or risk limit was relaxed. Two re-test-adjacent conditions were touched - L-006's first surviving re-measurement and the resolution of the 00:00 declined short - and BOTH were recorded as facts for the review rather than acted on. Nothing under 05-交易记录-data/reviews/ was read for modification or modified.",
+    "timing": {
+      "slot_scheduled_local": "2026-09-24T02:00+08:00",
+      "run_started_local": "2026-09-24T02:03:47+08:00",
+      "observation_utc": "2026-09-23T18:03:55Z",
+      "first_sweep_utc": "2026-09-23T18:04:48Z",
+      "last_sweep_utc": "2026-09-23T18:09:51Z",
+      "decision_local": "2026-09-24T02:14+08:00",
+      "minutes_after_slot": 14,
+      "late_run": false,
+      "note": "On time. Twelfth consecutive on-time check since the 09:00 stall on 2026-09-22."
+    },
+    "next_task_focus_short": "For 09:00 (01:00Z): re-run the 766.72 question from whatever structure exists then - the level has been touched eleven times in 165 minutes and is a magnet, so the honest read is chop, not a reclaim or a failure. BNB and ETH remain the only two readable contracts; BTC, SOL and XRP stay excluded. XRP's 1.6855 leaves the 24h window at 09-24 04:00Z = 12:00 LOCAL, AFTER the 09:00 check, so high24h will still read 1.6855 at 09:00 - and when it does stop reading it, that is the window moving, not XRP becoming readable (L-006). Funding settles 00:00Z = 08:00 local, an hour before the 09:00 check, and no check sits on it; the forecast test is answered and must not be repeated. The Trump-Xi summit and state dinner are today - anything opened must be justified THROUGH the event under the 24-hour hold, not around it. Sample the book FIVE times minimum and read quantity before spread: BNB's ask printed 7.67 USDT this check at 0.522 bps."
+  },
+  "result": {
+    "status": "no_trade",
+    "event": null,
+    "snapshot": {
+      "rules": {
+        "symbol": "BNBUSDT",
+        "tradability": "BUY_SELL",
+        "stepSize": "0.01",
+        "minQty": "0.01",
+        "maxQty": "100000",
+        "minNotional": "5",
+        "maxNotional": null,
+        "tickSize": "0.010"
+      },
+      "quote": {
+        "symbol": "BNBUSDT",
+        "bid": "766.040",
+        "ask": "766.190",
+        "bid_size": "18426.29",
+        "ask_size": "68437.50",
+        "received_at": "2026-09-23T18:13:50.831157+00:00"
+      }
+    }
+  },
+  "state": {
+    "cash_usdt": 5000,
+    "equity_usdt": 5000,
+    "positions": [],
+    "daily_open_risk_usdt": 0
+  }
+}

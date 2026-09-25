@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-09-24T01:04:07.787997+00:00",
+  "environment": "demo",
+  "scope": "demo_futures",
+  "symbol": "BTCUSDT",
+  "credentials_present": true,
+  "public_api_reachable": true,
+  "signed_account_read_verified": true,
+  "rules_read_verified": true,
+  "quote_read_verified": true,
+  "orders_read_verified": true,
+  "demo_market_access_verified": true,
+  "orders_allowed": false,
+  "errors": [],
+  "wallet_balance_usdt": "5000.04174826",
+  "quote": {
+    "symbol": "BTCUSDT",
+    "bidPrice": "84300.10",
+    "askPrice": "84330.80"
+  },
+  "quote_received_at": "2026-09-24T01:04:10.204230+00:00"
+}

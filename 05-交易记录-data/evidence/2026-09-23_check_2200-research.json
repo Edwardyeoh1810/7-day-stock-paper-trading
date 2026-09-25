@@ -1,0 +1,386 @@
+{
+  "run_id": "2026-09-23_check_2200-research",
+  "slot": "2026-09-23_check_2200",
+  "samples": [
+    {
+      "sweep_at": "2026-09-23T14:04:59Z",
+      "label": "sample1",
+      "contracts": {
+        "BTCUSDT": {
+          "bid": "85732.00",
+          "ask": "85745.40",
+          "spread_bps": 1.563,
+          "bid_notional_usdt": 128.6,
+          "ask_notional_usdt": 2463791.2,
+          "change_24h_pct": "-0.520",
+          "high_24h": "87235.50",
+          "low_24h": "85298.40",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "416839606.9797"
+        },
+        "ETHUSDT": {
+          "bid": "2714.29",
+          "ask": "2715.12",
+          "spread_bps": 3.057,
+          "bid_notional_usdt": 22601.9,
+          "ask_notional_usdt": 995189.2,
+          "change_24h_pct": "-1.405",
+          "high_24h": "2786.81",
+          "low_24h": "2708.27",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "11836338955.850"
+        },
+        "BNBUSDT": {
+          "bid": "780.900",
+          "ask": "781.580",
+          "spread_bps": 8.704,
+          "bid_notional_usdt": 8606494.1,
+          "ask_notional_usdt": 4994179.0,
+          "change_24h_pct": "-1.191",
+          "high_24h": "798.300",
+          "low_24h": "777.180",
+          "funding_rate": "0.00000000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "27976083273.32"
+        },
+        "SOLUSDT": {
+          "bid": "116.4300",
+          "ask": "116.5500",
+          "spread_bps": 10.301,
+          "bid_notional_usdt": 182786.9,
+          "ask_notional_usdt": 142242.3,
+          "change_24h_pct": "-0.893",
+          "high_24h": "119.6600",
+          "low_24h": "106.6700",
+          "funding_rate": "0.00005157",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "2983850545.59"
+        },
+        "XRPUSDT": {
+          "bid": "1.5776",
+          "ask": "1.5778",
+          "spread_bps": 1.268,
+          "bid_notional_usdt": 2086432.5,
+          "ask_notional_usdt": 22.7,
+          "change_24h_pct": "-0.139",
+          "high_24h": "1.6855",
+          "low_24h": "1.5393",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "15781008026452.2"
+        }
+      }
+    },
+    {
+      "sweep_at": "2026-09-23T14:07:03Z",
+      "label": "sample2",
+      "contracts": {
+        "BTCUSDT": {
+          "bid": "85672.00",
+          "ask": "85673.00",
+          "spread_bps": 0.117,
+          "bid_notional_usdt": 11592501.1,
+          "ask_notional_usdt": 599.7,
+          "change_24h_pct": "-0.478",
+          "high_24h": "87235.50",
+          "low_24h": "85298.40",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "416841371.9834"
+        },
+        "ETHUSDT": {
+          "bid": "2711.67",
+          "ask": "2712.16",
+          "spread_bps": 1.807,
+          "bid_notional_usdt": 301418.4,
+          "ask_notional_usdt": 80027.7,
+          "change_24h_pct": "-1.399",
+          "high_24h": "2786.81",
+          "low_24h": "2708.27",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "11836503734.769"
+        },
+        "BNBUSDT": {
+          "bid": "780.750",
+          "ask": "780.900",
+          "spread_bps": 1.921,
+          "bid_notional_usdt": 1147.7,
+          "ask_notional_usdt": 3039692.3,
+          "change_24h_pct": "-1.155",
+          "high_24h": "798.300",
+          "low_24h": "777.180",
+          "funding_rate": "0.00000000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "27976250878.21"
+        },
+        "SOLUSDT": {
+          "bid": "116.3600",
+          "ask": "116.3700",
+          "spread_bps": 0.859,
+          "bid_notional_usdt": 242517.5,
+          "ask_notional_usdt": 21423.7,
+          "change_24h_pct": "-0.920",
+          "high_24h": "119.6600",
+          "low_24h": "106.6700",
+          "funding_rate": "0.00004913",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "2983869019.74"
+        },
+        "XRPUSDT": {
+          "bid": "1.5750",
+          "ask": "1.5763",
+          "spread_bps": 8.251,
+          "bid_notional_usdt": 4016063.7,
+          "ask_notional_usdt": 8203258.6,
+          "change_24h_pct": "0.121",
+          "high_24h": "1.6855",
+          "low_24h": "1.5393",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "15781123990302.8"
+        }
+      }
+    },
+    {
+      "sweep_at": "2026-09-23T14:07:49Z",
+      "label": "sample3",
+      "contracts": {
+        "BTCUSDT": {
+          "bid": "85594.00",
+          "ask": "85696.90",
+          "spread_bps": 12.015,
+          "bid_notional_usdt": 94.2,
+          "ask_notional_usdt": 94.3,
+          "change_24h_pct": "-0.627",
+          "high_24h": "87235.50",
+          "low_24h": "85298.40",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "416841880.7462"
+        },
+        "ETHUSDT": {
+          "bid": "2710.32",
+          "ask": "2710.58",
+          "spread_bps": 0.959,
+          "bid_notional_usdt": 2773321.4,
+          "ask_notional_usdt": 907228.4,
+          "change_24h_pct": "-1.462",
+          "high_24h": "2786.81",
+          "low_24h": "2708.27",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "11836610699.734"
+        },
+        "BNBUSDT": {
+          "bid": "780.390",
+          "ask": "780.760",
+          "spread_bps": 4.74,
+          "bid_notional_usdt": 2782511.8,
+          "ask_notional_usdt": 1553.7,
+          "change_24h_pct": "-1.175",
+          "high_24h": "798.300",
+          "low_24h": "777.180",
+          "funding_rate": "0.00000000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "27976298283.64"
+        },
+        "SOLUSDT": {
+          "bid": "116.2800",
+          "ask": "116.2900",
+          "spread_bps": 0.86,
+          "bid_notional_usdt": 37374.7,
+          "ask_notional_usdt": 19925.1,
+          "change_24h_pct": "-0.979",
+          "high_24h": "119.6600",
+          "low_24h": "106.6700",
+          "funding_rate": "0.00004984",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "2983880405.64"
+        },
+        "XRPUSDT": {
+          "bid": "1.5735",
+          "ask": "1.5763",
+          "spread_bps": 17.779,
+          "bid_notional_usdt": 55.4,
+          "ask_notional_usdt": 8203258.6,
+          "change_24h_pct": "-0.127",
+          "high_24h": "1.6855",
+          "low_24h": "1.5393",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "15781125263250.6"
+        }
+      }
+    },
+    {
+      "sweep_at": "2026-09-23T14:11:52Z",
+      "label": "post_engine",
+      "contracts": {
+        "BTCUSDT": {
+          "bid": "85247.60",
+          "ask": "85430.70",
+          "spread_bps": 21.456,
+          "bid_notional_usdt": 4460486.9,
+          "ask_notional_usdt": 39563.0,
+          "change_24h_pct": "-1.050",
+          "high_24h": "87235.50",
+          "low_24h": "85249.50",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "416865767.6318"
+        },
+        "ETHUSDT": {
+          "bid": "2682.01",
+          "ask": "2709.53",
+          "spread_bps": 102.086,
+          "bid_notional_usdt": 749010.3,
+          "ask_notional_usdt": 271.0,
+          "change_24h_pct": "-1.442",
+          "high_24h": "2786.81",
+          "low_24h": "2677.56",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "11836934251.003"
+        },
+        "BNBUSDT": {
+          "bid": "776.050",
+          "ask": "776.560",
+          "spread_bps": 6.57,
+          "bid_notional_usdt": 4530432.5,
+          "ask_notional_usdt": 1320.2,
+          "change_24h_pct": "-1.799",
+          "high_24h": "798.300",
+          "low_24h": "776.050",
+          "funding_rate": "0.00000000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "27976961241.63"
+        },
+        "SOLUSDT": {
+          "bid": "114.5300",
+          "ask": "114.5700",
+          "spread_bps": 3.492,
+          "bid_notional_usdt": 964736.6,
+          "ask_notional_usdt": 88401.1,
+          "change_24h_pct": "-2.378",
+          "high_24h": "119.6600",
+          "low_24h": "106.6700",
+          "funding_rate": "0.00006204",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "2984104988.18"
+        },
+        "XRPUSDT": {
+          "bid": "1.5648",
+          "ask": "1.5763",
+          "spread_bps": 73.223,
+          "bid_notional_usdt": 4069684.6,
+          "ask_notional_usdt": 7923430.4,
+          "change_24h_pct": "-0.280",
+          "high_24h": "1.6855",
+          "low_24h": "1.5393",
+          "funding_rate": "0.00010000",
+          "next_funding_utc": "2026-09-23T16:00:00Z",
+          "open_interest": "15781362497310.3"
+        }
+      }
+    }
+  ],
+  "engine_quote": {
+    "sweep_at": "2026-09-23T14:11:36Z",
+    "symbol": "BNBUSDT",
+    "bid": "776.080",
+    "ask": "776.560",
+    "bid_size": "5763.75",
+    "ask_size": "1.94",
+    "note": "Fourth book sample. Revealed the breakdown that three sweeps inside 170 seconds had missed."
+  },
+  "noise_floor_pct": {
+    "BNBUSDT": {
+      "twelve_closed_5m_bars_1305Z_1400Z": 0.224,
+      "window_including_1200Z_setup_bar": 0.795,
+      "forecast_by_2100_note": 0.222
+    },
+    "XRPUSDT": {
+      "twelve_closed_5m_bars": 0.54
+    },
+    "ETHUSDT": {
+      "twelve_closed_5m_bars": 0.4
+    }
+  },
+  "relative_performance_pct": {
+    "window_4h": {
+      "BTCUSDT": -0.116,
+      "ETHUSDT": -0.821,
+      "BNBUSDT": -0.545,
+      "SOLUSDT": -0.842,
+      "XRPUSDT": -0.948
+    },
+    "window_8h": {
+      "BTCUSDT": -0.821,
+      "ETHUSDT": -1.406,
+      "BNBUSDT": -1.377,
+      "SOLUSDT": -1.977,
+      "XRPUSDT": -3.0
+    },
+    "window_12h": {
+      "BTCUSDT": -0.857,
+      "ETHUSDT": -1.695,
+      "BNBUSDT": -1.519,
+      "SOLUSDT": -1.579,
+      "XRPUSDT": -1.307
+    },
+    "window_24h": {
+      "BTCUSDT": -0.52,
+      "ETHUSDT": -1.405,
+      "BNBUSDT": -1.191,
+      "SOLUSDT": -0.893,
+      "XRPUSDT": -0.139
+    }
+  },
+  "artifacts_excluded": [
+    {
+      "symbol": "XRPUSDT",
+      "candle": "2026-09-23T04:00Z 4h",
+      "price": 1.6855,
+      "upper_wick_pct": 4.191,
+      "body_pct": 0.124,
+      "propagates_to": [
+        "09-23 daily bar 7.030% wick on 0.197% body",
+        "24h ticker high"
+      ],
+      "note": "NEW - first artifact ever found on XRPUSDT. No comparable spike on the other four at that timestamp."
+    },
+    {
+      "symbol": "SOLUSDT",
+      "candle": "2026-09-22T19:00Z 1h",
+      "price": 106.67,
+      "lower_wick_pct": 9.654,
+      "body_pct": 0.017,
+      "note": "Persists a fifth consecutive check; still contaminates the 24h low."
+    },
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21T08:00Z and 12:00Z 4h",
+      "price": 95804.1,
+      "note": "Still contaminates 4h/daily frames. NO NEW BTC ARTIFACT printed in the 30h 1h window or the 2.5h 5m window - cleanest BTC scan of the experiment."
+    }
+  ],
+  "against_interest": {
+    "note": "The market broke down four minutes after the decision. A BNB short at 780.39 would be ~+0.56%; an ETH short at 2710.32 traded through 2687.56, the target whose 1.474 net RR failed the floor.",
+    "at_1411_52Z": {
+      "BNBUSDT_bid": "776.050",
+      "ETHUSDT_bid": "2682.01",
+      "ETHUSDT_low_24h": "2677.56",
+      "XRPUSDT_bid": "1.5648"
+    },
+    "countervailing": "The same move blew spreads far past the 25 bps hard cap - ETH 102.086 bps, XRP 73.223 bps - and BNB ask notional to 1,320 USDT. Neither declined setup is a completed L-002 re-test tally; the tallying belongs to the review."
+  },
+  "decision": "no_trade",
+  "lessons_applied": [
+    "L-001",
+    "L-002",
+    "L-003"
+  ]
+}

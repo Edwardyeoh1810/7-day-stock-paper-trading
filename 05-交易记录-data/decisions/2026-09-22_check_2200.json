@@ -1,0 +1,98 @@
+{
+  "paper_trading_only": true,
+  "action": "no_trade",
+  "symbol": "XRPUSDT",
+  "slot": "2026-09-22_check_2200",
+  "checked_at_local": "2026-09-22T22:10+08:00",
+  "thesis": "NO ENTRY. The account is flat, so no manage or close applies, and this run is ON TIME (slot 22:00 MYT, decision written 22:10 MYT / 14:10Z, ten minutes after the slot and well inside the 45-minute window), so the late-run rule does not decide this check on its own for the first time since the stall. The question was decided on the evidence, and it was decided inside the check itself by the market. THE CANDIDATE: XRPUSDT presented the best-looking setup the experiment has seen. It broke a genuine 30-DAY HIGH - the maximum daily high over the preceding 30 sessions excluding today is 1.5701 (09-21), and the 13:55Z 5m bar printed 1.5875/1.5876 on a +1.516% thrust closing at its high. The higher-timeframe trend agreed: the daily sequence runs 09-18 +7.781%, 09-19 +1.010%, 09-20 -0.035%, 09-21 +8.994%, 09-22 +2.825%, and the 4h chart shows a clean ascending low sequence 1.3871, 1.3938, 1.4042, 1.4143, 1.4383, 1.4765, 1.4814, 1.5041, 1.4939, 1.5142, 1.5306 with the 09-22 00:00 pullback bar (-1.367%) completed and the 08:00 and 12:00 bars resuming at +1.265% and +2.778%. Relative strength was extreme (+6.197% over 24h against BTC +0.888%, ETH +0.883%, BNB -0.621%, SOL -0.499%). Funding was the only negative rate in the complex at -0.019946% against the 0.0100% baseline on BTC/ETH/SOL and 0.0000% on BNB, with the perp mark 1.58037 sitting ABOVE the 1.57965 mid - a perp discount during a rally, so a long would have RECEIVED funding at the 16:00Z settlement. The spread was 3.17 bps against the 25 bps cap, and the artifact scan found XRPUSDT completely clean at both 5m and 1h. Crucially, a 30-day high means CLEAN AIR ABOVE: for the first time in this experiment a passing target would not have had to jump two or three intervening levels, which is the objection that killed the 00:00, 02:00 and 09:00 constructions. THE ARITHMETIC NEVERTHELESS REPRODUCED THE DISTANCE PROBLEM EXACTLY. Re-implementing the engine's own formula (5 bps fee and 2 bps slippage per side, entry = ask * 1.0002 = 1.580216 from the 14:05Z ask of 1.5799): a stop at 1.5690, just below the broken 1.5701 high, is 0.710% away and clears the floor at a target of only 1.6039 (+1.499%, the measured move off the 1.5489/1.4939 base) for a net 1.661. But 0.710% is LESS THAN HALF the 1.534% range of the single 5m bar that made the breakout and roughly half a typical recent hourly range (12:00 0.928%, 11:00 1.456%, 10:00 1.313%, 08:00 2.291%) - that is trap (a) from the 02:00 note, a stop that is a size rather than a stop. The honest structural stop is 1.5470, below the double-touched 1.5476 low of the 13:35 and 13:45 bars and beyond the level that defines the setup, at 2.102% risk or 1.37x the largest 5m bar - and it pays only 0.509 to 1.6039, 1.079 to 1.6200, and needs roughly 1.636 (+3.53%) to reach 1.5, clearing properly only at the 1.6463 larger measured move (+4.182%, net 1.828). So once again the only construction that passed on a modest target did so on a noise-width stop, and the only noise-safe stop demanded a multi-percent reach. THE MARKET THEN SETTLED IT WITHIN THE CHECK, AND IT SETTLED IT AGAINST THE LONG. Between the first quote at 14:05Z and the confirming sweep at 14:09Z - four minutes - XRPUSDT fell from 1.5794/1.5799 to 1.5715/1.5716, and the 14:05Z 5m bar printed O1.5799 H1.5799 L1.5699 C1.5715 on 552,264,819 of volume. Price traded to 1.5699, BACK BELOW the 1.5701 level it had just broken, fifteen minutes after breaking it. The 1.5690 stop that made the tight construction 'pass' would have come within 0.0009 of being taken out inside the same check that proposed it - trap (a) demonstrated in real time rather than argued. This is precisely the case the strategy's session-timing rule names: a breakout that has not held is not evidence yet, and at 22:00-22:10 MYT we are thirty to forty minutes past the 21:30 US open, inside the erratic window that rule describes. VOLUME NEVER CONFIRMED THE BREAKOUT AT ANY POINT, and this is the reason the setup was thin even before it failed. On the hourly timeframe the breakout hour (13:00Z, +2.971%) traded 3.908B USDT against 4.030B in the flat 11:00 hour and 4.026B in the 08:00 hour - XRPUSDT's hourly volume sits in a 3.5-4.0B band every single hour regardless of price action, so it carries no directional information at all. On 5m the breakout bar's 625,770,303 was only the SECOND heaviest of the last thirty bars; the heaviest, 707,658,833 at 13:25Z, was a DOWN bar, and the failure bar at 14:05Z traded 552,264,819, nearly matching the breakout itself. The volume category therefore could not be claimed for the long and is recorded here as evidence AGAINST it. WHAT REMAINED WAS NOT INDEPENDENT ENOUGH. Stripping price_action (an unconfirmed and now failed breakout) and volume (absent, then adverse) leaves trend, market_context and derivatives. Trend and market_context here are largely the SAME observation drawn over the same candles - XRP has risen a lot recently, more than the others - and the strategy is explicit that a moving average and a trend line over the same candles are one observation, not two. Derivatives remains degraded to funding alone because /futures/data/openInterestHist still returns the bare string 'ok' with no history, and the -0.019946% reading is small in absolute terms. The strategy's instruction is that when in doubt, no_trade is a valid and common outcome, and the doubt here was resolved against the trade by the tape. WHAT WOULD MAKE THIS TRADEABLE, for the 23:00 check: a HOLD and retest above 1.5701 that forms a pullback low ABOVE that level would place a structural stop just beneath the retest low - both noise-safe and close - which is the first construction that would actually SOLVE the distance problem rather than work around it. That is worth waiting one hour for. BTCUSDT is excluded for a seventh consecutive check on artifacts. LESSONS APPLIED: none exist - 05-交易记录-data/reviews/LESSONS.md was read and is still empty because the experiment has no closed trades, so no lesson made this decision more selective. Nothing under reviews/ was read for modification or modified; the 22:00 review task owns that folder and may be running concurrently.",
+  "reason": "xrp_breakout_above_the_30day_high_1.5701_failed_inside_the_check_price_traded_back_to_1.5699_within_fifteen_minutes_on_552m_of_volume_and_hourly_volume_never_expanded_on_the_breakout_so_price_action_and_volume_both_argue_against_the_long_while_the_only_rr_passing_construction_with_a_noise_safe_1.5470_stop_needed_a_4.18pct_measured_move_target",
+  "evidence": [
+    {
+      "category": "price_action",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 5m and 1h XRPUSDT, pulled 14:05Z and confirmed 14:09Z",
+      "observed": "XRPUSDT broke the 30-day high 1.5701 on the 13:55Z 5m bar (O1.5638 H1.5875 L1.5635 C1.5875, +1.516%, closing at its high) after the 13:45Z bar ran 1.5523 to 1.5638. The breakout then FAILED inside this check: the 14:00Z bar printed H1.5876 L1.5794 C1.5799 and the 14:05Z bar printed O1.5799 H1.5799 L1.5699 C1.5715, trading back BELOW the 1.5701 level fifteen minutes after breaking it. Argues AGAINST the long, and voids the unconfirmed breakout as tradeable evidence under the strategy's rule that a breakout which has not held is not evidence yet."
+    },
+    {
+      "category": "volume",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 1h and 5m XRPUSDT, 48 bars each",
+      "observed": "No confirmation at any point. Hourly: the +2.971% breakout hour 13:00Z traded 3,908,273,922 against 4,029,644,508 in the flat 11:00Z hour and 4,025,945,039 at 08:00Z; XRPUSDT hourly volume sits in a 3.5-4.0B band every hour regardless of price, carrying no directional information. 5m: the breakout bar's 625,770,303 was only the second heaviest of the last thirty; the heaviest was 707,658,833 at 13:25Z on a DOWN bar, and the 14:05Z failure bar traded 552,264,819. Argues AGAINST the long."
+    },
+    {
+      "category": "trend",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 1d (30 bars) and 4h (30 bars) XRPUSDT",
+      "observed": "Supports the long side but was insufficient alone. Daily 09-18 +7.781%, 09-19 +1.010%, 09-20 -0.035%, 09-21 +8.994%, 09-22 +2.825%; the maximum daily high over the 30 preceding sessions excluding today is 1.5701, so 1.5876 is a genuine 30-day high with no overhead resistance in the window. 4h ascending lows 1.3871, 1.3938, 1.4042, 1.4143, 1.4383, 1.4765, 1.4814, 1.5041, 1.4939, 1.5142, 1.5306 with the 09-22 00:00 pullback (-1.367%) completed and 08:00 (+1.265%) and 12:00 (+2.778%) resuming."
+    },
+    {
+      "category": "market_context",
+      "source": "demo-fapi.binance.com /fapi/v1/ticker/24hr, all five watchlist contracts at 14:05Z",
+      "observed": "XRPUSDT +6.197% over 24h against BTCUSDT +0.888%, ETHUSDT +0.883%, BNBUSDT -0.621% and SOLUSDT -0.499% - a 6.8-point divergence from the weakest contract. Extreme relative strength, but the strategy treats these five as five ways to express one view, and an idiosyncratic single-name divergence of this size is as consistent with mean reversion against the complex as with leadership. Counted as closely related to the trend observation rather than fully independent of it, since both are drawn over the same candles."
+    },
+    {
+      "category": "derivatives",
+      "source": "demo-fapi.binance.com /fapi/v1/premiumIndex and /futures/data/openInterestHist, all five at 14:05Z",
+      "observed": "XRPUSDT lastFundingRate -0.00019946, the only negative rate in the complex against the 0.0100% baseline on BTC/ETH/SOL and 0.0000% on BNB; next funding 2026-09-22T16:00:00Z, so a long would have received. Mark 1.58037172 sits above the 1.57965 mid, confirming a perp discount during the rally. Supportive of the long but small in magnitude, and the category remains DEGRADED: /futures/data/openInterestHist still returns the bare string 'ok' with no history, so the change in open interest - the informative part - is unavailable, leaving funding alone."
+    },
+    {
+      "category": "news",
+      "source": "No verifiable scheduled macro, regulatory or exchange announcement identified for this slot",
+      "observed": "No new scheduled event was identified for the 22:00 MYT slot. The 09:00 check's standing market_context note that the 21 September advance was characterised in press coverage as a short squeeze is not re-argued here and was not used as evidence for this decision. Recorded as absent so the review statistics stay comparable."
+    }
+  ],
+  "demo_price_artifacts_excluded": [
+    "BTCUSDT 2026-09-21 09:00Z 1h high 95804.10, upper wick 13.347% on a 1.042% body - excluded, and it still contaminates the 24h high field which reads 95804.10 against a real session range topping near 86251.",
+    "BTCUSDT 2026-09-21 14:00Z 1h high 95804.10, upper wick 11.747% on a 0.429% body - excluded.",
+    "BTCUSDT 2026-09-21 12:00Z 1h high 87888.00, upper wick 2.991% on a 0.726% body - excluded.",
+    "BTCUSDT 2026-09-21 19:00Z 1h high 91000.00, upper wick 5.148% on a 0.669% body - excluded.",
+    "BTCUSDT 2026-09-21 20:00Z 1h high 90389.80, upper wick 3.985% on a 0.404% body - excluded.",
+    "ETHUSDT 2026-09-21 09:00Z 1h high 2850.00, upper wick 4.797% on a 0.896% body - NEWLY IDENTIFIED this check, and it shares the 09:00Z hour with the BTCUSDT 95804.10 artifact, so the two are the same demo event. Excluded from ETHUSDT resistance; it now sits outside the 24h window, which reads 2804.59.",
+    "5m artifact scan over the last 48 bars on all five contracts returned NOTHING - a third consecutive fully clean 5m scan. The 1h scan found no artifact on XRPUSDT, SOLUSDT or BNBUSDT, so XRPUSDT structure is clean at both resolutions and its levels are trustworthy."
+  ],
+  "considered_and_rejected": [
+    "XRPUSDT long, stop 1.5690 below the broken 1.5701 high, target 1.6039 (the measured move off the 1.5489/1.4939 base) - net reward/risk 1.661, which PASSES the 1.5 floor. REJECTED as trap (a): the 0.710% stop is less than half the 1.534% range of the single 5m bar that made the breakout and about half a typical recent hourly range. The market then proved the objection inside this check by trading to 1.5699 at 14:05Z, within 0.0009 of that stop.",
+    "XRPUSDT long, stop 1.5470 below the double-touched 1.5476 low of the 13:35 and 13:45 bars, 2.102% risk or 1.37x the largest 5m bar - the honest noise-safe structural stop. Pays only 0.509 to 1.6039 and 1.079 to 1.6200, needs about 1.636 (+3.53%) to reach 1.5, and clears properly only at 1.6463 (+4.182%) for 1.828. REJECTED: a 4.18% measured-move projection into blank air, entered mid-fade fifteen minutes after a vertical thrust with no volume confirmation, is a reach, not a plan - and the premise failed before it could be submitted.",
+    "XRPUSDT long, stop 1.5625 below the 1.5635 launch shelf, 1.121% risk - pays 1.111 to 1.6039 and 1.422 to 1.6100, FAILING the floor at every structurally anchored target. Rejected on arithmetic.",
+    "XRPUSDT long, stop 1.5300 below the 09-22 12:00 4h bar low 1.5306, 3.178% risk - pays 0.919 at 1.6300 and 1.232 even at 1.6463. Fails outright.",
+    "XRPUSDT short on the failed breakout. REJECTED: the failure is minutes old and less confirmed than the breakout it invalidates, the daily and 4h trend is emphatically up (+8.994% and +2.825% on the last two sessions), funding is negative so a short would PAY, and selling the first red bar after a 30-day-high break is exactly the react-to-a-red-candle entry the strategy forbids. The strategy requires the same bar for a short as for a long.",
+    "SOLUSDT, either direction. Structure is mixed with no clean setup: it fell from 119.86 on 09-21 21:00Z to a 115.55 low at 05:00Z and has recovered to 117.58 with overlapping ranges and no decisive level. The 118.91 reference the 02:00 note confirmed was retired when price rallied through it. No second independent category available.",
+    "BNBUSDT, either direction. Weakest contract at -0.621% over 24h, grinding within 783.77-807.74 with no structure worth a stop. Rejected for the same both-directions-pass geometry problem the 09:00 note documented.",
+    "ETHUSDT, either direction. +0.883% over 24h and range-bound between 2716.01 and 2761.62 since 04:00Z, with no directional evidence in two independent categories.",
+    "BTCUSDT - EXCLUDED for a seventh consecutive check. Five contaminated 1h bars in the last 48 (95804.10 twice, 87888.00, 91000.00, 90389.80) leave its resistance structure and its 24h high field unreadable. NOTE: the spread breach recorded at the 09:00 check (32.59 bps) did NOT recur - BTCUSDT quoted 12.82 bps at 14:04Z and 0.13 bps at 14:09Z, so that reading was demo book instability rather than a persistent condition, and the standing exclusion rests on artifacts alone."
+  ],
+  "spread_check_bps": {
+    "note": "All five contracts were inside the 25 bps cap at both sweeps. No contract was excluded on spread this check.",
+    "at_1405Z": {
+      "XRPUSDT": 3.17,
+      "SOLUSDT": 4.25,
+      "BTCUSDT": 2.23,
+      "ETHUSDT": 0.04,
+      "BNBUSDT": 0.51
+    },
+    "at_1409Z": {
+      "XRPUSDT": 0.64,
+      "SOLUSDT": 0.85,
+      "BTCUSDT": 0.13,
+      "ETHUSDT": 0.04,
+      "BNBUSDT": 1.52
+    }
+  },
+  "funding_check": {
+    "next_funding_time_utc": "2026-09-22T16:00:00Z",
+    "XRPUSDT": "-0.00019946 - the only negative rate in the complex; a long would have received, a short would have paid. Perp discount confirmed by mark 1.58037172 above the 1.57965 mid.",
+    "BTCUSDT": "0.00010000",
+    "ETHUSDT": "0.00010000",
+    "SOLUSDT": "0.00010000",
+    "BNBUSDT": "0.00000000",
+    "open_interest_limitation": "/fapi/v1/openInterest returns a point-in-time value but /futures/data/openInterestHist still returns the bare string 'ok' with no history, so the CHANGE in open interest remains unavailable and the derivatives category stays reduced to funding alone."
+  },
+  "timing_check": {
+    "slot_scheduled_local": "2026-09-22T22:00+08:00",
+    "observation_ran_utc": "2026-09-22T14:04:29Z",
+    "research_pulled_utc": "2026-09-22T14:05:02Z",
+    "confirming_sweep_utc": "2026-09-22T14:09:20Z",
+    "decision_written_utc": "2026-09-22T14:10Z",
+    "minutes_after_slot": 10,
+    "late_run": false,
+    "note": "ON TIME, ten minutes after the slot and well inside the 45-minute entry window. An entry was permitted by the clock and was refused on the evidence. This is the first check since the 09:00 stall where the late-run rule was not the governing constraint."
+  },
+  "lessons_applied": "None. 05-交易记录-data/reviews/LESSONS.md was read at the start of this run and is still empty - the experiment has no closed trades, so no lesson exists to make this decision more selective. Nothing under reviews/ was modified; the 22:00 review task owns that folder and may be running concurrently. The continuity findings carried forward from the 00:00, 02:00 and 09:00 research notes are NOT lessons in the formal sense and were applied only as prior reasoning: trap (a) that a stop resting just under a repeatedly-touched level is a size rather than a stop, which decided this check and was then confirmed by the tape; trap (b) that a reward/risk ratio improving because price moved toward the stop is not an improving trade; and the standing distance finding that the 1.5 net floor and the structural-stop requirement are jointly selecting against setups on this watchlist at these volatilities."
+}

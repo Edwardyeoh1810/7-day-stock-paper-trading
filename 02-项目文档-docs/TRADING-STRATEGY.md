@@ -53,9 +53,10 @@ Two items of the same category count as one category. Evidence must be independe
 
 The demo exchange is a simulation and sometimes prints prices the real market never traded, for example a single candle with a wick of many percent that none of the other four contracts shows. This is a defect of the demo environment, not market structure, and this rule should not be carried into any live use.
 
-- Before using a high or low as a level, compare the same candle across the watchlist. An isolated extreme that the other contracts do not show, or a wick several times the size of the candle's body and of neighbouring candles, is an artifact: exclude it from support, resistance, range and 24 hour high/low figures, and never anchor a stop or target to it.
+- A print is an artifact when both tests fire: its wick is several times its own body and the neighbouring candles, and the same candle on the other watchlist contracts shows nothing comparable. Scan the 1h and 4h frames; the 5m frame is too noisy to judge and the daily frame is dominated by any 4h print inside it.
+- An artifact excludes **that price** as a level: never anchor a stop or target to it, and exclude it from support, resistance, range and 24 hour high/low figures. It never excludes the contract, and a print older than 24 hours excludes nothing but itself.
+- Skip a contract only when an artifact printed within the last 24 hours, because its recent structure cannot be read yet. After 24 hours the contract is tradable again on levels that do not touch the print.
 - Record every artifact you exclude in the evidence file, with the contract, candle time and price.
-- If recent artifacts make a contract's structure unreadable, record `no_trade` for that contract.
 - An artifact can still trigger a resting stop or target, because the exchange acts on its own prices. Nothing in the rules can prevent that; the daily review identifies such exits and reports results with and without them.
 
 ## Entry Conditions
@@ -65,8 +66,9 @@ An entry may be considered only when all of these hold:
 - `04-运行状态-state/readiness.json` allows paper trading and does not allow live trading, and the demo account was verified in this run.
 - No position is open, and the contract is on the watchlist.
 - At least two independent evidence categories support the same direction. For a short the bar is the same as for a long: shorting is not a reaction to a red candle.
-- The stop is placed where the thesis is wrong, on price structure (beyond the level that defines the setup), and is within 10% of the entry. Do not choose a stop to fit a desired position size.
-- The target is a level the market can plausibly reach within the 24 hour holding limit, and the net reward/risk after fees is at least 1.5.
+- Stops and targets are drawn from **4h structure** (the swing high or low, range edge or breakout level that defines the setup); the 5m and 1h frames are for timing the entry only, never for placing the stop. The stop sits where the thesis is wrong, beyond that structure and outside recent bar noise, within 10% of the entry. Do not choose a stop to fit a desired position size.
+- The target is the nearest 4h structural level in the trade's direction that pays a net reward/risk of at least 1.5 after fees. **When no structural level exists within reach** (a fresh 60 day high or low, or the next level so far away that reaching it inside 24 hours is implausible), use a **measured target**: 1.5 to 2 times the stop distance from the entry. A measured target is allowed only when the stop itself is on structure and outside noise, so the ratio cannot be manufactured by shrinking the stop. Say in the thesis which kind of target was used.
+- A short reaching down to a level that has already held several times is not a measured target; it is a structural target that does not pay, and the trade is declined.
 - The spread is normal and the move is not so fast that a controlled stop cannot be defined.
 - Funding has been checked: note the current rate and the next funding time, and whether the position would pay or receive.
 - The reasons not to take the trade have been considered and recorded.

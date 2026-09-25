@@ -1,0 +1,397 @@
+{
+ "run_id": "2026-09-25_check_1600-research",
+ "slot": "2026-09-25_check_1600",
+ "slot_scheduled_local": "2026-09-25T16:00:00+08:00",
+ "run_started_local": "2026-09-25T16:03:29+08:00",
+ "late_run": false,
+ "decision": "no_trade",
+ "account": {
+  "positions": [],
+  "open_orders": [],
+  "cash_usdt": 5000,
+  "equity_usdt": 5000
+ },
+ "data_source": "demo-fapi.binance.com public read-only endpoints (klines 5m/1h/4h/1d, ticker/24hr, premiumIndex, openInterest, bookTicker)",
+ "read_at": "2026-09-25T08:04:10Z",
+ "ticker_24h": {
+  "BTCUSDT": {
+   "lastPrice": "84047.80",
+   "priceChangePercent": "-0.536",
+   "highPrice": "84821.70",
+   "lowPrice": "82980.20",
+   "quoteVolume": "121195131879.25"
+  },
+  "ETHUSDT": {
+   "lastPrice": "2674.58",
+   "priceChangePercent": "-0.632",
+   "highPrice": "2699.53",
+   "lowPrice": "2633.31",
+   "quoteVolume": "111049393281.67"
+  },
+  "BNBUSDT": {
+   "lastPrice": "774.670",
+   "priceChangePercent": "-0.198",
+   "highPrice": "786.180",
+   "lowPrice": "765.270",
+   "quoteVolume": "90514818144.245"
+  },
+  "SOLUSDT": {
+   "lastPrice": "116.5000",
+   "priceChangePercent": "0.857",
+   "highPrice": "118.3600",
+   "lowPrice": "112.6000",
+   "quoteVolume": "446874444.8814"
+  },
+  "XRPUSDT": {
+   "lastPrice": "1.5358",
+   "priceChangePercent": "2.019",
+   "highPrice": "1.5554",
+   "lowPrice": "1.4543",
+   "quoteVolume": "132344028833.6164"
+  }
+ },
+ "derivatives": {
+  "BTCUSDT": {
+   "funding": {
+    "lastFundingRate": "0.00010000",
+    "nextFundingTime": 1790352000000,
+    "mark": "84047.80000000"
+   },
+   "open_interest": "419314300.2259"
+  },
+  "ETHUSDT": {
+   "funding": {
+    "lastFundingRate": "0.00010000",
+    "nextFundingTime": 1790352000000,
+    "mark": "2674.58000000"
+   },
+   "open_interest": "11908218690.364"
+  },
+  "BNBUSDT": {
+   "funding": {
+    "lastFundingRate": "0.00004879",
+    "nextFundingTime": 1790352000000,
+    "mark": "774.52897244"
+   },
+   "open_interest": "28191234267.90"
+  },
+  "SOLUSDT": {
+   "funding": {
+    "lastFundingRate": "0.00010000",
+    "nextFundingTime": 1790352000000,
+    "mark": "116.51000000"
+   },
+   "open_interest": "2990157733.04"
+  },
+  "XRPUSDT": {
+   "funding": {
+    "lastFundingRate": "0.00010000",
+    "nextFundingTime": 1790352000000,
+    "mark": "1.53700333"
+   },
+   "open_interest": "15934166597447.8"
+  }
+ },
+ "artifact_scan_L001": {
+  "screen": "range >= 3x frame median AND wick/body >= 4x, 100x5m / 30x1h / 30x4h / 30x1d",
+  "results": {
+   "BTCUSDT": {
+    "5m": {
+     "median_range_pct": 0.0779,
+     "flags": []
+    },
+    "1h": {
+     "median_range_pct": 0.3642,
+     "flags": []
+    },
+    "4h": {
+     "median_range_pct": 0.8644,
+     "flags": [
+      {
+       "t": "09-21 12:00Z",
+       "o": 84738.4,
+       "h": 95804.1,
+       "l": 84738.3,
+       "c": 85882.0,
+       "rm": 15.11,
+       "wb": 8.7
+      },
+      {
+       "t": "09-21 16:00Z",
+       "o": 85882.0,
+       "h": 91000.0,
+       "l": 85688.0,
+       "c": 86573.2,
+       "rm": 7.16,
+       "wb": 6.4
+      },
+      {
+       "t": "09-21 20:00Z",
+       "o": 86588.9,
+       "h": 90389.8,
+       "l": 86305.5,
+       "c": 86523.4,
+       "rm": 5.46,
+       "wb": 58.0
+      }
+     ]
+    },
+    "1d": {
+     "median_range_pct": 2.2741,
+     "flags": []
+    }
+   },
+   "ETHUSDT": {
+    "5m": {
+     "median_range_pct": 0.1014,
+     "flags": []
+    },
+    "1h": {
+     "median_range_pct": 0.5244,
+     "flags": []
+    },
+    "4h": {
+     "median_range_pct": 1.2519,
+     "flags": []
+    },
+    "1d": {
+     "median_range_pct": 3.0708,
+     "flags": []
+    }
+   },
+   "BNBUSDT": {
+    "5m": {
+     "median_range_pct": 0.0838,
+     "flags": []
+    },
+    "1h": {
+     "median_range_pct": 0.4344,
+     "flags": []
+    },
+    "4h": {
+     "median_range_pct": 1.2417,
+     "flags": []
+    },
+    "1d": {
+     "median_range_pct": 2.8128,
+     "flags": []
+    }
+   },
+   "SOLUSDT": {
+    "5m": {
+     "median_range_pct": 0.1841,
+     "flags": []
+    },
+    "1h": {
+     "median_range_pct": 0.6937,
+     "flags": []
+    },
+    "4h": {
+     "median_range_pct": 1.5545,
+     "flags": [
+      {
+       "t": "09-22 16:00Z",
+       "o": 117.31,
+       "h": 118.59,
+       "l": 106.67,
+       "c": 118.07,
+       "rm": 6.54,
+       "wb": 14.0
+      }
+     ]
+    },
+    "1d": {
+     "median_range_pct": 4.3315,
+     "flags": []
+    }
+   },
+   "XRPUSDT": {
+    "5m": {
+     "median_range_pct": 0.2276,
+     "flags": []
+    },
+    "1h": {
+     "median_range_pct": 1.024,
+     "flags": []
+    },
+    "4h": {
+     "median_range_pct": 2.2049,
+     "flags": []
+    },
+    "1d": {
+     "median_range_pct": 4.7269,
+     "flags": []
+    }
+   }
+  },
+  "note": "Reproduced: BTC 09-21 12:00Z/16:00Z/20:00Z 4h (95804.10/91000.00/90389.80), SOL 09-22 16:00Z 4h L106.67. Not reproduced by this coarser AND-screen: ETH 2850.00 (flags on range alone per L-001), XRP 1.6855, BNB 780.90/786.18. Standing L-001 exclusion of all five binds regardless; only the review may change it."
+ },
+ "closed_4h_reads_ETH": {
+  "09-25 00:00Z": [
+   2686.35,
+   2699.53,
+   2673.88,
+   2677.28
+  ],
+  "09-25 04:00Z": [
+   2677.28,
+   2683.74,
+   2667.22,
+   2671.19
+  ],
+  "finding": "Failed poke above 2699.39 (to 2699.53) and a close below 2676.02: higher-low sequence broken, trend removed."
+ },
+ "book_sweeps_L005": [
+  {
+   "t": "08:04:23Z",
+   "BTCUSDT": {
+    "bid_usdt": 25446861.15,
+    "ask_usdt": 1878056.5,
+    "spread_bps": 4.427
+   },
+   "ETHUSDT": {
+    "bid_usdt": 528850.15,
+    "ask_usdt": 9548870.76,
+    "spread_bps": 1.533
+   },
+   "BNBUSDT": {
+    "bid_usdt": 11233475.11,
+    "ask_usdt": 10508638.7,
+    "spread_bps": 0.516
+   },
+   "SOLUSDT": {
+    "bid_usdt": 28829.23,
+    "ask_usdt": 207136.44,
+    "spread_bps": 0.858
+   },
+   "XRPUSDT": {
+    "bid_usdt": 4612500.0,
+    "ask_usdt": 17148196.86,
+    "spread_bps": 0.65
+   }
+  },
+  {
+   "t": "08:05:25Z",
+   "BTCUSDT": {
+    "bid_usdt": 25404788.64,
+    "ask_usdt": 1188528.34,
+    "spread_bps": 4.427
+   },
+   "ETHUSDT": {
+    "bid_usdt": 37.45,
+    "ask_usdt": 5.35,
+    "spread_bps": 1.121
+   },
+   "BNBUSDT": {
+    "bid_usdt": 11233180.75,
+    "ask_usdt": 10505385.08,
+    "spread_bps": 0.516
+   },
+   "SOLUSDT": {
+    "bid_usdt": 52017.05,
+    "ask_usdt": 228543.3,
+    "spread_bps": 1.716
+   },
+   "XRPUSDT": {
+    "bid_usdt": 1925123.74,
+    "ask_usdt": 3548302.01,
+    "spread_bps": 0.652
+   }
+  },
+  {
+   "t": "08:06:27Z",
+   "BTCUSDT": {
+    "bid_usdt": 25393531.22,
+    "ask_usdt": 1095075.6,
+    "spread_bps": 4.427
+   },
+   "ETHUSDT": {
+    "bid_usdt": 5037958.79,
+    "ask_usdt": 5068055.8,
+    "spread_bps": 5.121
+   },
+   "BNBUSDT": {
+    "bid_usdt": 11232104.01,
+    "ask_usdt": 10501341.31,
+    "spread_bps": 0.516
+   },
+   "SOLUSDT": {
+    "bid_usdt": 87411.51,
+    "ask_usdt": 223762.07,
+    "spread_bps": 7.726
+   },
+   "XRPUSDT": {
+    "bid_usdt": 34294961.54,
+    "ask_usdt": 564396.39,
+    "spread_bps": 0.652
+   }
+  },
+  {
+   "t": "08:07:16Z",
+   "source": "paper_engine snapshot",
+   "ETHUSDT": {
+    "bid_usdt": 40.12,
+    "ask_usdt": 21.4
+   }
+  }
+ ],
+ "noise_floor_L002_L007": {
+  "BTCUSDT": {
+   "N_1h_pct": 0.2574,
+   "N_5h_pct": 0.2574
+  },
+  "ETHUSDT": {
+   "N_1h_pct": 0.3054,
+   "N_5h_pct": 0.3054
+  },
+  "BNBUSDT": {
+   "N_1h_pct": 0.2826,
+   "N_5h_pct": 0.3501
+  },
+  "SOLUSDT": {
+   "N_1h_pct": 0.5247,
+   "N_5h_pct": 0.5247
+  },
+  "XRPUSDT": {
+   "N_1h_pct": 0.5921,
+   "N_5h_pct": 0.6086
+  }
+ },
+ "span_screen_L004": "not run - zero evidence categories, no setup to define a stop or target",
+ "volume_remeasurement_L006": {
+  "BTCUSDT": 1.61,
+  "ETHUSDT": 1.11,
+  "BNBUSDT": 1.63,
+  "SOLUSDT": 2.21,
+  "XRPUSDT": 1.1
+ },
+ "evidence_gate": {
+  "categories": 0,
+  "required": 2,
+  "passed": false
+ },
+ "lessons_applied": [
+  "L-001",
+  "L-002",
+  "L-003",
+  "L-004",
+  "L-005",
+  "L-006",
+  "L-007"
+ ],
+ "lesson_clocks": {
+  "L-002_tally": "1 of 3 (unchanged)",
+  "L-003": "0",
+  "L-006": "0",
+  "L-007": "first failed forecast recorded (N did not collapse)"
+ },
+ "orders_placed": false,
+ "demo_order_sent": false,
+ "exchange_exit_reconciled": false,
+ "engine_result": {
+  "status": "no_trade",
+  "live_order_sent": false,
+  "run_id": "2026-09-25_check_1600_paper"
+ },
+ "credentials_in_file": false
+}

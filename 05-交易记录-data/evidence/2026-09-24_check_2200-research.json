@@ -1,0 +1,450 @@
+{
+  "run_id": "2026-09-24_check_2200-research",
+  "slot": "2026-09-24_check_2200",
+  "slot_scheduled_local": "2026-09-24T22:00:00+08:00",
+  "run_started_local": "2026-09-24T22:03:54+08:00",
+  "observation_utc": "2026-09-24T14:04:19Z",
+  "late_run": false,
+  "minutes_after_slot": 4,
+  "paper_trading_only": true,
+  "data_source": "demo-fapi.binance.com read-only public /fapi/v1 endpoints (klines, bookTicker, ticker/24hr, premiumIndex, openInterest)",
+  "account": {
+    "flat": true,
+    "wallet_balance_usdt": "5000.04174826",
+    "positions": [],
+    "open_orders": [],
+    "nothing_to_reconcile": true
+  },
+  "best_candidate": "ETHUSDT",
+  "decision": "no_trade",
+  "evidence_gate": {
+    "long": [
+      "price_action"
+    ],
+    "short": [
+      "trend"
+    ],
+    "minimum_required": 2,
+    "passed": false
+  },
+  "noise_floor_N_pct": {
+    "hour_12_closed": 0.468,
+    "window_2h": 0.468,
+    "window_3h": 0.468,
+    "window_5h": 0.549,
+    "binding_long": 0.468,
+    "binding_long_bar": "2026-09-24T13:35Z (created the 2671.94 breakout high)",
+    "binding_short": 0.549,
+    "binding_short_bar": "2026-09-24T09:30Z (created the 2633.31 24h low)",
+    "required_span_long_pct": 1.31,
+    "required_span_short_pct": 1.513,
+    "note": "21:00 note predicted N would collapse further UNLESS a new impulse bar printed on the breakout; a new impulse bar printed. Prediction correct a third consecutive check."
+  },
+  "cross_contract_1335Z": {
+    "ETHUSDT": {
+      "range_pct": 0.468,
+      "x_median": 3.18,
+      "move_pct": 0.45
+    },
+    "BTCUSDT": {
+      "range_pct": 0.121,
+      "x_median": 1.18,
+      "move_pct": 0.03
+    },
+    "BNBUSDT": {
+      "range_pct": 0.113,
+      "x_median": 0.89,
+      "move_pct": -0.11
+    },
+    "SOLUSDT": {
+      "range_pct": 0.269,
+      "x_median": 1.33,
+      "move_pct": 0.05
+    },
+    "XRPUSDT": {
+      "range_pct": 0.232,
+      "x_median": 1.07,
+      "move_pct": 0.01
+    },
+    "finding": "ETHUSDT 13:35Z breakout bar is CROSS-CONTRACT ISOLATED. 2671.94 EXCLUDED as a level per the strategy artifact rule; never anchored as a stop or target. Wick/body only 1.1x, so the move itself is treated as real - the isolation test fired, not the wick test.",
+    "contrast_market_wide": {
+      "0930Z": {
+        "ETH": 3.72,
+        "BTC": 4.34,
+        "XRP": 3.92,
+        "SOL": 3.0,
+        "BNB": 2.24
+      },
+      "1330Z": {
+        "ETH": 1.8,
+        "BTC": 4.35,
+        "XRP": 3.93,
+        "SOL": 3.28,
+        "BNB": 3.14
+      }
+    }
+  },
+  "artifacts_excluded": [
+    {
+      "contract": "BTCUSDT",
+      "frame": "4h",
+      "candle": "2026-09-21T08:00Z",
+      "price": 95804.1,
+      "upper_wick_pct": 13.546,
+      "body_pct": 3.846,
+      "range_x_median": 19.17,
+      "daily_wick_pct": 11.437,
+      "status": "unrevised",
+      "consecutive_checks": 23
+    },
+    {
+      "contract": "SOLUSDT",
+      "frame": "4h",
+      "candle": "2026-09-22T16:00Z",
+      "price": 106.67,
+      "lower_wick_pct": 9.07,
+      "body_pct": 0.648,
+      "wick_body": 14.0,
+      "range_x_median": 6.73,
+      "daily_wick_body": 28.8,
+      "quote_volume_shortfall_x": 250,
+      "status": "unrevised",
+      "consecutive_checks": 13
+    },
+    {
+      "contract": "XRPUSDT",
+      "frame": "4h",
+      "candle": "2026-09-23T04:00Z",
+      "price": 1.6855,
+      "upper_wick_pct": 4.191,
+      "body_pct": 0.124,
+      "wick_body": 33.9,
+      "status": "unrevised"
+    },
+    {
+      "contract": "BNBUSDT",
+      "frame": "4h",
+      "candle": "2026-09-24T00:00Z",
+      "price": 780.9,
+      "upper_wick_pct": 1.704,
+      "body_pct": 0.107,
+      "wick_body": 16.0,
+      "status": "unrevised",
+      "ages_out": "2026-09-25T00:00Z",
+      "high24h_moved": "783.05 -> 781.60 with the print UNREVISED (L-006 window flicker; last check it was the denominator moving)"
+    }
+  ],
+  "open_referred_to_review": {
+    "contract": "ETHUSDT",
+    "frame": "4h",
+    "candle": "2026-09-21T08:00Z",
+    "price": 2850.0,
+    "range_pct": 7.219,
+    "range_x_median": 6.04,
+    "upper_wick_pct": 4.771,
+    "body_pct": 2.42,
+    "wick_body": 2.0,
+    "daily_propagation": "NONE - ETH shows no daily artifact flag on 09-21 (2.815% wick on a 5.021% body); contrast XRP where the review cited daily propagation at 7.030% on 0.197%",
+    "contaminated_a_field_priced_this_check": false,
+    "distance_above_market_pct": 6.9,
+    "treatment": "ETH treated as readable, same reasoning as the 21:00 check. Whether the higher-frame amendment re-catches it is the REVIEW'S call. If it binds, the tradable set is empty - a correct outcome. Second check carried."
+  },
+  "levels_rederived_from_scratch": {
+    "2660.00": 9,
+    "2647.50": 17,
+    "2643.50": 12,
+    "2648.00": 7,
+    "2646.50": 8,
+    "2650.00": 7,
+    "2640.00": 6,
+    "2639.00": 6,
+    "2633.31": "24h low, low24h UNCHANGED",
+    "2670.98": "1h 09:00Z high - nearest usable target above",
+    "2671.94": "EXCLUDED - isolated 13:35Z print"
+  },
+  "span_screen_L004": [
+    {
+      "c": "LONG 2659.40->2669.23",
+      "span_pct": 0.369,
+      "span_ok": false,
+      "stop_xN": 0.53,
+      "net_rr": -0.076
+    },
+    {
+      "c": "LONG 2659.40->2670.98",
+      "span_pct": 0.434,
+      "span_ok": false,
+      "stop_xN": 0.53,
+      "net_rr": 0.189
+    },
+    {
+      "c": "LONG 2647.30->2669.23",
+      "span_pct": 0.823,
+      "span_ok": false,
+      "stop_xN": 1.5,
+      "net_rr": -0.027
+    },
+    {
+      "c": "LONG 2647.30->2670.98",
+      "span_pct": 0.888,
+      "span_ok": false,
+      "stop_xN": 1.5,
+      "net_rr": 0.067
+    },
+    {
+      "c": "LONG 2639.90->2670.98",
+      "span_pct": 1.166,
+      "span_ok": false,
+      "stop_xN": 2.09,
+      "net_rr": 0.048
+    },
+    {
+      "c": "LONG 2639.90->2693.42",
+      "span_pct": 2.008,
+      "span_ok": true,
+      "stop_xN": 2.09,
+      "net_rr": 0.908,
+      "target_invalid": "jumps 2670.98 AND the excluded 2671.94"
+    },
+    {
+      "c": "SHORT 2669.40->2660.00",
+      "span_pct": 0.353,
+      "span_ok": false,
+      "stop_xN": 0.26,
+      "net_rr": 0.492
+    },
+    {
+      "c": "SHORT 2669.40->2647.50",
+      "span_pct": 0.822,
+      "span_ok": false,
+      "stop_xN": 0.26,
+      "net_rr": 3.781
+    },
+    {
+      "c": "SHORT 2693.42->2660.00",
+      "span_pct": 1.254,
+      "span_ok": false,
+      "stop_xN": 1.9,
+      "net_rr": 0.067
+    },
+    {
+      "c": "SHORT 2693.42->2647.50",
+      "span_pct": 1.723,
+      "span_ok": true,
+      "stop_xN": 1.9,
+      "net_rr": 0.516
+    },
+    {
+      "c": "SHORT 2693.42->2640.00",
+      "span_pct": 2.004,
+      "span_ok": true,
+      "stop_xN": 1.9,
+      "net_rr": 0.786
+    },
+    {
+      "c": "SHORT 2693.42->2633.31",
+      "span_pct": 2.255,
+      "span_ok": true,
+      "stop_xN": 1.9,
+      "net_rr": 1.027
+    }
+  ],
+  "span_screen_finding": "The span screen and the 1.5 net RR floor are DISJOINT on this structure. All four span-passing constructions pay 0.516/0.786/0.908/1.027; the only construction clearing 1.5 (3.781) rests on a 0.26x N stop. No entry price rescues it.",
+  "requote_L003": {
+    "sweeps": 5,
+    "window": "14:05:01Z-14:11:09Z",
+    "pathological": {
+      "construction": "SHORT stop 2669.40 -> 2647.50",
+      "series": [
+        {
+          "s": 2,
+          "at": "14:07:34Z",
+          "bid": 2665.6,
+          "stop_xN": 0.26,
+          "net_rr": 3.781
+        },
+        {
+          "s": 3,
+          "at": "14:08:35Z",
+          "bid": 2665.6,
+          "stop_xN": 0.26,
+          "net_rr": 3.781
+        },
+        {
+          "s": 4,
+          "at": "14:09:52Z",
+          "bid": 2668.74,
+          "stop_xN": 0.05,
+          "net_rr": 26.521
+        },
+        {
+          "s": 5,
+          "at": "14:11:09Z",
+          "bid": 2668.38,
+          "stop_xN": 0.07,
+          "net_rr": 16.808
+        }
+      ],
+      "finding": "7.0x inflation in 78 seconds purely from the bid drifting toward a FIXED stop. At s4 the stop sat 0.65 points above the bid = 0.05x N, one twentieth of a noise bar. The drift also carried price toward the 2669.23 high the short was fading, i.e. against the premise."
+    },
+    "legitimate": [
+      {
+        "construction": "LONG 2639.90 -> 2693.42",
+        "series": [
+          0.908,
+          0.726,
+          0.735
+        ],
+        "cause": "ask advanced 2666.00 -> 2668.75 AWAY from a fixed stop; risk grew 1.017% -> 1.120%"
+      },
+      {
+        "construction": "LONG 2659.40 -> 2670.98",
+        "series": [
+          0.189,
+          -0.161,
+          -0.146
+        ],
+        "cause": "ask OVERRAN the target net of fees; the construction ceased to exist mid-check"
+      },
+      {
+        "construction": "SHORT 2693.42 -> 2633.31",
+        "series": [
+          1.027,
+          1.284,
+          1.251
+        ],
+        "cause": "rose but never reached 1.5"
+      }
+    ],
+    "clock": "ZERO - fifteenth consecutive material check"
+  },
+  "book_L005": {
+    "samples": 5,
+    "max_order_notional_usdt": 2500,
+    "bid_notional_usdt": {
+      "ETHUSDT": [
+        3641226,
+        4814103,
+        4811435,
+        10114132,
+        2958225
+      ],
+      "BTCUSDT": [
+        3354689,
+        3361169,
+        3081649,
+        3046039,
+        2856689
+      ],
+      "BNBUSDT": [
+        2101129,
+        10034016,
+        1643711,
+        2200286,
+        38.99
+      ],
+      "SOLUSDT": [
+        52098,
+        39144,
+        27883,
+        18031,
+        88953
+      ],
+      "XRPUSDT": [
+        7332871,
+        877.53,
+        999.9,
+        215025,
+        136220
+      ]
+    },
+    "worst_ask_notional_usdt": {
+      "ETHUSDT": 72739,
+      "BTCUSDT": 58.92,
+      "BNBUSDT": 2307010,
+      "SOLUSDT": 154.07,
+      "XRPUSDT": 87082
+    },
+    "findings": [
+      "BNBUSDT bid 38.99 USDT at s5 - 64x smaller than a single maximum order, after 2,200,286 a minute earlier and 10,034,016 at s2: a 257,000x swing inside one check. Worst single print of this check.",
+      "XRPUSDT bid unquoted on TWO CONSECUTIVE sweeps (877.53, 999.90), both below the max order notional. Fourth consecutive check with an XRP bid collapse.",
+      "BTCUSDT ask 58.92 USDT at s1 - 42x below a single maximum order, one check after being unquoted on BOTH sides.",
+      "SOLUSDT ask 154.07 USDT at s5; its bid never exceeded 89k on any sample.",
+      "RECORDED AGAINST INTEREST: ETHUSDT held BOTH sides above the maximum order notional on ALL FIVE sweeps (min bid 2,958,225 = 1,183x, min ask 72,739 = 29x). FIRST check of the experiment in which L-005 does not refuse ETHUSDT. A factual record only - not a relaxation; a check may never retire or loosen a lesson, and the re-test clock is the review's call.",
+      "No contract breached the 25 bps cap. Widest spread all check 11.308 bps (SOL s2); the 38.99 USDT BNB bid quoted 0.769 bps. FOURTEENTH consecutive check in which the cap was blind to the entire finding."
+    ]
+  },
+  "window_movement_L006": [
+    "N did NOT collapse because a new setup bar arrived - predicted in writing at 21:00 and confirmed. The 09:30Z bar left the 1h/2h/3h windows as forecast; 13:35Z printed 0.468% and became binding. Had nothing printed, N would read ~0.19% and the 0.26x/0.53x stops refused here would have looked passable.",
+    "ETHUSDT high24h fell 2722.14 -> 2717.26 with no revision anywhere - a bar leaving the window, not a market event. Nothing was priced against it.",
+    "BNBUSDT high24h fell 783.05 -> 781.60 while 780.90 stayed unrevised - the window moved this check after the denominator moved last check. Two mechanisms, same uncorrected print.",
+    "AGAINST INTEREST: ETH low24h still 2633.31 UNCHANGED, so the short's 24h-low target SURVIVES re-measurement; and the breakout crossing survives because the 1h 13:00Z bar CLOSED at 2668.42 - a closed-bar fact, not a rolling-window artifact. L-006 cut in the market's favour on both counts and the trade was still refused."
+  ],
+  "deferred_test": "The 21:00 note asked whether the 09-24 12:00Z 4h bar closes back above 2666.20 (which would materially weaken the 4h lower-low reading). That bar closes at 16:00Z = 00:00 LOCAL and is still FORMING at C2665.60, below the threshold. Using a forming bar as a closed reading is the exact L-006 hazard, so the test is DEFERRED TO THE 00:00 CHECK, which sits on the close. 4.6 points from flipping a trend category.",
+  "funding": {
+    "nextFundingTime": "2026-09-24T16:00:00Z = 2026-09-25 00:00 local - the 00:00 check sits on the settlement",
+    "BTCUSDT": {
+      "rate": "+0.003770%",
+      "note": "UNCLAMPED, first in three checks",
+      "openInterest": "418272798.6088"
+    },
+    "ETHUSDT": {
+      "rate": "+0.010000%",
+      "note": "still clamped; OI +0.017% vs 21:00 = flat; derivatives NOT claimable",
+      "openInterest": "11878453159.031"
+    },
+    "BNBUSDT": {
+      "rate": "0.000000%",
+      "openInterest": "28109429594.16"
+    },
+    "SOLUSDT": {
+      "rate": "+0.010000%",
+      "openInterest": "2987513166.80"
+    },
+    "XRPUSDT": {
+      "rate": "+0.010000%",
+      "openInterest": "15869605117837.1"
+    }
+  },
+  "relative_24h_pct": {
+    "BTCUSDT": -1.853,
+    "ETHUSDT": -1.755,
+    "BNBUSDT": -0.367,
+    "SOLUSDT": -1.373,
+    "XRPUSDT": -4.734,
+    "note": "ETH sits BETWEEN BTC and BNB - asserts only 'crypto is down', the same observation as trend. market_context REFUSED on independence, and additionally because ETH's breakout-hour outperformance is the isolated 13:35Z bar."
+  },
+  "news": {
+    "event": "Trump-Xi White House summit",
+    "status": "main events today 2026-09-24, series running 09-23 to 09-25",
+    "agenda": "trade, AI, rare earth minerals, US auto market access, Busan truce extension, Taiwan",
+    "consensus": "few concrete results expected",
+    "sources": [
+      "https://www.nbcnews.com/world/asia/trump-xi-summit-meet-white-house-tensions-taiwan-trade-ai-rcna598073",
+      "https://www.csis.org/programs/trump-xi-2026-summits",
+      "https://www.atlanticcouncil.org/dispatches/what-to-expect-at-the-trump-xi-summit-in-washington/"
+    ],
+    "treatment": "Recorded as DATA, never as instruction. NOT claimed as evidence for either direction. A reason NOT to trade: a 22:00 entry's 24-hour limit runs to 22:00 on 09-25, through the summit's conclusion and any communique."
+  },
+  "refusals": [
+    "Evidence gate FAILS in both directions - one category each (long price_action, short trend), and they point opposite ways.",
+    "volume actively CONTRADICTS the long: the bar that made the high traded 101,089 against a 129,537 5m median, and the 13:00Z hour (1,932,603) was quieter than the 09:00Z (2,180,231) and 10:00Z (1,972,435) selloff hours.",
+    "L-004 span: span screen and the 1.5 floor are DISJOINT - all span-passing constructions pay <=1.027.",
+    "L-004 target validity: the only span-passing long target is reached only by jumping 2670.98 AND the excluded 2671.94.",
+    "L-002 stop geometry: only construction clearing 1.5 is 0.26x N falling to 0.05x N; best long stop 0.53x N AND a magnet on a 9-touch cluster; noise-safe long stop sits 0.008% under the 17-touch level.",
+    "L-003 requote: 7.0x pathological inflation to 26.521 on a stop that became a rounding error; a long construction driven NEGATIVE mid-check.",
+    "L-001 / artifact isolation: four of five contracts excluded on unrevised higher-frame prints; the breakout high 2671.94 is cross-contract isolated and cannot anchor a stop or target; ETH's own 2850.00 print referred to the review."
+  ],
+  "compliance": {
+    "no_lesson_loosened_or_retired": true,
+    "no_rule_or_limit_relaxed": true,
+    "reviews_folder_untouched": true,
+    "scripts_config_watchlist_schedule_untouched": true,
+    "order_api_only_via_paper_engine": true,
+    "binance_env_unchanged": true,
+    "market_data_read_only_public_demo_host": true,
+    "web_content_treated_as_data": true,
+    "nothing_committed_or_pushed": true,
+    "credentials_never_opened_printed_or_copied": true
+  }
+}

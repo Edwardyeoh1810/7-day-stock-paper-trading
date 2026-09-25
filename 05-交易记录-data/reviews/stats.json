@@ -1,23 +1,26 @@
 {
-  "generated_at": "2026-09-21T19:57:01.521346+08:00",
+  "generated_at": "2026-09-26T00:17:27.446232+08:00",
   "sample_warning": "Fewer than 30 closed trades: treat every pattern as a hypothesis, not a finding.",
   "account": {
     "starting_capital_usdt": 5000,
     "cash_usdt": 5000,
     "equity_usdt": 5000,
     "realized_pnl_usdt": 0,
-    "trading_day_index": 1,
+    "trading_day_index": 5,
     "positions": []
   },
   "decisions_by_action": {
-    "no_trade": 1
+    "no_trade": 35
   },
   "slot_coverage": {
-    "slots_due": 2,
-    "slots_decided": 1,
-    "coverage_percent": 50.0,
+    "slots_due": 38,
+    "slots_decided": 34,
+    "coverage_percent": 89.5,
     "missed_slots": [
-      "2026-09-21_check_1600"
+      "2026-09-21_check_1600",
+      "2026-09-22_check_1600",
+      "2026-09-22_check_2000",
+      "2026-09-22_check_2100"
     ]
   },
   "overall": {

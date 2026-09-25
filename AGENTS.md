@@ -87,6 +87,6 @@ Each journal entry must state:
 ## Review And Improvement
 
 - The daily review follows `03-定时任务-routines/REVIEW-PROMPT.md`: statistics from `06-程序脚本-scripts/review_stats.py`, a written review, and an updated `05-交易记录-data/reviews/LESSONS.md`.
-- Every trading check reads `LESSONS.md` and applies it. A lesson may make a decision more selective; it can never loosen or override a rule or risk limit.
+- Every trading check reads `LESSONS.md` and applies it. A lesson may make a decision more selective; it can never loosen or override a rule or risk limit. The review adds, narrows and retires lessons; a lesson that would exclude the whole watchlist is retired, not obeyed.
 - Changes to rules, limits, leverage, watchlist, schedule or code are only proposed in `05-交易记录-data/reviews/PROPOSALS.md`. Only the user approves and applies them.
 - Preserve both languages. Dates in the schedule are provisional until authentication and review pass; do not count setup days as experiment sessions.

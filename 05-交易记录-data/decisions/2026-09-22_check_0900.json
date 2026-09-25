@@ -1,0 +1,106 @@
+{
+  "paper_trading_only": true,
+  "action": "no_trade",
+  "symbol": "XRPUSDT",
+  "slot": "2026-09-22_check_0900",
+  "checked_at_local": "2026-09-22T21:58+08:00",
+  "thesis": "LATE RUN - NO ENTRY IS PERMITTED AND NONE IS PROPOSED. This is the governing fact of the check and it overrides everything else below. The slot was 2026-09-22 09:00 Asia/Kuala_Lumpur. The read-only observation ran on time at 01:12:02Z (09:12 MYT) and the market research was pulled at 01:13-01:16Z (09:13-09:16 MYT), 13 to 16 minutes after the slot and comfortably inside the 45-minute entry window. The run then STALLED for roughly twelve hours and forty minutes. The decision is being written at 13:58Z (21:58 MYT), which is 778 minutes after the scheduled slot. The host clock was cross-checked against the exchange's own /fapi/v1/time endpoint and the two agree to within a tenth of a second, so this is a genuine stall and not a clock fault. Under the late-run rule an open_long or open_short is forbidden and the engine would reject it in any case; no position is open, so manage and close do not apply; the required outcome is no_trade with the reason 'late run', recorded under the original slot's run id. That is what this decision does. WHAT THE RESEARCH FOUND AT THE SLOT, RECORDED AS A HISTORICAL SNAPSHOT AND EXPLICITLY NOT AS A CURRENT READ. The evidence below describes the market at 01:13-01:16Z. It is now around thirteen hours old and every price level in it is stale. It is preserved because it is a faithful record of what the 09:00 slot actually saw, and because its reasoning - not its numbers - is worth carrying. It must NOT be reused as a live read by the next check. The finding was that the 02:00 note's volume-versus-arithmetic inversion had reappeared in a new and sharper form: an inversion of DISTANCE. Over the seven-hour gap the whole complex rallied into the 20:00-22:00Z window and then pulled back together for three to four hours. XRPUSDT ran from 1.4888 to a 1.5701 high at 22:00Z and retraced to 1.5158, giving back about two thirds of the move, with a clean descending sequence of hourly highs 1.5701, 1.5654, 1.5401, 1.5313. SOLUSDT ran to 119.86 and fell back to 118.01 with hourly highs stepping down 119.86, 119.74, 119.80, 119.37, 118.37. Volume supported the downside for the first time in the experiment: the heaviest 5m bar of the two-hour window was a DOWN bar on BTCUSDT (01:00Z), on ETHUSDT (01:00Z, at 478,840 nearly twice the next-heaviest and -0.745%) and on SOLUSDT (00:55Z, at 148,504 roughly three times the next and -0.905%), and BTCUSDT printed eight consecutive down 5m bars into the quote. So structure and volume agreed on direction for once. The trade still failed, and it failed on distance. On the two contracts with genuine bearish structure the nearest honest target was too close to pay the 1.5 floor, and the only passing target required jumping two or three intervening supports. XRPUSDT short with a structural 1.5320 stop above the 1.5313 lower high returned 0.515 to the nearest support at 1.5041 and 0.884 to the second at 1.4973, and reached 1.557 only by targeting 1.4849, which sits beyond both. That is precisely the error the 00:00 note refused when it ruled the XRP long cleared 'only by reaching for 1.5441'; applied symmetrically to the short side it is refused again. SOLUSDT short with a 118.42 stop returned 0.194 to the nearest support at 117.59 and still only 0.986 reaching past three levels to 117.04. Everything that did clear 1.5 cleared it on a noise-width stop, which is trap (a) from the 02:00 note - a stop resting just under a level the market has been touching is a size, not a stop. XRPUSDT long printed 4.615 on a stop 0.060% away when the maximum 5m bar range of the preceding hour was 0.883%, a stop one fifteenth of a single bar's range. BNBUSDT passed in BOTH directions, 1.673 short and 2.015 long, on mirror-image stops 0.166% and 0.155% away against a 0.444% maximum 5m range - a contract passing both ways on opposing noise stops is the clearest possible sign that the geometry is producing the number rather than the market. BTCUSDT was excluded for a sixth consecutive check, and this time on spread as well as artifacts: the 01:13Z book was 85800.10 by 86080.60, a spread of 32.59 bps against the 25 bps cap, which tightened to 1.06 bps three minutes later, so the demo book was also unstable. Two NEW hourly artifacts appeared in the gap - 91000.00 at 19:00Z on a 5.148% upper wick and 90389.80 at 20:00Z on 3.985% - on top of the standing 95804.10 double contamination. The news check added context that argued against the short rather than for it: the rally into 21 September was reported as a short squeeze that liquidated more than 648 million dollars of bitcoin short positions above 85,000, and selling into a market that has just forced out that much bearish positioning, on a pullback that had not yet confirmed, is the wrong side of a crowded unwind. Higher-timeframe trend also opposed a short on all five, with 24h changes of +6.117% on XRP, +5.362% on BTC and +4.693% on SOL. The honest summary is that the 09:00 slot would have recorded no_trade on the merits even had it finished on time; the late-run rule and the evidence point the same way, and the decision does not depend on which one is applied first. LESSONS APPLIED: none were available to apply. LESSONS.md was read and still records no lessons because the experiment has no closed trades. Nothing under reviews/ was read for modification or modified; the 22:00 daily review owns that folder and is due at almost exactly the time this decision is being written. The two traps cited above - target-reaching past intervening supports, and the noise-width stop - come from the 00:00 and 02:00 research notes, not from LESSONS.md, and are carried as prior reasoning rather than as lessons. OPERATIONAL ISSUE FOR THE REVIEW AND FOR EDWARD: because this run stalled for nearly thirteen hours, the 16:00, 20:00 and 21:00 slots of 2026-09-22 passed with no check at all. No position was open at any point during the stall and the account never carried risk, so nothing was left unprotected, but three scheduled observations were lost. They are NOT backfilled here: backfilling a historical trade is forbidden, and this decision is confined to the 09:00 slot under whose run id it is recorded.",
+  "reason": "late run",
+  "evidence": [
+    {
+      "category": "price_action",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 1h and 5m, all five contracts, pulled 2026-09-22T01:13:20Z (09:13 MYT, 13 min after the slot)",
+      "observed": "STALE SNAPSHOT OF THE 09:00 SLOT - NOT A CURRENT READ. Over the seven-hour gap since the 02:00 check the complex rallied into 20:00-22:00Z and then pulled back together. XRPUSDT: 1.4888 up to a 1.5701 high at 22:00Z, back to 1.5158, a clean descending hourly-high sequence 1.5701 > 1.5654 > 1.5401 > 1.5313 and lows 1.5454 > 1.5276 > 1.5281 > 1.5168. SOLUSDT: up to 119.86 at 21:00Z, back to 118.01, hourly highs 119.86 > 119.74 > 119.80 > 119.37 > 118.37. Genuine bearish structure on both. But the honest short constructions failed on distance: XRP short with a 1.5320 stop above the 1.5313 lower high paid 0.515 to the nearest support 1.5041 and 0.884 to the second 1.4973, reaching 1.557 only at 1.4849 beyond both - the same target-reaching error the 00:00 note refused for the XRP long at 1.5441, refused again symmetrically. SOL short with a 118.42 stop paid 0.194 to 117.59 and 0.986 reaching to 117.04 past three levels. 5m artifact scan over the last 24 bars was CLEAN on all five, a second consecutive clean scan."
+    },
+    {
+      "category": "volume",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 5m quote-asset volume, all five contracts, 2026-09-22T01:13:20Z",
+      "observed": "STALE. For the first time in the experiment volume AGREED with structure on direction, and the trade still failed on arithmetic. The heaviest 5m bar of the two-hour window was a DOWN bar on three of five: BTCUSDT 01:00Z, ETHUSDT 01:00Z at 478,840 (roughly twice the next-heaviest 261,437) closing -0.745%, and SOLUSDT 00:55Z at 148,504 (roughly three times the next) closing -0.905%. BTCUSDT printed eight consecutive DOWN 5m bars into the quote. XRPUSDT was mixed - heaviest was an UP bar at 00:40Z on 620,026,191 - but its 01:00Z DOWN bar at 506,130,892 and a 424,077,207 DOWN bar only three minutes into the forming 01:10Z bar were both heavy. The volume read did not rescue any construction: on XRP and SOL the direction volume supported had no target close enough to pay 1.5 without jumping intervening supports."
+    },
+    {
+      "category": "trend",
+      "source": "demo-fapi.binance.com /fapi/v1/ticker/24hr and /fapi/v1/klines 1d (60 bars), all five, 2026-09-22T01:13:20Z",
+      "observed": "STALE. Higher-timeframe trend was UP on all five and argued against the short that structure and volume were pointing to: 24h changes XRPUSDT +6.117%, BTCUSDT +5.362%, SOLUSDT +4.693%, ETHUSDT +2.317%, BNBUSDT +1.272%. Any short here was counter-trend on the daily, which is a reason for a higher bar on the short side, not a lower one. BNBUSDT remained the weakest contract of the five, consistent with the 02:00 note's ranking."
+    },
+    {
+      "category": "market_context",
+      "source": "demo-fapi.binance.com /fapi/v1/klines 1h and /fapi/v1/ticker/bookTicker all five, plus web news check, 2026-09-22T01:13-01:16Z",
+      "observed": "STALE. All five moved as one: they rallied together into the US-session window and pulled back together for three to four hours, which is one view on the crypto market expressed five ways, not five opportunities. Press coverage of the 21 September rally described it as a SHORT SQUEEZE that liquidated more than 648 million dollars of bitcoin short positions above 85,000 - context that argues against selling an unconfirmed pullback in a market that has just forced bearish positioning out, and it is recorded as context rather than as a tradeable news catalyst since no scheduled macro event was identified for the session. BTCUSDT excluded for a sixth consecutive check, now on SPREAD as well as artifacts: the 01:13Z book was 85800.10/86080.60 = 32.59 bps against the 25 bps cap, which then tightened to 1.06 bps three minutes later, so the demo book was unstable as well as wide."
+    },
+    {
+      "category": "derivatives",
+      "source": "demo-fapi.binance.com /fapi/v1/premiumIndex and /fapi/v1/openInterest, all five, 2026-09-22T01:13-01:17Z",
+      "observed": "STALE. Neutral, no crowding to fade or squeeze. Funding at the 0.0100% baseline on BTCUSDT, ETHUSDT, SOLUSDT and XRPUSDT and 0.003859% on BNBUSDT, next funding 2026-09-22T08:00Z, so a position would have paid or received almost nothing. ONE CHANGE WORTH RECORDING against the standing note that open interest is unavailable on the demo host: /fapi/v1/openInterest now RETURNS a value (XRPUSDT 15,646,486,925,706.1 at 01:17Z), but /futures/data/openInterestHist still returns the bare string 'ok' with no history, so the CHANGE in open interest - the part that carries information about positioning - remains unavailable, and the absolute figure is implausible enough to look like a demo artifact. The derivatives category is therefore still effectively reduced to funding alone."
+    }
+  ],
+  "demo_price_artifacts_excluded": [
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21 19:00Z 1h bar",
+      "price": 91000.0,
+      "note": "NEW this check. 5.148% upper wick against a 0.669% body. Excluded from all highs, ranges and targets."
+    },
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21 20:00Z 1h bar",
+      "price": 90389.8,
+      "note": "NEW this check. 3.985% upper wick against a 0.404% body. Excluded."
+    },
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21 09:00Z and 14:00Z 1h bars, and the 24h ticker high",
+      "price": 95804.1,
+      "note": "Standing exclusion, re-confirmed. Contaminates two separate hourly bars (14:00Z upper wick 11.747%). Still the 24h ticker high, so the 24h high figure is unusable."
+    },
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21 12:00Z and 15:00Z 1h bars",
+      "price": 87888.0,
+      "note": "Standing exclusion, re-confirmed (2.991% and 1.302% upper wicks on 0.726% and 0.131% bodies)."
+    },
+    {
+      "symbol": "ETHUSDT",
+      "candle": "2026-09-21 15:00Z 1h bar and the 24h ticker high 2850.00",
+      "price": 2795.0,
+      "note": "Standing exclusion carried from earlier checks; not re-derived this check."
+    }
+  ],
+  "considered_and_rejected": {
+    "short_XRPUSDT": "The best-supported idea of the slot and still rejected. Structure was genuinely bearish (four descending hourly highs off 1.5701) and volume was tilting down. A structural 1.5320 stop above the 1.5313 lower high cost 1.096%, which is honest against a 0.883% maximum 5m range. It paid only 0.515 to the nearest support 1.5041 and 0.884 to the second at 1.4973, and cleared the floor at 1.557 ONLY by targeting 1.4849, beyond both. Target-reaching past intervening support is the error the 00:00 note refused on the long side; refused here on the short side for the same reason. 1.557 is also barely above the floor and would drift under it on a few ticks of adverse movement.",
+    "long_XRPUSDT": "Printed 4.615, the highest number of the check, and is the clearest trap on the board. The stop at 1.5160 sat 0.060% from the entry while the maximum 5m bar range of the preceding hour was 0.883% and the average 0.380% - a stop one fifteenth of a single bar's range, which is a size and not a stop. It was also a long into an active decline: the last three 5m bars were DOWN, FLAT, DOWN with heavy down volume.",
+    "short_SOLUSDT": "Structure was the cleanest of the five (five descending hourly highs) and the 00:55Z down bar was three times the next-heaviest. It still failed outright: 0.194 to the nearest support at 117.59 and only 0.986 reaching all the way to 117.04 past 117.59, 117.47 and 117.36. The contract with the best directional evidence again offered no tradeable expression of it, exactly as at 02:00.",
+    "long_SOLUSDT": "The setup the 02:00 note named as the one to watch. It resolved upward overnight - SOL rallied through the 118.9100 reference to 119.86 - so the 116.73-floor construction the note described no longer existed. Re-sited to the 01:00Z low the long paid 1.075 to 118.91 and failed; volume opposed it anyway.",
+    "both_sides_BNBUSDT": "BNB passed in BOTH directions - 1.673 short with a 795.00 stop and 2.015 long with a 793.00 stop - on mirror-image stops 0.166% and 0.155% away against a 0.444% maximum 5m range. A contract that clears the floor in both directions simultaneously on opposing noise-width stops is producing numbers from geometry, not from the market. Both refused under trap (a).",
+    "both_sides_ETHUSDT": "Failed honestly in both directions. Short with a structural 2777.00 stop above the 00:00Z high paid 0.195 to the nearest support and 0.602 reaching to 2730.01; long paid 1.335 on an already noise-width 0.427% stop. Consistent with ETH's long run of failures.",
+    "BTCUSDT": "Not assessed for direction. Excluded on spread (32.59 bps at the quote, above the 25 bps cap) and on artifacts, for a sixth consecutive check."
+  },
+  "spread_check_bps": {
+    "BTCUSDT": 32.59,
+    "ETHUSDT": 0.58,
+    "BNBUSDT": 0.5,
+    "SOLUSDT": 3.39,
+    "XRPUSDT": 0.66,
+    "note": "Measured at the 01:13:20Z research pull. BTCUSDT BREACHED the 25 bps cap and was excluded on that ground alone. A re-quote at 01:16:42Z returned BTC at 1.06 bps, SOL 12.71 and XRP 5.93 - the demo book is unstable between quotes. All figures are stale as of the 13:58Z submission."
+  },
+  "funding_check": {
+    "next_funding_time_utc": "2026-09-22T08:00Z",
+    "rates": {
+      "BTCUSDT": "0.00010000",
+      "ETHUSDT": "0.00010000",
+      "BNBUSDT": "0.00003859",
+      "SOLUSDT": "0.00010000",
+      "XRPUSDT": "0.00010000"
+    },
+    "note": "Checked at 01:13:20Z. All at or below the 0.0100% baseline, so no crowding signal in either direction and negligible carry. That funding time has itself now passed during the stall."
+  },
+  "timing_check": {
+    "slot_scheduled_local": "2026-09-22T09:00+08:00",
+    "observation_ran_utc": "2026-09-22T01:12:02Z",
+    "research_pulled_utc": "2026-09-22T01:13:20Z",
+    "decision_submitted_local": "2026-09-22T21:58+08:00",
+    "minutes_after_slot": 778,
+    "late": true,
+    "note": "LATE by 778 minutes against a 45-minute window. The observation and the research were both ON TIME (12 and 13 minutes after the slot); the run then stalled for roughly twelve hours and forty minutes before the decision could be written. The host clock was cross-checked against the exchange's /fapi/v1/time endpoint and agrees to within 0.1 second, so the stall is real and not a clock fault. No entry is permitted; no position is open, so manage and close do not apply; no_trade with reason 'late run' under the original slot's run id is the required outcome. The 16:00, 20:00 and 21:00 slots of 2026-09-22 were missed entirely during the stall and are deliberately NOT backfilled."
+  },
+  "lessons_applied": "None available. LESSONS.md was read and still records no lessons, because the experiment has no closed trades yet. Nothing under reviews/ was modified - the 22:00 daily review owns that folder and is due at essentially the moment this decision is being written. The two traps cited in the thesis (target-reaching past intervening support; the noise-width stop) are carried from the 00:00 and 02:00 research notes as prior reasoning, not as lessons, and both were applied to make this check MORE selective, never less."
+}

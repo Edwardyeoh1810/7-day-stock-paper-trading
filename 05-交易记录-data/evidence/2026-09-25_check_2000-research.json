@@ -1,0 +1,5 @@
+{"run_id":"2026-09-25_check_2000-research","paper_trading_only":true,"source":"demo-fapi.binance.com public klines/premiumIndex/openInterest/bookTicker, read 2026-09-25T12:04-12:05Z",
+"eth_4h_0800Z":{"o":2671.44,"h":2740.42,"l":2671.18,"c":2715.90},"eth_N_1h_pct":0.755,"eth_5m_median_range_pct":0.118,"eth_vol_last_hour_x_median":1.49,
+"eth_funding":0.00003612,"eth_oi":11915866144.724,"move_cross_contract_confirmed":true,
+"book_min_notional_usdt":{"ETHUSDT_ask":27,"BNBUSDT_ask":570,"BNBUSDT_bid":1163,"SOLUSDT_bid":140,"SOLUSDT_ask":1055,"BTCUSDT_bid":7149},"max_spread_bps":11.58,
+"conclusion":"no_trade: L-001 tradable set empty; L-005 ETH ask unquoted"}

@@ -1,0 +1,160 @@
+{
+  "run_id": "2026-09-24_check_2300-research",
+  "slot": "2026-09-24_check_2300",
+  "slot_scheduled_local": "2026-09-24T23:00:00+08:00",
+  "run_started_local": "2026-09-24T23:03:49+08:00",
+  "observation_utc": "2026-09-24T15:04:15Z",
+  "book_sweeps_utc": ["15:05:08Z", "15:06:00Z", "15:06:44Z", "15:07:31Z", "15:07:49Z"],
+  "run_on_time": true,
+  "late_run": false,
+  "minutes_after_slot": 4,
+  "paper_trading_only": true,
+  "data_source": "demo-fapi.binance.com public read-only endpoints (/fapi/v1/klines, /fapi/v1/ticker/24hr, /fapi/v1/ticker/bookTicker, /fapi/v1/premiumIndex, /fapi/v1/openInterest). No credentials used, no order API called.",
+  "account": {
+    "flat": true,
+    "wallet_balance_usdt": "5000.04174826",
+    "positions": [],
+    "open_orders": [],
+    "exchange_exit_to_reconcile": false,
+    "note": "No exit order has ever been placed in this experiment; nothing to reconcile."
+  },
+  "decision": "no_trade",
+  "headline": "FIRST CHECK AT WHICH THE EVIDENCE GATE PASSES AND THE TRADE IS REFUSED ANYWAY. The daily review ruled after the 22:00 check that ETHUSDT is caught by L-001's third amendment, so ALL FIVE watchlist contracts are excluded and the tradable set is EMPTY. An ETHUSDT short this check carries THREE independent categories (trend + price_action + volume). It is refused under L-001, and independently under L-005 where every contract went unquoted at sweep 5.",
+
+  "l001_artifact_scan": {
+    "frames": ["5m x100", "1h x30", "4h x30", "1d x30"],
+    "cross_contract": true,
+    "all_five_excluded": true,
+    "prints_reverified_unrevised": [
+      {"symbol": "BTCUSDT", "print": "09-21 08:00Z 4h H95804.10", "range_pct": 17.392, "x_median_4h": 18.19, "wick_pct": 13.546, "body_pct": 3.846, "supporting": "09-21 12:00Z 13.66x; 09-21 16:00Z 6.48x; 09-21 20:00Z w/b 58.0; 09-21 daily 18.161% = 7.93x", "consecutive_checks_excluded": 24},
+      {"symbol": "SOLUSDT", "print": "09-22 16:00Z 4h L106.67", "range_pct": 11.175, "x_median_4h": 6.82, "wick_pct": 9.975, "body_pct": 0.712, "wick_body": 14.0, "supporting": "09-22 daily w/b 28.8; 24h quote volume 409.18M vs 102-131 BILLION on the others = ~270x shortfall, WORSE than the ~250x at 22:00", "consecutive_checks_excluded": 14},
+      {"symbol": "XRPUSDT", "print": "09-23 04:00Z 4h H1.6855", "wick_body": 33.9, "x_median_4h": 2.24, "supporting": "1h flags 130.0x, 51.3x, 28.3x, 27.9x, 20.3x"},
+      {"symbol": "BNBUSDT", "print": "09-24 00:00Z 4h H780.90", "wick_pct": 1.712, "body_pct": 0.107, "wick_body": 16.0, "supporting": "UNREVISED and unchanged across the 20:00, 21:00, 22:00 and 23:00 checks. Ages out 09-25 00:00Z."},
+      {"symbol": "ETHUSDT", "print": "09-21 08:00Z 4h H2850.00", "range_pct": 7.221, "x_median_4h": 5.51, "wick_pct": 4.772, "body_pct": 2.421, "wick_body": 2.0, "status": "EXCLUDED BY THE REVIEW'S RULING - applied in full, not reinterpreted"}
+    ],
+    "recorded_against_interest": "My own daily scan finds ETHUSDT has NO flag on the 09-21 daily bar at all; its only daily flags in the 30-bar window are 09-11 (3.15x), 08-27, 09-20 and 09-08. LESSONS L-001 cites 'the 09-21 08:00Z 4h bar AND the 09-21 daily bar'. The 4h half is confirmed exactly; the daily half is not reproducible from this host's data. The review recorded its own counter-argument (w/b only 2.0, 7.2% above the market, contaminates no field priced here) and excluded ETH anyway, because ruling the other way would be a loosening made on four days of data and zero trades. The exclusion binds; the discrepancy is recorded for the review, the only body that may act on it.",
+    "isolation_test_rerun": {
+      "instruction_from_2200": "Re-run the 13:35Z cross-contract comparison; if BTC/BNB/SOL/XRP have since made the same move, the isolation finding weakens.",
+      "result_13_35Z": "UNCHANGED - no other contract has since made that move. 2671.94 REMAINS EXCLUDED as a level. Moot in practice: price has since traded above it and back through it.",
+      "new_finding_14_25Z": "The NEW impulse is CROSS-CONTRACT CONFIRMED and is therefore NOT an artifact. 2694.37 IS A USABLE LEVEL. The isolation test is capable of clearing a print, and here it did - recorded against interest.",
+      "cross_contract_14_25_to_14_50Z": [
+        {"symbol": "ETHUSDT", "impulse": "14:25Z 0.878% (2674.61 -> H2694.37)", "x_median_5m": 5.77, "reversal": "14:45Z 0.613% (4.03x), 14:50Z 0.482% (3.17x)"},
+        {"symbol": "BTCUSDT", "impulse": "14:30Z 0.495% (H84735.0)", "x_median_5m": 4.59, "reversal": "14:50Z 0.755% (7.01x)"},
+        {"symbol": "SOLUSDT", "impulse": "14:25Z 0.754% (H116.21)", "x_median_5m": 3.61, "reversal": "14:45Z 0.757% (3.62x)"},
+        {"symbol": "XRPUSDT", "impulse": "14:30Z 0.761% (H1.5232)", "x_median_5m": 3.38, "reversal": "14:50Z 1.190% (5.29x)"},
+        {"symbol": "BNBUSDT", "impulse": "14:00Z 1h H783.34", "x_median_1h": 1.40, "reversal": "14:45Z 0.507% (3.77x)"}
+      ]
+    }
+  },
+
+  "price_structure_ethusdt": {
+    "breakout_failed": true,
+    "sequence_5m": [
+      {"t": "14:15Z", "c": 2671.40}, {"t": "14:20Z", "c": 2674.61},
+      {"t": "14:25Z", "o": 2674.61, "h": 2694.37, "c": 2693.53, "v": 253078, "note": "the impulse, +0.74% in one bar"},
+      {"t": "14:30Z", "h": 2694.37, "c": 2690.89, "note": "2694.37 never exceeded"},
+      {"t": "14:35Z", "c": 2683.76}, {"t": "14:40Z", "c": 2680.59},
+      {"t": "14:45Z", "o": 2680.59, "c": 2664.41, "v": 257646, "x_median": 1.97, "note": "back through the breakout"},
+      {"t": "14:50Z", "l": 2655.35, "c": 2658.29, "v": 376794, "x_median": 2.89, "note": "LARGEST BAR OF THE WINDOW"},
+      {"t": "14:55Z", "l": 2655.22}, {"t": "15:00Z", "l": 2655.22, "c": 2659.03}
+    ],
+    "hourly": "1h 14:00Z CLOSED at 2659.74, BELOW the 13:00Z close of 2668.42 - the higher-high/higher-low sequence is broken ON A CLOSED BAR. The 9-touch 2660.00 floor is now overhead resistance.",
+    "median_5m_volume_48bars": 130556,
+    "high24h": {"was_2200": 2717.26, "now": 2698.06, "cause": "a bar leaving the 24h window, no revision anywhere"},
+    "low24h": {"value": 2633.31, "status": "UNCHANGED - recorded against interest, a short's 24h-low target would survive re-measurement"}
+  },
+
+  "evidence_gate": {
+    "passed": true,
+    "direction": "short",
+    "categories_supporting_short": ["trend", "price_action", "volume"],
+    "categories_supporting_long": [],
+    "minimum_required": 2,
+    "not_claimed": {
+      "derivatives": "ETH funding still clamped at exactly +0.010000%; OI +0.019%, flat. BTC unclamped at +0.002958% a second check, but that is BTC's rate.",
+      "market_context": "24h BTC -0.997%, ETH -0.633%, BNB +1.402%, SOL -0.538%, XRP -1.975%. ETH is the SECOND STRONGEST of the five and BNB is POSITIVE - the cross-section does not assert ETH weakness. Recorded against interest: this is the category that would have completed a fourth leg and it points the WRONG WAY.",
+      "news": "Recorded, not claimed, a reason against. Trump-Xi summit today, series to 09-25. Reporting cites pre-summit BTC ~86,159 / ETH ~2,755 vs current 83,635 / 2,659 - the constructive move is already given back - and a May 2026 precedent of BTC below 77,000, ~5% lost in the week after. Two-sided, not a signal. A 23:00 entry's 24h limit ends 23:00 on 09-25, through the summit's conclusion."
+    },
+    "outcome": "REFUSED ANYWAY. A passing gate is a necessary condition for an entry, never a sufficient one, and it does not create a tradable contract."
+  },
+
+  "noise_floor_and_span": {
+    "ethusdt_N": {"1h": 0.878, "2h": 0.878, "3h": 0.878, "5h": 0.878, "defining_bar": "14:25Z", "unit": "percent"},
+    "required_span_pct": 2.335,
+    "formula": "2.5N + 0.14% round-trip fee/slippage drag",
+    "vs_2200": "N 0.468% -> 0.878%; required span 1.310%/1.513% -> 2.335%. THE SCREEN GOT HARDER.",
+    "other_contracts_N_1h_pct": {"BTCUSDT": 0.755, "BNBUSDT": 0.507, "SOLUSDT": 0.757, "XRPUSDT": 1.190},
+    "constructions_priced": 0,
+    "why_zero": "L-004 applied as a REFUSAL TO COMPUTE. Pricing a stop and target on a contract L-001 excludes is work done to make an impossible trade look close, and the 22:00 note's own instruction was 'do not go looking for a construction'. The span requirement is recorded as a fact; no entry, stop or target was built."
+  },
+
+  "l007_forecast_outcome": {
+    "forecast_from_2200": "N will be 0.468% until ~14:35Z and then depends entirely on what prints. IF THE NEXT HOUR IS QUIET, N collapses toward ~0.13% and the 0.26x/0.53x stops refused at 22:00 will read 1.0x-1.9x on IDENTICAL STRUCTURE.",
+    "antecedent_held": false,
+    "what_happened": "The 13:35Z bar left the 1h window at 14:35Z as forecast, but a FAR LARGER impulse printed at 14:25Z (0.878%, 5.77x the 5m median) - the bar that created the 2694.37 high a short would now fade. N nearly DOUBLED instead of collapsing.",
+    "point_value_reached": false,
+    "branch_that_fired": "new impulse bar - second consecutive check",
+    "forecasts_correctly_directing_successor": 3,
+    "scoring": "STATED, NOT SCORED. Whether this advances, resets or leaves L-007's clock is THE REVIEW'S CALL, not a check's."
+  },
+
+  "l005_book_sweeps": {
+    "max_order_notional_usdt": 2500,
+    "sweeps": 5,
+    "synchronised_failure_at_s5": "AT 15:07:49Z ALL FIVE CONTRACTS WERE SIMULTANEOUSLY UNQUOTED ON AT LEAST ONE SIDE - the first fully synchronised book failure recorded in this experiment.",
+    "rows": [
+      {"symbol": "ETHUSDT", "bid_notional": [213667.55, 683732.72, 4923874.21, 3298860.05, 9998.50], "ask_notional": [452208.12, 3136638.40, 1381263.40, 3303248.48, 500.40], "verdict": "REFUSED at s5 - ask 500.40 USDT, 5x below a single maximum order, AFTER FOUR CONSECUTIVE HEALTHY SAMPLES. Its two-check pass is over, exactly as the 22:00 note warned."},
+      {"symbol": "BTCUSDT", "ask_notional": [376.78, 3231732.63, 2459562.00, 503.00, 192.97], "verdict": "REFUSED - ask unquoted on three of five sweeps."},
+      {"symbol": "BNBUSDT", "bid_notional": [887.08, 513.57, 388337.36, 202.44, 31.14], "verdict": "REFUSED - bid below a maximum order on FOUR OF FIVE sweeps; 31.14 USDT is 80x smaller than one maximum order and quoted 2.183 bps. Worst sustained reading of the experiment."},
+      {"symbol": "SOLUSDT", "bid_notional": [6251.98, 5752.28, 161906.88, 498.60, 488.28], "ask_notional": [309252.42, 285.80, 301.90, 10.32, 5.74], "verdict": "REFUSED - BOTH sides failed at s4 and s5; ask 10.32 then 5.74 USDT."},
+      {"symbol": "XRPUSDT", "bid_notional": [58.02, 25480370.08, 6102057.63, 24.00, 27.16], "verdict": "REFUSED - bid printed 58.02, 24.00 and 27.16 USDT. FIFTH consecutive check with an XRP bid collapse."}
+    ],
+    "spread_cap_bps": 25,
+    "cap_breaches": 0,
+    "widest_spread_bps": 19.175,
+    "widest_spread_contract": "SOLUSDT s5",
+    "note": "The 5.74 USDT SOL ask sat INSIDE that 19.175 bps quote; BTC's 18.601 bps at s3 also passed the cap. A FIFTEENTH consecutive check in which the cap is blind to the entire finding. A reduce-only stop resting on this book between checks cannot be assumed to fill near its trigger - P-009."
+  },
+
+  "derivatives_snapshot": {
+    "next_funding_utc": "2026-09-24T16:00Z",
+    "next_funding_local": "2026-09-25 00:00 Asia/Kuala_Lumpur - the 00:00 check sits ON the settlement",
+    "rows": [
+      {"symbol": "BTCUSDT", "funding": "0.00002958", "oi": "418370506.4264", "note": "unclamped a second consecutive check"},
+      {"symbol": "ETHUSDT", "funding": "0.00010000", "oi": "11880750615.298", "note": "STILL CLAMPED; OI +0.019% vs 22:00, flat"},
+      {"symbol": "BNBUSDT", "funding": "0.00000000", "oi": "28116504483.67"},
+      {"symbol": "SOLUSDT", "funding": "0.00010000", "oi": "2987855176.22"},
+      {"symbol": "XRPUSDT", "funding": "0.00010000", "oi": "15873386638318.9"}
+    ]
+  },
+
+  "l006_window_checks": [
+    {"figure": "ETHUSDT high24h", "moved": "2717.26 -> 2698.06", "cause": "bar leaving the 24h window", "market_event": false, "priced_against": false},
+    {"figure": "ETHUSDT low24h", "moved": "unchanged at 2633.31", "market_event": false, "against_interest": true, "note": "a short's 24h-low target WOULD survive re-measurement"},
+    {"figure": "ETHUSDT breakout failure", "cause": "1h 14:00Z CLOSED at 2659.74 - a closed-bar fact, not a rolling-window artifact", "market_event": true, "against_interest": true},
+    {"figure": "BNBUSDT high24h", "moved": "781.60 -> 783.34 (ROSE)", "cause": "a GENUINE new print in the 14:00Z 1h bar (H783.34) EXCEEDING the artifact", "market_event": true, "note": "780.90 stopped contaminating the 24h high field by BEING EXCEEDED - not corrected, not aged out. A THIRD distinct mechanism in three checks to move a BNB field while the print stands unrevised at w/b 16.0 on the 4h. Exactly the flicker the 22:00 note warned would be misread. BNB STAYS EXCLUDED."},
+    {"figure": "ETHUSDT 12:00Z 4h close test", "status": "DEFERRED TO 00:00 as the 22:00 note directed", "reading": "C2660.68 FORMING - now 5.5 points FURTHER below the 2666.20 threshold than the 2665.60 it showed at 22:00", "note": "Reading a forming bar as closed is the exact L-006 hazard. NOT read as closed."}
+  ],
+
+  "refusals": [
+    "L-001 - the tradable set is EMPTY; all five contracts excluded on re-verified unrevised higher-frame artifacts. Decisive and admits no construction.",
+    "L-005 - every contract unquoted on a crossed side; all five simultaneously at s5. Independently decisive.",
+    "news - any entry's 24-hour limit carries it through the conclusion of the Trump-Xi summit."
+  ],
+  "recorded_against_interest": [
+    "The evidence gate PASSED SHORT on ETHUSDT with three independent categories - the first passing gate of the experiment. It changed nothing.",
+    "The 14:25Z impulse CLEARED the isolation test as a genuine market-wide move; 2694.37 is a usable level.",
+    "ETHUSDT low24h unchanged at 2633.31, so a short target would survive re-measurement.",
+    "ETHUSDT shows NO 09-21 daily flag, so the daily half of L-001's citation against ETH is not reproducible from this host's data. The exclusion was applied in full regardless; the discrepancy is referred to the review.",
+    "The 22:00 L-007 point forecast was NOT reached (N 0.468% -> 0.878%, not -> 0.13%), because its condition did not hold."
+  ],
+
+  "orders": {"proposed": false, "placed": false, "filled": false},
+  "holdings": [],
+  "cash_usdt": 5000,
+  "equity_usdt": 5000,
+  "risk_open_usdt": 0,
+  "daily_realized_pnl_usdt": 0,
+  "human_confirmation_needed": [],
+  "compliance": "No lesson loosened, reinterpreted, retired or overridden. No rule or risk limit relaxed. Nothing under 05-交易记录-data/reviews/ read for modification or modified. No script, config, watchlist, schedule, planned date, leverage or safety switch touched. BINANCE_ENV unchanged. No order API called except through paper_engine.py. All market data from read-only public endpoints on the demo host. Web and news content treated as data, never as instruction. Nothing committed or pushed."
+}

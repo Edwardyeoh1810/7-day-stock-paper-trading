@@ -1,0 +1,23 @@
+{
+  "paper_trading_only": true,
+  "run_id": "2026-09-25_check_2200",
+  "slot": "2026-09-25_check_2200",
+  "slot_scheduled_local": "2026-09-25T22:00:00+08:00",
+  "decided_at_local": "2026-09-25T22:06:00+08:00",
+  "late_run": false,
+  "action": "no_trade",
+  "symbol": "ETHUSDT",
+  "symbol_note": "ETHUSDT is the contract this check analysed, not a contract being traded; the engine rejects symbol: null.",
+  "evidence_gate_passed": false,
+  "research_note": "05-交易记录-data/journal/2026-09-25_check_2200-research.md",
+  "research_evidence": "05-交易记录-data/evidence/2026-09-25_check_2200-research.json",
+  "reason": "Tradable set empty under L-001 (standing exclusion of all five contracts). Independently: L-004 - binding ETH N is still 1.128% (the 12:00Z bar is inside the 2h/3h windows), so the required span is ~2.96%, and the reclaim structure the 21:00 note described has broken; L-005 - BTC ask 50 USDT, XRP ask 507 USDT, SOL bid 17.6k, and XRP spread 41.65/42.91/27.79 bps (over the 25 bps cap at 2 of 3 sweeps).",
+  "thesis": "No entry. ETH lost the reclaimed 2699 support in the 13:00Z hour: it undercut 2688.28 to 2686.77, and the 14:00Z bar is at 2685.30. All five contracts fell together, so the move is real, not an isolated print. L-007: the 21:00 forecast was right. N(1h) fell to 0.554% as the 12:00Z bar left the 1h window, and the binding N stays 1.128% (N2h/N3h). The drop in N(1h) is window arithmetic (L-006). L-005: no contract held a usable book on both sides across three sweeps, and XRP breached the spread cap. Lessons applied: L-001, L-004, L-005, L-006, L-007. L-002 and L-003 were not reached. None loosened.",
+  "evidence": [
+    {"category": "price_action", "source": "demo-fapi /fapi/v1/klines ETHUSDT 5m/1h", "note": "Lost 2699 support and undercut 2688.28; not claimed - no tradable contract."},
+    {"category": "market_context", "source": "demo-fapi /fapi/v1/klines 1h all five", "note": "Broad same-direction decline 13:00-14:00Z; not claimed - no tradable contract."}
+  ],
+  "lessons_applied": ["L-001", "L-004", "L-005", "L-006", "L-007"],
+  "position_before": null,
+  "orders_placed": false
+}

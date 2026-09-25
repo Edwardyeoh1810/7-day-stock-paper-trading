@@ -1,0 +1,74 @@
+{
+  "run_id": "2026-09-25_check_2000_paper",
+  "timestamp": "2026-09-25T12:05:44.003947+00:00",
+  "mode": "binance_demo_paper",
+  "live_order_sent": false,
+  "demo_order_sent": false,
+  "decision": {
+    "paper_trading_only": true,
+    "run_id": "2026-09-25_check_2000",
+    "slot": "2026-09-25_check_2000",
+    "slot_scheduled_local": "2026-09-25T20:00:00+08:00",
+    "decided_at_local": "2026-09-25T20:07:00+08:00",
+    "late_run": false,
+    "action": "no_trade",
+    "symbol": "ETHUSDT",
+    "symbol_note": "ETHUSDT is the contract this check analysed, not a contract being traded; the engine rejects symbol: null.",
+    "evidence_gate_passed": false,
+    "research_note": "05-交易记录-data/journal/2026-09-25_check_2000-research.md",
+    "research_evidence": "05-交易记录-data/evidence/2026-09-25_check_2000-research.json",
+    "reason": "Tradable set empty under L-001 (standing exclusion of all five contracts, binding until the daily review changes it); independently L-005 - ETHUSDT ask (long-entry side) 27 USDT at sweep 0.",
+    "thesis": "No entry. ETH's 08:00Z 4h bar closed 2715.90 (H2740.42), breaking the 2699.39/2699.53 ceiling rather than the 2667.22 low, so the short case the 16:00 note set up never started. The move was broad (all five up across 08-11Z), so it is real under L-001's isolation test, but L-001's standing exclusion binds and no contract is tradable. L-005: ETH ask 27 USDT, BNB/SOL/BTC thin on at least one side. L-004: the only long target would sit in a vacuum above the fresh 2740.42 high. L-007: the 16:00 forecast (N stays >=0.25%) was confirmed, with N(1h)=0.755%. L-006: no 24h figures claimed. Lessons applied: L-001, L-004, L-005, L-006, L-007. None loosened.",
+    "evidence": [
+      {
+        "category": "trend",
+        "source": "demo-fapi /fapi/v1/klines ETHUSDT 4h",
+        "note": "Upside break of 2699.39 on a closed bar; not claimed - no tradable contract."
+      },
+      {
+        "category": "market_context",
+        "source": "demo-fapi /fapi/v1/klines 1h all five",
+        "note": "Broad same-direction move; not claimed - no tradable contract."
+      }
+    ],
+    "lessons_applied": [
+      "L-001",
+      "L-004",
+      "L-005",
+      "L-006",
+      "L-007"
+    ],
+    "position_before": null,
+    "orders_placed": false
+  },
+  "result": {
+    "status": "no_trade",
+    "event": null,
+    "snapshot": {
+      "rules": {
+        "symbol": "ETHUSDT",
+        "tradability": "BUY_SELL",
+        "stepSize": "0.001",
+        "minQty": "0.001",
+        "maxQty": "10000",
+        "minNotional": "20",
+        "maxNotional": null,
+        "tickSize": "0.01"
+      },
+      "quote": {
+        "symbol": "ETHUSDT",
+        "bid": "2720.00",
+        "ask": "2721.08",
+        "bid_size": "0.244",
+        "ask_size": "1284.482",
+        "received_at": "2026-09-25T12:05:47.251546+00:00"
+      }
+    }
+  },
+  "state": {
+    "cash_usdt": 5000,
+    "equity_usdt": 5000,
+    "positions": [],
+    "daily_open_risk_usdt": 0
+  }
+}

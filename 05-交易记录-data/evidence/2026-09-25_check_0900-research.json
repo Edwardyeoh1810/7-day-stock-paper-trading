@@ -1,0 +1,185 @@
+{
+  "run_id": "2026-09-25_check_0900-research",
+  "slot": "2026-09-25_check_0900",
+  "slot_scheduled_local": "2026-09-25T09:00:00+08:00",
+  "run_started_local": "2026-09-25T09:03:49+08:00",
+  "late_run": false,
+  "decision": "no_trade",
+  "account": {
+    "flat": true,
+    "wallet_balance_usdt": "5000.04174826",
+    "positions": 0,
+    "open_orders": 0,
+    "nothing_to_reconcile": true,
+    "exchange_exit_reconciled": false,
+    "note": "No exit order has ever been placed in this experiment. Trading day rolled to 2026-09-25 (ledger rolls 06:00 local = 22:00Z)."
+  },
+  "data_source": "demo-fapi.binance.com read-only public endpoints (/fapi/v1/klines, /fapi/v1/ticker/24hr, /fapi/v1/ticker/bookTicker, /fapi/v1/premiumIndex, /fapi/v1/openInterest) plus the signed read performed by run_observation.py",
+  "read_at": "2026-09-25T01:04:06Z - 2026-09-25T01:08:56Z",
+  "ticker_24h": {
+    "BTCUSDT": {"last": 84632.2, "chg_pct": 0.357, "high": 84735.5, "low": 82980.2, "quote_volume": 122370694591.34},
+    "ETHUSDT": {"last": 2694.79, "chg_pct": 0.475, "high": 2699.39, "low": 2633.31, "quote_volume": 114548780564.21,
+      "note": "24h HIGH MOVED 2698.06 -> 2699.39 after three checks unchanged; low unchanged at 2633.31 for a fourth check. ETH is FOURTH OF FIVE for a second consecutive check - relative weakness OPPOSING this check's only claimable category."},
+    "BNBUSDT": {"last": 778.97, "chg_pct": 1.468, "high": 786.18, "low": 764.1, "quote_volume": 99124161178.61},
+    "SOLUSDT": {"last": 117.74, "chg_pct": 2.169, "high": 117.74, "low": 112.6, "quote_volume": 423830559.09,
+      "note": "24h quote volume ~234-313x smaller than the other four (423.8M against 99.1-132.8 BILLION)."},
+    "XRPUSDT": {"last": 1.5528, "chg_pct": 3.555, "high": 1.5554, "low": 1.4543, "quote_volume": 132759678783.95},
+    "market_context_claimed": false,
+    "market_context_reason": "BTC crossed back ABOVE zero (-0.165% -> +0.357%), but the 02:00 check measured ~three quarters of the previous crossing as 24h reference-price roll rather than price; the same contamination applies, so it is not read as a market event (L-006). ETH fourth of five - opposes the long."
+  },
+  "derivatives": {
+    "claimed": false,
+    "funding_settled_at": "2026-09-25T00:00Z (as forecast by the 02:00 check)",
+    "next_funding_time": "2026-09-25T08:00Z - AT THE 16:00 SLOT",
+    "funding_pct": {"BTCUSDT": 0.007025, "ETHUSDT": 0.009096, "BNBUSDT": 0.0, "SOLUSDT": 0.004047, "XRPUSDT": 0.003071},
+    "eth_open_interest": 11897688432.812,
+    "eth_open_interest_prev_check": 11887027055,
+    "eth_open_interest_change_pct": 0.09,
+    "note": "OI is the field that matters and it is FLAT at +0.090%. ETH funding is a THIRD consecutive unclamped reading (+0.009626% -> +0.009225% -> +0.009096%), answering the 02:00 note's test YES. BTCUSDT did NOT stay snapped to its cap: +0.007025% against exactly +0.010000% one check earlier. Only ONE of five is now on a bound (BNBUSDT 0.000000%), down from two. Funding alone has never carried derivatives in this experiment."
+  },
+  "artifact_scan_L001": {
+    "frames_scanned": ["5m", "1h", "4h", "1d"],
+    "closed_bars_per_higher_frame": 30,
+    "gate": "range/median >= 2.0 OR wick-to-body >= 5",
+    "tradable_set": "EMPTY - all five contracts excluded",
+    "contracts": {
+      "BTCUSDT": {"binding_print": "09-21 08:00Z 4h H95804.10", "range_pct": 17.392, "range_multiple": 19.04, "median_4h_pct": 0.9133, "daily_09_21_multiple": 7.96, "status": "excluded, 27th consecutive check", "unrevised": true},
+      "SOLUSDT": {"binding_print": "09-22 16:00Z 4h L106.67", "range_pct": 11.175, "range_multiple": 7.04, "wick_body": 15.7, "daily_09_22_wick_body": 31.0, "quote_volume_shortfall": "~234-313x", "status": "excluded, 17th consecutive check", "unrevised": true},
+      "XRPUSDT": {"binding_print": "09-23 04:00Z 4h H1.6855", "wick_body": 40.6, "range_multiple": 2.25, "daily_09_23_multiple": 2.71, "status": "excluded", "unrevised": true},
+      "BNBUSDT": {"binding_print": "09-24 00:00Z 4h H780.90", "wick_body": 20.5, "status": "excluded", "unrevised": true,
+        "NEW_SECOND_4H_FLAG": {"bar": "09-24 16:00Z 4h", "o": 780.70, "h": 786.18, "l": 776.64, "c": 780.02, "wick_body": 14.0, "range_multiple": 0.96, "body_pct": 0.087,
+          "note": "TIGHTENING. Carries the new 24h high 786.18, so BNB stays caught even after 780.90 leaves the 4h window at 09-25 20:00Z. This is the 'fifth mechanism' the 02:00 note predicted. RECORDED AGAINST INTEREST: it flags on wick/body ALONE with an entirely ordinary range (rm 0.96x) and a 0.087% body, which inflates the ratio mechanically - the same weakness the review recorded against ETH's citation. It changes nothing; BNB is excluded on 780.90 regardless."}},
+      "ETHUSDT": {"binding_print": "09-21 08:00Z 4h H2850.00", "range_pct": 7.221, "range_multiple": 5.27, "median_4h_pct": 1.3711, "status": "excluded - review-ruled", "unrevised": true,
+        "daily_reproduction": {"bar": "09-21 00:00Z 1d", "o": 2642.90, "h": 2850.00, "l": 2641.70, "c": 2775.61, "range_pct": 7.885, "range_multiple": 2.53, "median_1d_pct": 3.1154,
+          "note": "REPRODUCED FOR A SECOND CONSECUTIVE CHECK (02:00 read 2.40x) after three checks recorded it as NOT reproducible. Referred to the review. Moves in the direction of CONFIRMING the exclusion."}}
+    },
+    "isolation_test": "Not required this check - no new extreme was proposed as a level. 2671.94 (09-24 13:35Z) remains NOT usable as a level, isolated.",
+    "standing_note": "The standing note forbids resolving the empty set from a check by reinterpreting a frame, re-dating a print or widening the watchlist. P-011 puts that decision with Edward."
+  },
+  "book_sweeps_L005": {
+    "sweeps": 5,
+    "max_order_notional_usdt": 2500,
+    "times_utc": ["01:05:53", "01:06:50", "01:07:12", "01:08:04", "01:08:56"],
+    "bid_notional_usdt": {
+      "BTCUSDT": [11704010.43, 100313.12, 76.17, 253.85, 84.59],
+      "ETHUSDT": [2437419.03, 1767092.52, 18272290.47, 28284079.93, 18169410.62],
+      "BNBUSDT": [7727.38, 9667884.41, 6263525.30, 11105436.84, 31.15],
+      "SOLUSDT": [7717.86, 120157.80, 12840.32, 8.24, 28046.76],
+      "XRPUSDT": [1551700.00, 45034098.91, 6490524.17, 28795043.30, 5760038.95]
+    },
+    "ask_notional_usdt": {
+      "BTCUSDT": [1194168.81, 3731370.40, 3696002.56, 3545822.55, 3454935.92],
+      "ETHUSDT": [6657574.83, 29.64, 6599033.83, 26.95, 3999994.94],
+      "BNBUSDT": [18000365.95, 18000319.21, 17922418.21, 17921444.44, 16722.34],
+      "SOLUSDT": [277020.92, 268970.65, 8.24, 253118.64, 37.67],
+      "XRPUSDT": [10855638.91, 29507000.00, 29506783.36, 12541999.14, 18608749.63]
+    },
+    "spread_bps_max_of_check": 15.294,
+    "spread_bps_max_contract": "SOLUSDT sweep 2",
+    "cap_25bps_fired": 0,
+    "consecutive_checks_with_cap_blind": 18,
+    "findings": [
+      "BTCUSDT's BID FAILED ON THREE CONSECUTIVE SWEEPS (3, 4, 5): 76.17 -> 253.85 -> 84.59 USDT, 10x to 33x smaller than one maximum order, WITH NO RECOVERY OBSERVED BEFORE THE CHECK ENDED. L-005 records adjacent PAIRS as the rare form; THIS IS THE FIRST TRIPLE ON RECORD.",
+      "ETHUSDT's ASK - the exact side this check's only claimable candidate (a long) would have to cross - printed 29.64 USDT at sweep 2 and 26.95 USDT at sweep 4, 84x and 93x smaller than one maximum order. THESE ARE THE TWO SMALLEST ETH CROSSED-SIDE PRINTS OF THE EXPERIMENT (previous record 40.3 USDT, 09-24 16:00), quoted at 3.08 and 2.04 bps.",
+      "BNBUSDT printed 7,727 USDT at sweep 1 and 31.15 USDT at sweep 5 with its ask at 16,722 USDT on the same sweep - both sides unusable at once.",
+      "SOLUSDT lost its ask at sweep 3 (8.24 USDT), its bid at sweep 4 (8.24 USDT) and its ask again at sweep 5 (37.67 USDT).",
+      "RECORDED AGAINST INTEREST: XRPUSDT was the ONLY contract healthy on both sides across all five sweeps - and it is excluded on artifact grounds.",
+      "The 25 bps cap fired ZERO times on a check where a bid printed 8.24 USDT. Eighteenth consecutive check with the cap blind to the finding. -> P-009."
+    ]
+  },
+  "noise_floor_L002_L007": {
+    "binding_N_pct": 0.327,
+    "binding_N_bar": "2026-09-24 22:15Z 5m - O2684.33 H2684.77 L2676.02 C2676.08, the bar that MADE the 2676.02 higher low the entire long structure rests on",
+    "binding_N_stated_before_rolled_forward": true,
+    "rolled_forward_N_1h_pct": 0.237,
+    "rolled_forward_N_bar": "2026-09-25 01:00Z 5m",
+    "required_span_binding_pct": 0.9575,
+    "required_span_rolled_forward_pct": 0.7325,
+    "forecast_from_02_00_check": "The 16:15Z bar (1.074%) leaves the 3h window at ~19:15Z and the 5h window at ~21:15Z, both before this check; 18:00Z-01:00Z is the quietest stretch of the day; if quiet, N collapses toward ~0.10-0.20% and the required span falls to ~0.39-0.64% - UNLESS a new impulse bar prints.",
+    "forecast_outcome": "CONFIRMED. N(full preceding hour) = 0.237%, inside the predicted band. Sixth consecutive confirmed forecast.",
+    "FIRST_OF_ITS_KIND": "AGAINST THE BINDING WINDOW THE SPAN SCREEN FAILS BY 0.0711pp; AGAINST THE ROLLED-FORWARD WINDOW IT WOULD PASS BY 0.1539pp. This is the FIRST instance in the experiment where the rolled-forward figure would have converted a REFUSAL into a PERMISSION. Every prior instance inflated a ratio or made a stop look noise-safe. Stated, not scored - the clock is the review's call.",
+    "watchlist_context": "Only ETHUSDT was measured in full; the other four are excluded under L-001 and no construction was contemplated on them."
+  },
+  "span_screen_L004": {
+    "constructions_priced": 2,
+    "long": {
+      "entry_ask": 2695.00,
+      "stop": 2675.50,
+      "stop_rationale": "below the 2676.02 fourth higher low that defines the setup",
+      "risk_pct": 0.7236,
+      "risk_in_N": 2.21,
+      "noise_safe": true,
+      "nearest_valid_target": 2699.39,
+      "targets_refused_on_validity": [2718.09, 2727.77],
+      "target_refusal_reason": "reachable ONLY by jumping 2699.39, a level that has rejected THREE times in nine hours - L-004 forbids a target reached by jumping intervening structure",
+      "reward_pct": 0.1629,
+      "gross_rr": 0.225,
+      "net_rr": 0.03,
+      "span_available_pct": 0.8864,
+      "span_required_pct": 0.9575,
+      "miss_pp": 0.0711,
+      "result": "FAILS"
+    },
+    "short": {
+      "entry_bid": 2694.99,
+      "stop": 2700.00,
+      "stop_rationale": "above the 2699.39 level that defines the setup",
+      "risk_pct": 0.1859,
+      "risk_in_N": 0.57,
+      "noise_safe": false,
+      "nearest_target": 2676.02,
+      "reward_pct": 0.7038,
+      "net_rr": 3.03,
+      "result": "REFUSED OUTRIGHT BY L-002 - SUB-NOISE STOP, despite being the ONLY construction of the check to clear the 1.5 floor",
+      "noise_safe_stop_would_be": "above ~2703.6 - a price with no structure of any kind, itself refused by L-004"
+    },
+    "disjointness": "SECOND CONSECUTIVE CHECK, AND THE FIRST IN BOTH DIRECTIONS AT ONCE. The only construction clearing the floor rests on a 0.57x N stop; the only construction with a noise-safe stop pays 0.03 net. The two conditions do not overlap anywhere, and no entry price rescues that because moving the entry moves them in opposite directions."
+  },
+  "volume_remeasurement_L006": {
+    "claimed": false,
+    "median_100bar": 322623493,
+    "window_100bar": "09-24 16:50Z - 09-25 01:00Z",
+    "median_honest_session": 248297996,
+    "window_honest_session": "09-24 22:15Z onward, 34 bars, containing the setup",
+    "session_median_vs_100bar_pct": -23.0,
+    "DIRECTION_OF_REMEASUREMENT": "TOWARD CLAIMING - THE REVERSE OF THE 02:00 CHECK. At 02:00 the 100-bar median was 18% INFLATED by quiet Asian hours and re-measurement DISSOLVED the claim. Here the 100-bar median is 23.0% HIGHER than the honest window, so re-measuring makes the up-impulses LARGER: 00:05Z 4.93x and 01:00Z 3.31x against 3.80x and 2.55x. THIS IS THE FIRST RE-MEASUREMENT IN THE EXPERIMENT THAT STRENGTHENED A CANDIDATE CATEGORY RATHER THAN DISSOLVING IT. Recorded against interest.",
+    "refusal_basis": "The strategy's own definition - 'expansion on the move, drying up on the pullback'. THE PULLBACK DID NOT DRY UP: the SECOND-LARGEST bar of the entire session is the 22:15Z DOWN bar at 3.77x the session median, and it is the bar that made the 2676.02 low the long rests on.",
+    "directional_separation": {"up_bars": 19, "up_above_median": 11, "up_pct": 58, "down_bars": 15, "down_above_median": 6, "down_pct": 40,
+      "note": "far too weak to carry a category on 34 bars"}
+  },
+  "evidence_gate": {
+    "passed": false,
+    "categories_supporting_entry": 1,
+    "minimum_required": 2,
+    "claimed": [{"category": "trend", "direction": "long"}],
+    "refused": ["price_action", "volume", "derivatives", "market_context", "news"],
+    "gate_history_ETHUSDT": [
+      {"check": "2026-09-24 23:00", "categories": 3, "direction": "short"},
+      {"check": "2026-09-25 00:00", "categories": 0, "direction": null},
+      {"check": "2026-09-25 02:00", "categories": 1, "direction": "short"},
+      {"check": "2026-09-25 09:00", "categories": 1, "direction": "long"}
+    ],
+    "FINDING": "THE GATE HAS READ 3 -> 0 -> 1 -> 1 ON ONE CONTRACT ACROSS FOUR CONSECUTIVE HOURLY CHECKS, AND BETWEEN THE LAST TWO THE SURVIVING CATEGORY SWITCHED SIDES - price_action SHORT at 02:00, trend LONG here. It is not merely never two; it is not even consistently one side.",
+    "closed_bars_that_moved_the_gate": {
+      "eth_4h_09_24_16_00Z": {"o": 2682.25, "h": 2699.39, "l": 2660.49, "c": 2694.09,
+        "note": "CLOSED above the 02:00 note's 2682.25 'recovery continues' threshold; new high 2699.39 above the 2698.06 unchanged for three checks. FORMING-BAR TRAP DEMONSTRATED A THIRD TIME IN ONE BAR: read C2676.00 at 00:00, C2662.20 at 02:00, CLOSED at C2694.09 - the final value 31.89 points above the last forming read. Both predecessors were right to refuse it a reading."},
+      "eth_daily_09_24": {"o": 2684.16, "h": 2699.39, "l": 2633.31, "c": 2686.59,
+        "note": "CLOSED ABOVE the 09-23 close 2684.16. The falling daily-close sequence 2775.61 -> 2752.43 -> 2684.16 DID NOT extend to four - IT BROKE. First higher daily close in four days."},
+      "eth_4h_higher_lows": [2633.31, 2640.00, 2660.49, 2676.02],
+      "against_interest": "The LAST closed 4h bar (09-24 20:00Z) is itself a lower high AND a lower close (H2695.78 < 2699.39, C2686.59 < 2694.09), so the long trend claim rests on lows and the daily close, NOT on highs."
+    }
+  },
+  "lessons_applied": ["L-001", "L-002", "L-003", "L-004", "L-005", "L-006", "L-007"],
+  "lesson_clocks": {
+    "L-002_tally": "one of three - NOT advanced and could not be; no construction was both noise-safe and floor-clearing, so nothing was resolved. The two 09-23 23:00 BNB constructions remain live and unresolved.",
+    "L-003_clock": "zero - no construction survived L-002/L-004 to be requoted",
+    "L-006_clock": "zero",
+    "L-007_clock": "zero - sixth consecutive confirmed forecast",
+    "note": "Clocks are STATED, NOT SCORED. Only the daily review may change a lesson."
+  },
+  "orders_placed": false,
+  "demo_order_sent": false,
+  "exchange_exit_reconciled": false,
+  "engine_result": "no_trade - accepted on the FIRST submission (the symbol field was supplied per the 02:00 check's finding that the engine rejects symbol: null with Binance -1121)",
+  "credentials_in_file": false
+}

@@ -1,0 +1,23 @@
+{
+  "paper_trading_only": true,
+  "run_id": "2026-09-25_check_2100",
+  "slot": "2026-09-25_check_2100",
+  "slot_scheduled_local": "2026-09-25T21:00:00+08:00",
+  "decided_at_local": "2026-09-25T21:05:32+08:00",
+  "late_run": false,
+  "action": "no_trade",
+  "symbol": "ETHUSDT",
+  "symbol_note": "ETHUSDT is the contract this check analysed, not a contract being traded; the engine rejects symbol: null.",
+  "evidence_gate_passed": false,
+  "research_note": "05-交易记录-data/journal/2026-09-25_check_2100-research.md",
+  "research_evidence": "05-交易记录-data/evidence/2026-09-25_check_2100-research.json",
+  "reason": "Tradable set empty under L-001 (standing exclusion of all five contracts). Independently: L-004 - ETH binding N 1.128% needs ~2.96% span vs 1.94% structure; L-005 - ETH unquoted both sides at 2 of 3 sweeps (bid 22/ask 14 USDT), every contract thin at least once, XRP spread 54.38 bps over cap.",
+  "thesis": "No entry. ETH's 12:00Z hour retested the 2699.39/2699.53 ex-ceiling, wicked to 2688.28 and reclaimed (C2717.13); the dip was broad across all five, so it is real. The retest bar raised ETH N(1h) to 1.128%, so the 20:00 L-007 forecast of a falling N was wrong in the tightening direction; the required span (~2.96%) exceeds the whole 2688-2740 structure (L-004). L-005: ETH unquoted on both sides at two of three sweeps; XRP breached the 25 bps cap. L-006: 24h figures not claimed. Lessons applied: L-001, L-004, L-005, L-006, L-007. None loosened.",
+  "evidence": [
+    {"category": "price_action", "source": "demo-fapi /fapi/v1/klines ETHUSDT 1h", "note": "Retest wicked through 2699 to 2688.28 and reclaimed; not claimed - no tradable contract."},
+    {"category": "market_context", "source": "demo-fapi /fapi/v1/klines 1h all five", "note": "Broad same-direction dip and recovery; not claimed - no tradable contract."}
+  ],
+  "lessons_applied": ["L-001", "L-004", "L-005", "L-006", "L-007"],
+  "position_before": null,
+  "orders_placed": false
+}

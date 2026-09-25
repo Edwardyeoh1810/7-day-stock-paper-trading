@@ -1,0 +1,18 @@
+{
+  "run_id": "2026-09-25_check_2100-research",
+  "paper_trading_only": true,
+  "source_host": "demo-fapi.binance.com (public market endpoints)",
+  "sampled_at_utc": "2026-09-25T13:04:12Z/13:04:56Z",
+  "eth": {"last": 2711.87, "h1_12z": [2715.91, 2721.75, 2688.28, 2717.13], "h4_08z": [2671.44, 2740.42, 2671.18, 2715.90],
+          "N_1h_pct": 1.128, "N_3h_pct": 1.128, "median_5m_pct": 0.124, "required_span_pct": 2.96, "available_structure_pct": 1.94,
+          "funding": 0.00006828, "open_interest": 11918311012.084},
+  "change_24h_pct": {"BTCUSDT": 0.993, "ETHUSDT": 2.334, "BNBUSDT": 0.662, "SOLUSDT": 5.823, "XRPUSDT": 8.201},
+  "N_1h_pct": {"BTCUSDT": 0.720, "ETHUSDT": 1.128, "BNBUSDT": 0.469, "SOLUSDT": 1.108, "XRPUSDT": 1.156},
+  "book_sweeps_usdt": [
+    {"t": "13:04:12Z", "BTC": [23408920, 101], "ETH": [22, 475269], "BNB": [840613, 12712917], "SOL": [12881, 75736], "XRP": [32, 4803626], "XRP_spread_bps": 54.38},
+    {"t": "13:04:34Z", "BTC": [169, 19960155], "ETH": [301, 271], "BNB": [4100487, 9711939], "SOL": [12485, 11853], "XRP": [11101797, 7963043]},
+    {"t": "13:04:56Z", "BTC": [4966183, 19908200], "ETH": [22, 14], "BNB": [3821469, 156], "SOL": [67631, 130596], "XRP": [19553615, 596879]}
+  ],
+  "l007_forecast_check": "20:00 forecast N(1h) falls: WRONG. The 12:00Z retest impulse raised ETH N(1h) 0.755% -> 1.128% (the tightening direction).",
+  "lessons_applied": ["L-001", "L-004", "L-005", "L-006", "L-007"]
+}

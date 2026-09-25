@@ -1,0 +1,23 @@
+{
+  "paper_trading_only": true,
+  "run_id": "2026-09-25_check_2300",
+  "slot": "2026-09-25_check_2300",
+  "slot_scheduled_local": "2026-09-25T23:00:00+08:00",
+  "decided_at_local": "2026-09-25T23:06:00+08:00",
+  "late_run": false,
+  "action": "no_trade",
+  "symbol": "ETHUSDT",
+  "symbol_note": "ETHUSDT is the contract this check analysed, not a contract being traded; the engine rejects symbol: null.",
+  "evidence_gate_passed": false,
+  "research_note": "05-交易记录-data/journal/2026-09-25_check_2300-research.md",
+  "research_evidence": "05-交易记录-data/evidence/2026-09-25_check_2300-research.json",
+  "reason": "Tradable set empty under L-001 (standing exclusion of all five contracts; daily-bar prints do not leave a 30-bar daily window before 2026-10-21). Independently: L-005 - no contract held a usable book on both sides across three sweeps (BTC bid 50 USDT, XRP bid 68/18 USDT, SOL both sides 257-580 USDT at several sweeps, ETH bid 19,972 USDT at sweep 3); SOL spread 32.37 bps, over the 25 bps cap.",
+  "thesis": "No entry. ETH extended the decline to a new low of 2677.40 in the 14:00Z hour and has since gone quiet around 2692-2695; 2699-2701.8 remains overhead resistance and 2667.22 the swing low below. L-007: the 22:00 forecast (N(1h) falls below 0.55% if 14:00Z is quiet; a new-low bar binds if one prints) resolved on the conditional branch - a new low printed on the 14:00Z 5m bar (0.520%), N(1h)=0.520%, N(2h)=0.554%, and the 12:20Z 1.128% bar is still inside N(3h). Binding N is at least 0.52% and the span screen (L-004) was not reached because L-001 already decides. L-006: the N(1h) change is window arithmetic plus one new bar, not a relaxation. Lessons applied: L-001, L-004, L-005, L-006, L-007. L-002 and L-003 were not reached. None loosened.",
+  "evidence": [
+    {"category": "price_action", "source": "demo-fapi /fapi/v1/klines ETHUSDT 5m/1h", "note": "New low 2677.40 at 14:00Z, below-resistance consolidation; not claimed - no tradable contract."},
+    {"category": "derivatives", "source": "demo-fapi /fapi/v1/premiumIndex", "note": "Funding +0.0100% on BTC/ETH/SOL/XRP, 0 on BNB, settles 16:00Z; not claimed - no tradable contract."}
+  ],
+  "lessons_applied": ["L-001", "L-004", "L-005", "L-006", "L-007"],
+  "position_before": null,
+  "orders_placed": false
+}

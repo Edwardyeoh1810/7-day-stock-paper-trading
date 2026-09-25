@@ -1,0 +1,194 @@
+{
+  "run_id": "2026-09-24_check_0000-research",
+  "slot_scheduled_local": "2026-09-24T00:00+08:00",
+  "run_started_local": "2026-09-24T00:03:48+08:00",
+  "on_time": true,
+  "late_run": false,
+  "minutes_after_slot_at_decision": 12,
+  "collected_utc": ["2026-09-23T16:04:49Z", "2026-09-23T16:04:56Z", "2026-09-23T16:06:08Z", "2026-09-23T16:06:31Z", "2026-09-23T16:07:03Z", "2026-09-23T16:07:40Z"],
+  "source": "demo-fapi.binance.com public read-only endpoints: /fapi/v1/ticker/bookTicker, /fapi/v1/ticker/24hr, /fapi/v1/premiumIndex, /fapi/v1/openInterest, /fapi/v1/klines, /fapi/v1/fundingRate. No signed call, no POST, no credentials used by this note.",
+
+  "account": {"flat": true, "cash_usdt": 5000, "equity_usdt": 5000, "positions": [], "open_orders": [], "nothing_to_reconcile": true, "no_exit_order_has_ever_been_placed_in_this_experiment": true},
+
+  "headline": "THE 23:00 NOTE ASKED WHETHER A SHELF FORMED ABOVE 766.72. IT DID NOT - 766.72 BROKE, AND SO DID 761.25. BNB MADE A NEW 24h LOW AT 760.09. THE SHORT FINALLY HAD A SPAN TO PRICE, AND IT STILL FAILED - THEN THE LOW WAS BOUGHT BACK INSIDE THE CHECK.",
+
+  "ticker_24h_at_16_04_49Z": {
+    "BTCUSDT": {"last": 83959.3, "chg24h_pct": -2.849, "high24h": 87235.5, "low24h": 83686.9, "quote_vol_musdt": 114170.51, "mark": 83927.07},
+    "ETHUSDT": {"last": 2651.2, "chg24h_pct": -3.453, "high24h": 2786.81, "low24h": 2641.37, "quote_vol_musdt": 120062.34, "mark": 2651.39},
+    "BNBUSDT": {"last": 761.48, "chg24h_pct": -3.446, "high24h": 798.3, "low24h": 760.09, "quote_vol_musdt": 101988.17, "mark": 761.48},
+    "SOLUSDT": {"last": 113.99, "chg24h_pct": -2.888, "high24h": 119.66, "low24h": 106.67, "quote_vol_musdt": 456.12, "mark": 114.1, "note": "low24h 106.67 is the excluded artifact, STILL contaminating the live field a SEVENTH consecutive check"},
+    "XRPUSDT": {"last": 1.4996, "chg24h_pct": -4.854, "high24h": 1.6855, "low24h": 1.4935, "quote_vol_musdt": 137808.72, "mark": 1.49962, "note": "high24h 1.6855 is the excluded artifact, STILL contaminating the live field; the print is 09-23 04:00Z and does not leave the 24h window until 09-24 04:00Z"},
+    "observation": "EVERY CONTRACT MADE A FRESH 24h LOW SINCE THE 23:00 CHECK. The decline that started with the 14:10Z flush continued for a further 55 minutes rather than stabilising. 24h change deteriorated on all five: BTC -1.965 -> -2.849, ETH -2.394 -> -3.453, BNB -2.513 -> -3.446, SOL -1.464 -> -2.888, XRP -2.212 -> -4.854. XRP is now the WEAKEST of the five, having been the strongest at 22:00 - see the L-006 note on why its 22:00 reading was arithmetic."
+  },
+
+  "item_1_funding_forecast_vs_outcome_test_FINALLY_RUN": {
+    "background": "The 20:00 note set this test and it was deferred FOUR times because no check sat on a settlement. 00:00+08:00 IS 16:00Z, so this slot is the first that could run it.",
+    "forecast_recorded_at_23_00_check_15_05Z": {"BTCUSDT": 0.01, "ETHUSDT": 0.01, "XRPUSDT": 0.01, "BNBUSDT": 0.0, "SOLUSDT": -0.004060},
+    "settled_at_16_00Z_from_fapi_v1_fundingRate": {"BTCUSDT": 0.01, "ETHUSDT": 0.01, "XRPUSDT": 0.01, "BNBUSDT": 0.0, "SOLUSDT": -0.003708},
+    "result": "FOUR OF FIVE SETTLED EXACTLY AT THE FORECAST. The fifth, SOLUSDT, settled -0.003708 against a -0.004060 forecast: direction correct, magnitude 8.7% smaller, a 0.000352pp miss over the final 55 minutes.",
+    "THE_FINDING_IS_NOT_THAT_THE_FORECAST_WORKED": "Four of the five were sitting AT THE CLAMP (+0.010000% is the cap, BNB's 0.00000000 is the floor of its band). A prediction of a clamped value is not a prediction. THE ONLY CONTRACT CARRYING INFORMATION WAS THE ONLY ONE THAT MISSED. Funding forecast is therefore NOT a usable derivatives input on this host while four of five contracts are pinned, and this check does not claim `derivatives` on it.",
+    "SOL_funding_flipped_sign": "SOLUSDT settled NEGATIVE for the first time in the recorded window: 09-22 16:00Z +0.01, 09-23 00:00Z +0.01, 09-23 08:00Z +0.01, 09-23 16:00Z -0.003708. Recorded, not traded - SOL is excluded under L-001 anyway.",
+    "XRP_funding_oscillates": "-0.017407, +0.01, -0.009057, +0.01 across four consecutive settlements. Alternating sign at every settlement is not a positioning signal, it is noise.",
+    "next_funding_utc": "2026-09-24T00:00:00Z", "next_funding_local": "2026-09-24T08:00+08:00", "note": "No check sits on 00:00Z; the 09:00 slot is 01:00Z, one hour after."
+  },
+
+  "item_2_the_766_72_question_answered_NO_SHELF": {
+    "the_question_as_set_by_the_23_00_note": "HAS A SHELF FORMED ABOVE 766.72 - held with higher lows built on top, not merely touched?",
+    "answer": "NO. It held for ~25 minutes and then broke. There was never a higher low.",
+    "sequence_5m_after_the_23_00_decision_15_11Z": [
+      {"t": "15:15Z", "h": 769.03, "l": 767.61},
+      {"t": "15:20Z", "h": 768.1, "l": 766.74},
+      {"t": "15:25Z", "h": 768.27, "l": 766.2},
+      {"t": "15:30Z", "h": 766.69, "l": 766.16, "note": "first 5m high BELOW 766.72 - the level stopped capping and started failing"},
+      {"t": "15:35Z", "h": 766.7, "l": 763.52, "range_pct": 0.415, "vol_m": 637.7, "note": "BREAKDOWN BAR - the setup-defining bar for any short at this check"},
+      {"t": "15:40Z", "h": 764.05, "l": 762.92},
+      {"t": "15:45Z", "h": 764.05, "l": 762.9},
+      {"t": "15:50Z", "h": 762.97, "l": 762.1},
+      {"t": "15:55Z", "h": 762.97, "l": 761.38},
+      {"t": "16:00Z", "h": 761.62, "l": 760.09, "note": "NEW 24h LOW, below the 761.25 low of the 14:20Z flush"},
+      {"t": "16:05Z", "h": 764.96, "l": 761.52, "c": 764.96, "range_pct": 0.452, "vol_m": 470.4, "note": "*** THE LOW WAS BOUGHT. Unbroken up-bar closing AT ITS HIGH, reclaiming 762.97 AND 764.05. This bar printed WHILE THIS CHECK WAS PRICING THE SHORT. ***"}
+    ],
+    "lower_high_sequence_that_was_the_shorts_only_premise": "769.49 -> 769.03 -> 768.27 -> 766.70 -> 764.05 -> 762.97 -> 761.64, THEN 764.96 - THE SEQUENCE IS BROKEN. The short's structural premise did not survive the check that priced it.",
+    "levels_confirmed_from_daily_bars": {"09-19_low": 757.9, "09-20_low": 747.64, "09-21_low": 766.72, "09-23_bar": {"o": 788.7, "h": 798.3, "l": 760.09, "c": 764.31, "range_pct": 3.58}},
+    "daily_closes": "799.71 -> 788.70 -> 764.31, an unbroken descending sequence."
+  },
+
+  "item_3_noise_floor_N_stated_ALL_THREE_WAYS_L002_L006": {
+    "window": "FULL preceding hour, 15:10Z to 16:05Z, twelve 5m bars",
+    "bars_pct": [0.139, 0.185, 0.177, 0.27, 0.069, 0.415, 0.148, 0.151, 0.114, 0.209, 0.201, 0.452],
+    "N_largest_bar_in_window": 0.452,
+    "N_largest_bar_in_window_is": "16:05Z - THE BOUNCE BAR, i.e. the bar that runs AGAINST the short",
+    "N_setup_defining_breakdown_bar_15_35Z": 0.415,
+    "N_excluding_both": 0.27,
+    "N_including_the_days_structure_defining_14_10Z_flush": 1.846,
+    "THE_23_00_FORECAST_WAS_CORRECT": "The 23:00 note wrote: 'The 14:10Z bar ages out of the preceding hour at ~15:15Z; by 16:00Z BNB's N is back near 0.2-0.5%.' MEASURED: 0.415-0.452%. Inside the forecast band. N COLLAPSED 1.846% -> 0.452% AND NOTHING HAPPENED EXCEPT SIXTY MINUTES - this is L-006's mechanism for the second consecutive check, and in the direction that FLATTERS tight stops, opposite to the 23:00 check where the window movement made stops look worse.",
+    "how_this_check_handled_it": "Every construction below is priced against N = 0.415%, the setup-defining breakdown bar. This is the HONEST figure: it is not the flattering 0.270% that exists only because the window rolled, and not the 0.452% bounce bar that would refuse the short for the wrong reason. The 1.846% figure is recorded to show that a short measured against the bar that defines the DAY's structure is hopeless at any stop."
+  },
+
+  "item_4_geometry_L002_L004_THE_ENTRY_SWEEP_DEMONSTRATES_L004s_CENTRAL_CLAIM": {
+    "note": "L-004 states that as the entry moves, EITHER the stop becomes noise-safe and the ratio collapses, OR the ratio passes and the stop goes sub-noise, and that the two conditions move in opposite directions. THIS CHECK OBSERVED BOTH ENDS OF THAT SWEEP ON ONE CONTRACT IN 164 SECONDS OF LIVE PRICE, NOT AS A HYPOTHETICAL.",
+    "construction_A_at_first_quote_16_04_56Z": {
+      "side": "short", "entry_bid": 761.52, "stop": 766.72, "stop_basis": "above the broken 09-21 daily low - the structurally correct 'thesis is wrong' level",
+      "risk_pct": 0.683, "stop_vs_N": "1.645x N - NOISE-SAFE, passes L-002",
+      "target": 757.9, "target_basis": "09-19 daily low, the NEAREST structural level below", "reward_pct": 0.475,
+      "net_rr": 0.538, "verdict": "REFUSED - net RR 0.538, barely a third of the 1.5 floor"
+    },
+    "construction_A_span_screen_L004": {
+      "span_stop_to_nearest_target_pct": 1.158,
+      "required_2_5N_plus_fees_pct": 1.178,
+      "arithmetic": "2.5 x 0.415 + 0.14 = 1.178 required; 766.72 to 757.90 is 8.82 points on 761.52 = 1.158 available",
+      "verdict": "*** THE SPAN SCREEN REFUSES THE SHORT BY 0.020 PERCENTAGE POINTS. The structure did not offer the room, so no entry price rescues it. This is the FIRST time in the experiment the span screen has failed by a margin this thin, and it is still a failure. ***",
+      "what_1_5_net_would_require": "target 752.65 - BELOW the 09-19 daily low 757.90, ABOVE the 09-20 low 747.64, i.e. IN THE VACUUM BETWEEN THEM, reached only by jumping 757.90, which is untested support. L-004 explicitly forbids this."
+    },
+    "construction_B_at_fourth_and_fifth_quote_16_07_03Z_and_16_07_40Z": {
+      "side": "short", "entry_bid": 764.89, "stop": 766.72, "risk_pct": 0.239,
+      "stop_vs_N": "*** 0.58x N - SUB-NOISE. L-002 REFUSES OUTRIGHT. ***",
+      "target": 757.9, "reward_pct": 0.914, "net_rr": 2.73,
+      "verdict": "REFUSED. THE NUMBER PASSED THE FLOOR BY 82% AND THE STOP BECAME A POSITION SIZE AT THE SAME INSTANT."
+    },
+    "construction_C_noise_safe_stop_at_the_later_entry": {
+      "side": "short", "entry_bid": 764.89, "stop": 769.49, "stop_basis": "the level that rejected FOUR CONSECUTIVE TIMES at 14:20Z/14:25Z/14:30Z/14:35Z",
+      "risk_pct": 0.601, "stop_vs_N": "1.45x N - noise-safe", "target": 757.9, "reward_pct": 0.914,
+      "net_rr": 1.257, "verdict": "REFUSED - below the 1.5 floor. For 1.5 net the target must be 756.65, which again JUMPS 757.90 into the vacuum. L-004 refuses."
+    },
+    "conclusion": "THREE CONSTRUCTIONS, THE FULL ENTRY SWEEP, NOT ONE PASSES BOTH TESTS AT THE SAME TIME. At the honest entry the stop is noise-safe and the ratio is 0.538. At the drifted entry the ratio is 2.73 and the stop is 0.58x N. In between, the only noise-safe stop pays 1.257. The span simply is not there.",
+    "the_long": "REFUSED WITHOUT PRICING. Counter-trend on 5m, 1h, 4h and daily; the 760.09 low was three minutes old with no shelf on top; and the 23:00 check already refused a long at 766.85 under L-004 - see the tally below for how that one is doing."
+  },
+
+  "item_5_L003_REQUOTE_THE_STRONGEST_INSTANCE_OF_THE_EXPERIMENT": {
+    "bnb_bid_path": "761.52 (16:04:56Z) -> 762.22 -> 762.23 -> 764.89 (16:07:03Z) -> 764.89 (16:07:40Z)",
+    "elapsed_seconds": 164,
+    "net_rr_path_on_a_FIXED_766_72_stop": "0.538 -> 2.73",
+    "THE_PATHOLOGY": "*** A 5.1x INFLATION OF THE RATIO PRODUCED ENTIRELY BY THE ENTRY DRIFTING 3.37 POINTS TOWARD A FIXED STOP. Risk shrank 5.20 -> 1.83 points AND reward grew 3.62 -> 6.99 points - BOTH HALVES OF THE RATIO IMPROVING FROM ONE CAUSE, which is the exact signature L-003 names. ***",
+    "AND_THE_SAME_MOVE_BROKE_THE_PREMISE": "The drift IS the 16:05Z bar that reclaimed 762.97 and 764.05 and closed at its high on expanding volume, ending the lower-high sequence the short rested on. THE CONSTRUCTION CROSSED THE FLOOR AT THE EXACT MOMENT THE TRADE STOPPED EXISTING - the 22:00 amendment to L-003, reproduced almost word for word, on a different contract and a different day.",
+    "this_is_the_RESCUE_form_not_the_inflation_form": "Construction A FAILED at the first quote (0.538, and failed the span screen). It did not merely get flattered - it was RESCUED from a clean refusal into an apparent 2.73. L-003's strongest stated form is that the drift can rescue a construction that previously failed. CONFIRMED.",
+    "re_test_clock": "STAYS AT ZERO. This is the NINTH consecutive check in which the second quote was material, and the first in which it reversed a refusal into an apparent pass."
+  },
+
+  "item_6_L005_BOOK_QUALITY_FIVE_SAMPLES_EIGHTH_CONSECUTIVE_REFUSAL": {
+    "samples": 5, "elapsed_seconds": 164,
+    "bid_notional_usdt_by_sample": {
+      "BTCUSDT": [2168671.7, 18811030.2, 75.8, 219275.9, 5029461.2],
+      "ETHUSDT": [100.8, 53.0, 100.9, 100.9, 299.8],
+      "BNBUSDT": [920929.0, 68.6, 99.1, 3339494.4, 3281324.6],
+      "SOLUSDT": [12544.4, 85266.9, 70498.9, 11296.1, 99.8],
+      "XRPUSDT": [6.4, 19405065.3, 5559752.6, 5549219.8, 14427082.2]
+    },
+    "ask_notional_usdt_by_sample": {
+      "BTCUSDT": [58.8, 665445.3, 14232970.7, 75293402.3, 49821683.0],
+      "ETHUSDT": [2.7, 6350.6, 19855232.9, 9469900.5, 1850858.9],
+      "BNBUSDT": [76.2, 8897261.9, 11145120.0, 19981826.1, 20002208.8],
+      "SOLUSDT": [353484.7, 202180.6, 87457.8, 219762.1, 249416.0],
+      "XRPUSDT": [5490701.4, 15092541.8, 67419167.9, 15403876.7, 1223298.5]
+    },
+    "NOT_ONE_OF_THE_FIVE_HELD_BOTH_SIDES_QUOTED_ACROSS_ALL_FIVE_SAMPLES": true,
+    "BNBUSDT_is_the_binding_one_because_it_is_the_only_contract_this_check_wanted_to_trade": "*** A SHORT SELLS INTO THE BID. BNB's BID WAS WORTH 68.6 AND THEN 99.1 USDT ON TWO CONSECUTIVE SAMPLES - a ~13,400x collapse and a ~48,600x recovery in 55 seconds. Against a 2,500 USDT maximum order notional, a maximum-size market sell at those prints is TWENTY-FIVE TIMES THE ENTIRE VISIBLE BID. The reduce-only stop that would have rested on this book between checks cannot be assumed to fill near its trigger. ***",
+    "ETHUSDT_STRONGEST_SINGLE_CONTRACT_INSTANCE_YET": "*** ETH's BID WAS UNQUOTED ON ALL FIVE SAMPLES: 100.8, 53.0, 100.9, 100.9, 299.8 USDT. Not a collapse-and-recover - a book that never came back inside the check. AND AT SAMPLE 3 IT QUOTED 0.264 bps, THE TIGHTEST SPREAD OF THE FIVE, ON A BID WORTH 100.90 USDT. The price filter saw nothing at all. The 23:00 note's instruction - 'ETHUSDT IS OUT ON EXECUTION until its bid stops vanishing' - is confirmed, not relaxed. ***",
+    "spread_cap_breaches_25_bps": {"XRPUSDT": "37.281 bps at sample 1, recovering to 11.211/1.323/1.985/5.296", "note": "XRP breached the cap on the side a short would cross while its bid was worth 6.40 USDT - both filters firing on the same print."},
+    "BNB_spread_path_bps": [0.394, 11.801, 12.194, 0.915, 1.307],
+    "re_test_clock": "STAYS AT ZERO."
+  },
+
+  "item_7_L001_ARTIFACT_SCAN_ALL_FOUR_FRAMES": {
+    "frames_scanned": ["5m x30", "1h x30", "4h x30", "1d x20"],
+    "BTCUSDT": {
+      "verdict": "EXCLUDED - SEVENTEENTH CONSECUTIVE CHECK",
+      "fresh_5m_flags_today": 4,
+      "detail": "14:20Z H85099.0 (0.908% wick on 0.160% body, 5.7x, 6.14x median range), 14:35Z H85040.0 (8.4x), 14:40Z H84988.0 (18.1x), 14:45Z H84766.9 (20.7x). THE 23:00 CHECK RECORDED THREE OF THESE; A FOURTH AT 14:20Z IS NOW FLAGGED TOO.",
+      "persisting_4h_contamination": "09-21 12:00Z H95804.1 (11.709% wick on a 1.350% body, 8.7x, 15.11x median range), 09-21 16:00Z H91000.0 (6.4x), 09-21 20:00Z H90389.8 (4.390% on 0.076%, 57.8x). ALL THREE STILL SIT IN THE 4h FRAME AND HAVE NEVER MOVED.",
+      "note": "The 22:00 'cleanest scan of the experiment' was reversed within one hour on 09-23 and has NOT recovered. BTC is dirty on 5m AND 4h simultaneously."
+    },
+    "SOLUSDT": {"verdict": "EXCLUDED - SEVENTH CONSECUTIVE CHECK", "detail": "09-22 19:00Z 1h bar O118.09 H118.59 L106.67 C118.07: 9.654% lower wick on a 0.017% body, 567.9x, 12.42x median range. SAME EVENT ON THE 4h FRAME (09-22 16:00Z): 9.070% on 0.648%, 14.0x. Live low24h is STILL 106.67 against a last of 113.99."},
+    "XRPUSDT": {
+      "verdict": "EXCLUDED - and the REASON IS ITSELF AN L-006 INSTANCE",
+      "detail": "The 09-23 04:00Z 1.6855 print NO LONGER FLAGS on any frame by the ratio-and-range test. IT DID NOT GO ANYWHERE. XRP's 4h median range has EXPANDED from the level the 22:00 check measured to 2.174%, so the same unchanged bar no longer clears the 3x-median leg of the test. THE SCAN WENT CLEAN BECAUSE THE DENOMINATOR MOVED, NOT BECAUSE THE PRINT LEFT. The live high24h field still reads 1.6855 against a last of 1.4996, and the print does not leave the 24h window until 09-24 04:00Z. A THIRD MECHANISM BY WHICH A ROLLING WINDOW MANUFACTURES A CLEAN READING."
+    },
+    "ETHUSDT": {"verdict": "CLEAN on all four frames", "note": "readable - and refused on execution instead"},
+    "BNBUSDT": {"verdict": "CLEAN on all four frames", "note": "readable - the only contract this check priced. Its 14:10Z and 16:05Z bars are large-BODIED directional bars, not wick prints."}
+  },
+
+  "item_8_L002_RE_TEST_TALLY_NO_NEW_INSTANCE": {
+    "standing_count": "ONE of the three required. NOT ADVANCED BY THIS CHECK.",
+    "the_23_00_declined_BNB_short": {"entry": 766.74, "stop": 780.9, "target": 757.9, "highest_print_since": 769.03, "lowest_print_since": 760.09, "stop_hit": false, "target_reached": false, "verdict": "NEITHER - would still be open, ~0.24% in profit at 764.89. NOT AN INSTANCE."},
+    "the_23_00_declined_BNB_long": {"entry": 766.85, "stop": 758.55, "target": 780.9, "lowest_print_since": 760.09, "stop_hit": false, "margin_to_stop": "1.54 points, 0.20%", "target_reached": false, "verdict": "NOT AN INSTANCE, AND AGAINST THE LONG. This was the ONLY construction at the 23:00 check that cleared the 1.5 floor (net 1.529) and it was refused under L-004 because its path to 780.90 jumped 769.49. It went 0.88% AGAINST immediately and came within 0.20% of its stop. THE SPAN SCREEN'S REFUSAL IS SO FAR VINDICATED."},
+    "honesty_note": "Recorded with the same precision as the instance that counts, in both directions, per the standing rule. This check neither retires nor loosens any lesson; that is the review's call."
+  },
+
+  "item_9_evidence_gate_NOT_THE_BINDING_CONSTRAINT_AGAIN": {
+    "categories_arguable_for_a_BNBUSDT_short": {
+      "trend": "5m lower highs 769.49->769.03->768.27->766.70->764.05->762.97->761.64; 1h lower highs 792.35->791.04->788.63->785.72->786.19->783.46->783.05->782.55->769.03; daily closes 799.71->788.70->764.31; 09-21 daily low 766.72 broken and 24h low 760.09 made.",
+      "price_action": "766.72 broke after ~25 minutes of capping and was not reclaimed until 16:05Z; the 761.25 low of the 14:20Z flush also broke.",
+      "market_context": "ALL FIVE contracts made fresh 24h lows in the same window and all five deteriorated on 24h change - BTC 83686.9, ETH 2641.37, BNB 760.09, XRP 1.4935."
+    },
+    "count": 3,
+    "verdict": "THE GATE PASSES. SECOND CONSECUTIVE CHECK IN WHICH EVIDENCE IS NOT WHAT REFUSED THE TRADE. It failed on GEOMETRY (L-004 span, by 0.020pp), on the L-002 sub-noise stop at the drifted entry, on L-003's premise break, and independently on L-005 execution. FOUR INDEPENDENT REFUSALS.",
+    "derivatives_NOT_claimed": "Funding is clamped on four of five (see item 1) and open interest was sampled once. Not claimable.",
+    "news_RECORDED_NOT_CLAIMED": "No verifiable scheduled release ties to the continuation of the decline through 16:00Z. The TRUMP-XI SUMMIT AND STATE DINNER ARE TODAY, 2026-09-24. This is context, not a traded category: no source was verified inside this check, and per the strategy a single headline is never an entry reason. Anything opened at this slot or at 02:00 would be held THROUGH that event under the 24-hour limit."
+  },
+
+  "item_10_for_the_02_00_check": {
+    "1": "THE 16:05Z BOUNCE IS THE THING TO PRICE. BNB closed the 16:05Z 5m bar at its high 764.96 after making 760.09. ASK THE FALSIFIABLE QUESTION: did the bounce build a HIGHER LOW above 760.09 and reclaim 766.72, or did it fail under 766.72 and roll over? IF IT FAILED UNDER 766.72, THE SHORT'S LOWER-HIGH SEQUENCE IS RE-ESTABLISHED WITH A NEW, HIGHER, STRUCTURALLY HONEST STOP - and the span screen should be RE-RUN, because a stop at the bounce high with a target at 757.90 may finally clear 2.5N. THIS CHECK FAILED THE SPAN SCREEN BY 0.020 PERCENTAGE POINTS; A SLIGHTLY HIGHER ENTRY IS EXACTLY WHAT WOULD FIX IT. DO NOT REUSE THESE NUMBERS - re-measure from whatever structure exists at 18:00Z.",
+    "2": "N WILL MOVE AGAIN AND IT WILL BE ARITHMETIC. The 15:35Z breakdown bar (0.415%) and the 16:05Z bounce bar (0.452%) both age out of the preceding hour by ~17:05Z. If nothing new prints, N falls toward 0.20-0.27% and the SAME 766.72 stop will look like 2.5x N on unchanged structure. STATE N ALL THREE WAYS AGAIN - largest-in-window, setup-defining-bar, and excluding both - AND PRICE AGAINST THE SETUP-DEFINING ONE.",
+    "3": "L-002 TALLY IS STILL ONE OF THREE. Two 23:00 constructions resolved to NEITHER this check. Track the 23:00 long (entry 766.85, stop 758.55, target 780.90) and the 23:00 short (entry 766.74, stop 780.90, target 757.90) - both are still live and either could resolve by 18:00Z.",
+    "4": "ETHUSDT REMAINS OUT ON EXECUTION and the bar is now higher, not lower: its bid was unquoted on FIVE OF FIVE samples, including one at the tightest spread of the group. FIVE SAMPLES MINIMUM AGAIN, AND READ QUANTITY BEFORE SPREAD.",
+    "5": "BNB's BID IS THE SIDE THAT MATTERS and it printed 68.6 and 99.1 USDT this check. If BNB is the candidate again, the book samples are a first-class filter, not a formality.",
+    "6": "BTC, SOL, XRP STAY EXCLUDED. Carry forward the XRP finding specifically: ITS SCAN WENT CLEAN BECAUSE THE MEDIAN RANGE EXPANDED, NOT BECAUSE THE 1.6855 PRINT LEFT. The print exits the 24h window at 09-24 04:00Z - between the 02:00 and 09:00 checks. WHEN high24h STOPS READING 1.6855, THAT IS THE WINDOW MOVING, NOT XRP BECOMING READABLE (L-006).",
+    "7": "FUNDING: next settlement 00:00Z = 08:00+08:00, which NO check sits on; 09:00 local is 01:00Z. The forecast test is answered and does not need repeating - four of five are clamped and the exercise is uninformative until that changes.",
+    "8": "SUMMIT AND STATE DINNER ARE TODAY. Anything opened at 02:00 is held through it. Justify THROUGH the event, not around it.",
+    "9": "EVIDENCE HAS NOW PASSED TWICE IN A ROW AND GEOMETRY HAS REFUSED TWICE IN A ROW. That is the pattern to report to the review, not a reason to loosen geometry."
+  },
+
+  "lessons_applied": {
+    "L-001": "APPLIED. Scan run at 5m, 1h, 4h AND daily on all five. BTC excluded a 17th consecutive check (four fresh 5m flags today plus three unmoved 4h prints from 09-21). SOL excluded a 7th (106.67 on both 1h and 4h, still in the live low24h field). XRP excluded - and the reason its scan read clean is recorded as a new L-006 mechanism, not as evidence it became readable. ETH and BNB clean on all four frames.",
+    "L-002": "APPLIED AND DECISIVE FOR AN EIGHTH CONSECUTIVE CHECK. N stated three ways; every construction priced against the setup-defining 0.415%. The construction that cleared the 1.5 floor (net 2.73) did so on a 0.58x N stop and was refused for exactly that reason. Re-test tally NOT advanced: no instance either way this check.",
+    "L-003": "APPLIED, NINTH CONSECUTIVE MATERIAL CHECK, AND THE STRONGEST INSTANCE OF THE EXPERIMENT. Five quotes over 164 seconds; net RR went 0.538 -> 2.73 on a fixed stop purely by drift, with risk shrinking and reward growing from one cause, and that same move broke the lower-high sequence the short rested on. This is the RESCUE form - a construction that had already failed was lifted into an apparent pass. Re-test clock stays at ZERO.",
+    "L-004": "APPLIED AND THE PRIMARY REFUSAL. Span screen run before any ratio: 1.158% available against 1.178% required - refused by 0.020 percentage points. Every path to a 1.5 net target (752.65 at the first entry, 756.65 at the later one) jumps the 09-19 daily low 757.90 into the vacuum above 747.64. The full entry sweep was priced and BOTH ends of L-004's predicted trade-off were observed in live price.",
+    "L-005": "APPLIED WITH FIVE SAMPLES, EIGHTH CONSECUTIVE REFUSAL, AND REFUSES THE TRADE INDEPENDENTLY OF ALL GEOMETRY. BNB's bid - the exact side the short must cross - printed 68.6 and 99.1 USDT on consecutive samples against a 2,500 USDT maximum order. ETH's bid was unquoted on all five. Not one contract held both sides across all five.",
+    "L-006": "APPLIED THREE TIMES. (a) BNB's N collapsed 1.846% -> 0.452% purely because the 14:10Z flush aged out, exactly as the 23:00 note forecast, in the direction that flatters tight stops; priced against the setup-defining bar instead. (b) XRP's artifact scan went clean because the median range expanded, not because the print left - a NEW mechanism for this lesson. (c) Every contract's 24h low is fresh, so the 24h fields moved for a genuine market reason this time, which is recorded as the contrast case. Re-test clock stays at ZERO: a fourth and fifth crossing examined under this rule dissolved.",
+    "no_lesson_was_loosened_reinterpreted_or_overridden": true,
+    "no_rule_or_risk_limit_was_relaxed": true,
+    "nothing_under_reviews_was_read_for_modification_or_modified": true
+  },
+
+  "decision": "no_trade"
+}

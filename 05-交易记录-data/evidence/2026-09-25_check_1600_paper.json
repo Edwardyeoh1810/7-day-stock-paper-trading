@@ -1,0 +1,93 @@
+{
+  "run_id": "2026-09-25_check_1600_paper",
+  "timestamp": "2026-09-25T08:07:13.145388+00:00",
+  "mode": "binance_demo_paper",
+  "live_order_sent": false,
+  "demo_order_sent": false,
+  "decision": {
+    "paper_trading_only": true,
+    "run_id": "2026-09-25_check_1600",
+    "slot": "2026-09-25_check_1600",
+    "slot_scheduled_local": "2026-09-25T16:00:00+08:00",
+    "decided_at_local": "2026-09-25T16:10:00+08:00",
+    "late_run": false,
+    "action": "no_trade",
+    "symbol": "ETHUSDT",
+    "symbol_note": "ETHUSDT is the contract this check analysed, not a contract being traded; a symbol is supplied because the engine rejects symbol: null on no_trade.",
+    "evidence_gate_passed": false,
+    "evidence_categories_supporting_entry": 0,
+    "minimum_required": 2,
+    "research_note": "05-交易记录-data/journal/2026-09-25_check_1600-research.md",
+    "research_evidence": "05-交易记录-data/evidence/2026-09-25_check_1600-research.json",
+    "reason": "Tradable set empty under L-001 (standing exclusion of all five contracts, binding until the daily review changes it); independently the evidence gate reads ZERO categories on ETHUSDT (trend removed: the 09-25 04:00Z 4h bar closed 2671.19 with low 2667.22, breaking the 2676.02 higher low); independently L-005 - ETHUSDT went unquoted on BOTH sides at sweep 2 (bid 37.45 / ask 5.35 USDT).",
+    "thesis": "No entry. Both 4h bars the 09:00 note told this check to read closed have closed. 09-25 00:00Z: O2686.35 H2699.53 L2673.88 C2677.28 - it poked 0.14 above the thrice-rejected 2699.39 ceiling and closed 22 points below it, a failed breakout, and its low 2673.88 was already beneath 2676.02. 09-25 04:00Z: O2677.28 H2683.74 L2667.22 C2671.19 - a close BELOW 2676.02, the threshold the 09:00 note named as removing trend. The four-bar higher-low sequence (2633.31/2640.00/2660.49/2676.02) is broken, so trend is no longer claimable long; it is not claimable short either (one lower low against a higher daily close on 09-24). price_action: the 2699.53 poke-and-reject is a failed breakout that could read short, but a single failed poke with a close still above the 2660s support is one observation, and the tradable set is empty regardless. volume: last-hour 5m quote volume 1.11x the 100-bar median - no expansion. derivatives: funding settled 08:00Z; ETH back at +0.0100% (on the bound again after three unclamped readings), OI 11,908,218,690 vs 11,897,688,432 at 09:00 = +0.09%, flat. market_context: BTC -0.54%, ETH -0.63%, BNB -0.20%, SOL +0.86%, XRP +2.02% on 24h - ETH weakest of five, but 24h figures are rolling-window statistics (L-006) and are not claimed. Gate: 0 of 2. Lessons applied: L-001 (standing exclusion binds; BTC 95,804.10/91,000/90,389.80 4h flags and SOL 106.67 4h flag reproduced by this check's screen; ETH 2850.00, XRP 1.6855 and BNB 780.90/786.18 are recorded exclusions not reproduced by this check's coarser rm>=3x AND w/b>=4x screen - recorded, not relied on, and not a reason to readmit anything; only the review may change L-001). L-002/L-004: no construction priced - with zero categories there is no setup to define a stop or span; N(1h)=N(5h)=0.305% stated. L-003: no ratio to requote. L-005: three sweeps; ETH both sides unquoted at sweep 2, SOL bid 28.8k-87.4k (never a usable multiple), XRP ask 564k at sweep 3; spread cap never fired (widest 7.73 bps SOL). L-006: 24h relative figures not claimed; the ETH 24h high moved 2699.39 -> 2699.53 as a real closed-bar print. L-007: the 09:00 forecast that N would collapse toward 0.10-0.15% across the dead zone was WRONG this time - N(1h) is 0.305%, near the 0.327% binding value, because 06:00Z-08:00Z produced new 0.2-0.3% bars on the move down; recorded as the first failed forecast. No lesson was loosened.",
+    "evidence": [
+      {
+        "category": "trend",
+        "source": "demo-fapi.binance.com /fapi/v1/klines ETHUSDT 4h+1d, read 2026-09-25T08:04Z",
+        "note": "NOT CLAIMED either way - higher-low sequence broken by the 04:00Z close 2671.19 / low 2667.22."
+      },
+      {
+        "category": "price_action",
+        "source": "demo-fapi.binance.com /fapi/v1/klines ETHUSDT 1h/4h",
+        "note": "NOT CLAIMED - failed poke to 2699.53 above 2699.39, single observation; price mid-range 2667-2700."
+      },
+      {
+        "category": "volume",
+        "source": "demo-fapi.binance.com /fapi/v1/klines ETHUSDT 5m",
+        "note": "NOT CLAIMED - last hour 1.11x the 100-bar median."
+      },
+      {
+        "category": "derivatives",
+        "source": "demo-fapi.binance.com /fapi/v1/premiumIndex and /fapi/v1/openInterest",
+        "note": "NOT CLAIMED - funding +0.0100%, next 16:00Z; OI +0.09% vs 09:00."
+      },
+      {
+        "category": "market_context",
+        "source": "demo-fapi.binance.com /fapi/v1/ticker/24hr all five",
+        "note": "NOT CLAIMED - rolling 24h statistics (L-006)."
+      }
+    ],
+    "lessons_applied": [
+      "L-001",
+      "L-002",
+      "L-003",
+      "L-004",
+      "L-005",
+      "L-006",
+      "L-007"
+    ],
+    "position_before": null,
+    "orders_placed": false
+  },
+  "result": {
+    "status": "no_trade",
+    "event": null,
+    "snapshot": {
+      "rules": {
+        "symbol": "ETHUSDT",
+        "tradability": "BUY_SELL",
+        "stepSize": "0.001",
+        "minQty": "0.001",
+        "maxQty": "10000",
+        "minNotional": "20",
+        "maxNotional": null,
+        "tickSize": "0.01"
+      },
+      "quote": {
+        "symbol": "ETHUSDT",
+        "bid": "2674.36",
+        "ask": "2675.10",
+        "bid_size": "0.015",
+        "ask_size": "0.008",
+        "received_at": "2026-09-25T08:07:16.545821+00:00"
+      }
+    }
+  },
+  "state": {
+    "cash_usdt": 5000,
+    "equity_usdt": 5000,
+    "positions": [],
+    "daily_open_risk_usdt": 0
+  }
+}

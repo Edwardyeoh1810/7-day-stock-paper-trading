@@ -1,0 +1,170 @@
+{
+  "run_id": "2026-09-23_check_0200_paper",
+  "timestamp": "2026-09-22T18:10:20.512889+00:00",
+  "mode": "binance_demo_paper",
+  "live_order_sent": false,
+  "demo_order_sent": false,
+  "decision": {
+    "paper_trading_only": true,
+    "action": "no_trade",
+    "symbol": "XRPUSDT",
+    "slot": "2026-09-23_check_0200",
+    "checked_at_local": "2026-09-23T02:09+08:00",
+    "thesis": "NO ENTRY. Account flat, so no manage or close applies. RUN IS ON TIME: slot 02:00 MYT, observation 02:03:59 MYT (18:03:59Z), research sweep 18:05:08Z, requote 18:08:14Z, decision written 02:09 MYT / 18:09Z - nine minutes after the slot, well inside the 45-minute window. An entry was therefore permitted by the clock and is refused on the evidence and the geometry. THE 00:00 NOTE SET THREE TASKS AND ALL THREE ARE ANSWERED, WITH THE LEAD SIGNAL OF THE LAST TWO CHECKS DYING IN THE PROCESS. (1) THE 4H ASCENDING-LOW SEQUENCE IS INTACT AND HAS EXTENDED. The 00:00 note called this the backbone of the entire long case and asked for it to be re-read from scratch after the 1.5633 break. It survived: 4h lows 1.4939 (09-22 04:00Z) -> 1.5142 (08:00Z) -> 1.5306 (12:00Z) -> 1.5475 (16:00Z), four ascending lows, and the 16:00Z 4h bar that made 1.5475 closed at 1.5704 in the upper half of its range. trend is a clean supporting category for the long. (2) THE DERIVATIVES LEG IS GONE - THE SINGLE MOST IMPORTANT FINDING OF THIS CHECK. The 00:00 note named XRPUSDT's deepening funding discount, -0.008393% to -0.016553% in one hour, as 'the single most directional thing on the board' and left the third settlement as the 09:00 read. It did not survive to 09:00. The live predicted rate read -0.000601% at 18:05:08Z and -0.000078% at 18:08:14Z: the discount has decayed 99.5% in roughly two hours and is now indistinguishable from zero. It is still nominally the only negative rate in the complex (ETH +0.010000%, SOL +0.010000%, BTC +0.003891%, BNB +0.001656%), but a -0.0001% rate is not a squeeze signal and I decline to claim it as one. THE SETTLED HISTORY ALSO CORRECTS THE 00:00 NOTE'S FRAMING: the last four settlements are +0.010000% (09-21 16:00Z), -0.006889% (09-22 00:00Z), +0.010000% (08:00Z), -0.017407% (16:00Z) - the sign ALTERNATED twice. That is not a discount 'persisting through breakout, failure and reclaim'; it is an oscillation, and the 00:00 note over-read a two-point trend. XRPUSDT LONG THEREFORE CARRIES TWO SUPPORTING CATEGORIES, NOT THREE: trend and market_context. (3) THE SPAN SCREEN WAS RUN FIRST, BEFORE ANY RATIO, AND IT FAILS ON EVERY CONTRACT. N for XRPUSDT (largest 5m range of the preceding hour) = 0.506% using the 17:00-18:00Z clock hour, 0.447% on the last twelve closed bars; I used the conservative 0.506%. Required clean structural span = 2.5N + ~0.14% round-trip drag = ~1.41%. From 1.5704 the ENTIRE structural span available to a long is 1.5617 (17:00Z 1h low) to 1.5876 (24h high) = 1.659%, and the noise-safe version 1.5475 to 1.5876 = 2.592%. Now run it with the NEAREST structural target as the 00:00 note demanded rather than letting the target float: stop 1.5617 / target 1.5731 pays net 0.058; stop 1.5617 / target 1.5762 pays 0.413; stop 1.5475 / target 1.5762 pays 0.157; stop 1.5475 / target 1.5876 pays 0.655. EVERY NEAREST-TARGET CONSTRUCTION FAILS, MOST OF THEM BY AN ORDER OF MAGNITUDE. EXACTLY ONE CONSTRUCTION CLEARS THE 1.5 FLOOR AND IT IS THE TARGET-STRETCHED ONE: stop 1.5617 (0.554% risk, 1.09x N, so L-002 does NOT reject it) with target 1.5876 pays net 1.724 - and it passes ONLY because 1.5876 sits beyond FOUR intervening 1h highs that have each already rejected within the last five hours (1.5827 at 15:00Z, 1.5762 at 16:00Z, 1.5746 at 17:00Z, 1.5731 at 18:00Z). THE 00:00 NOTE IDENTIFIED TARGET-STRETCHING RETROSPECTIVELY ON FOUR CONSTRUCTIONS AND SENT IT TO THE REVIEW; THIS IS THE FIRST TIME THE SCREEN HAS BEEN APPLIED PROSPECTIVELY TO DISQUALIFY THE CHECK'S OWN BEST CANDIDATE, AND IT IS THE ONLY THING STANDING BETWEEN THIS EXPERIMENT AND A 1.724 ENTRY THAT L-002 WOULD HAVE WAVED THROUGH. L-002 AND L-003 THEN FIRED IN SEQUENCE ON THAT SAME CONSTRUCTION INSIDE 186 SECONDS - THE CLEANEST JOINT DEMONSTRATION OF THE TWO LESSONS SO FAR. Same stop 1.5617, same target 1.5876: at 18:05:08Z (ask 1.5704) risk 0.554% = 1.09x N and net RR 1.724; at 18:08:14Z (ask 1.5680) risk 0.402% = 0.79x N and net RR 2.761. THE RATIO ROSE 60% PURELY BECAUSE PRICE FELL 0.153% ONTO ITS FIXED STOP - L-003 verbatim, fourth reproduction, second consecutive check on the long side - AND THE SAME DRIFT CARRIED THE STOP FROM MARGINALLY NOISE-SAFE (1.09x N) TO SUB-NOISE (0.79x N), SO L-002 NOW REJECTS OUTRIGHT WHAT IT PERMITTED THREE MINUTES EARLIER. L-003 caught the drift; the drift then handed the rejection to L-002. THE PREMISE BROKE IN THE SAME 186 SECONDS: the requote at 1.5678/1.5680 puts price BACK BELOW the 1.5701 pivot for the THIRD time (lost 16:12:58Z, reclaimed, lost again now), so price_action for the long is not merely ambiguous, it is negative. PRICE_ACTION IS COMPRESSION, CLAIMED FOR NEITHER SIDE: five consecutive lower 1h highs (1.5876 -> 1.5827 -> 1.5762 -> 1.5746 -> 1.5731) against rising lows since 16:00Z (1.5475 -> 1.5617 -> 1.5677) - a coil tightening onto the pivot, directionally mute. VOLUME EXAMINED AND EXPLICITLY NOT CLAIMED, FOURTH CONSECUTIVE CHECK: the 1h series is a flat band again (13:00Z 6066.6M, 14:00Z 5707.5M, 15:00Z 5538.9M, 16:00Z 5739.9M, 17:00Z 6009.2M) and the 5m recovery off 1.5617 averaged ~500M against a 350.6M selloff bar - no expansion, no drying up. This finding is now firm; it should stop being re-derived. XRPUSDT SHORT IS THE MIRROR AND FAILS THE EVIDENCE BAR: ONE category (price_action, the five lower highs), with trend against it, market_context against it, and funding now marginally against it too since a short pays a negative rate. One is not two. BNBUSDT SHORT WAS THE ONLY OTHER TWO-CATEGORY CANDIDATE AND FAILS THE SAME SPAN SCREEN PLUS A LIQUIDITY TEST. It has trend (4h lower highs 807.74 -> 800.90 -> 790.66 -> 789.77 -> 792.26 -> 791.56) and market_context (-1.046% over 24h, the ONLY negative of the five against BTC +0.672%, ETH +0.088%, SOL +0.443%, XRP +4.353%). N = 0.263%, required span ~0.80%. Stop above the 792.26 4h swing high = 0.512% risk = 1.95x N, properly noise-safe; nearest target 787.23 pays NEGATIVE net, 785.73 pays 0.348, and only the 782.33 24h low pays 1.191 - STILL SHORT OF 1.5, and already beyond two intervening lows. Tightening the stop to 790.45 (1.07x N) makes 782.33 pay 2.171, which is target-stretching on a barely-noise-safe stop: the same failure as XRPUSDT, on a second contract, in the same check. AND THE BOOK INDEPENDENTLY DISQUALIFIES IT - SEE THE NEW BOOK-INSTABILITY FINDING BELOW. NEW FINDING FOR THE REVIEW - THE DEMO BOOK IS UNSTABLE IN QUANTITY ACROSS THE WHOLE WATCHLIST, NOT JUST IN SPREAD ON BTCUSDT. L-001 records BTCUSDT requoting from 32.59 bps to 1.06 bps in three minutes. The same instability appears in top-of-book SIZE on every contract over 186 seconds: BNBUSDT went from bid 0.16 / ask 0.01 units (an 0.01 BNB touch, about 7.88 USDT, against a 2500 USDT maximum notional) to bid 1107.52 / ask 9203.63, a swing of roughly 7000x, with the spread moving 0.38 -> 5.45 bps; BTCUSDT went from 69.3685 / 186.7960 to 2.8759 / 0.0208; ETHUSDT from 2004.945 / 2432.587 to 451.097 / 2710.768; XRPUSDT's ask side from 19366259 to 30580. A QUOTED SPREAD OF 0.38 bps ON AN 0.01-UNIT TOUCH IS NOT A MEASUREMENT OF ANYTHING, and the 25 bps spread cap cannot see this. Recorded for the review task; I have changed no rule and no limit. ETHUSDT AND SOLUSDT LONGS DECLINED ON EVIDENCE: both pay the maximum +0.010000% funding (crowded long, a long pays at 00:00Z), ETHUSDT's 4h highs descend from 2850 and its low sequence broke at 2716, SOLUSDT's broke at 115.55, and neither has market_context. Zero to one category each. SOLUSDT additionally carries a DATA-QUALITY flag: 24h quote volume 452.5M against 104,697M-137,784M for the other four, a factor of about 250, with six consecutive 5m bars printing an identical 118.11 high (17:30Z-17:55Z) and a spread that moved 0.85 -> 8.48 bps on the requote. ARTIFACT SCAN AT BOTH RESOLUTIONS - NO NEW ARTIFACT ON ANY CONTRACT, SIXTH CONSECUTIVE CLEAN 5m SCAN. ONE CORRECTION TO THE 00:00 NOTE: it listed five contaminated BTCUSDT 1h bars and omitted the 09-21 15:00Z print of 86999.00, which LESSONS L-001 records and which shows a 1.301% upper wick on a 0.131% body, a 9.9x ratio. The 00:00 count should have been SIX. At 02:00 the count is five again because 87888.00 (09-21 12:00Z) has now aged out of the 30-bar 1h window, leaving 86769.40 (13:00Z), 95804.10 (14:00Z), 86999.00 (15:00Z), 91000.00 (19:00Z) and 90389.80 (20:00Z). ETHUSDT's 09-21 15:00Z 2795.00 print still flags on range (2.381% against a 0.647% median) and has not aged out, confirming the 00:00 note's correction 2. BTCUSDT's 24h high field still reads 91000.00 against a real session top of 86534. BTCUSDT EXCLUDED FOR A TENTH CONSECUTIVE CHECK; its spread was 1.60 and 0.47 bps, so the exclusion rests on artifacts alone. L-001 RE-TEST CLOCK: last artifact print 09-21 20:00Z, 22h05m before this decision, so the full artifact-free day lands near 20:00Z / 04:00 MYT, between this check and 09:00. THE EXCLUSION STANDS IN FULL - ONLY THE DAILY REVIEW MAY RETIRE A LESSON. SPREADS ALL INSIDE THE 25 bps CAP AT BOTH SWEEPS (BTC 1.60/0.47, ETH 0.44/1.75, BNB 0.38/5.45, SOL 0.85/8.48, XRP 0.64/1.28), so XRPUSDT's 38.9 bps blowout at 16:12:58Z has fully repaired and item (5) of the 00:00 assignment is answered: the book was not the binding constraint this time. EXTERNAL CORROBORATION: one web search placed XRP at about 1.51-1.56 USD against the demo's 1.5704, so XRPUSDT itself is NOT contaminated, and reported no chaotic or contradictory news and no scheduled event requiring a stop. Spot XRP fund inflows and a roughly 27% monthly outperformance of BTC and ETH are consistent with the market_context relative-strength read but are NOT claimed as a separate news category, which requires a verifiable dated scheduled event. THE NET POSITION: XRPUSDT LONG HAS TWO CATEGORIES AND NO VALID CONSTRUCTION; XRPUSDT SHORT HAS A CONSTRUCTION AND ONE CATEGORY; BNBUSDT SHORT HAS TWO CATEGORIES, NO VALID CONSTRUCTION AND AN UNMEASURABLE BOOK; ETH, SOL AND BTC ARE OUT ON EVIDENCE OR ON L-001. Staying flat is the correct and unforced outcome. LESSONS APPLIED: L-001 applied - BTCUSDT excluded for a tenth check, scan run at BOTH 1h and 5m, which is what caught the 86999.00 omission; L-002 applied and decisive - it converted from permitting the 1.724 construction at 1.09x N to rejecting it at 0.79x N inside 186 seconds; L-003 applied and MATERIAL for a third consecutive check - the 186-second requote raised the ratio 60% on drift alone, collapsed the funding leg by a further 87%, and broke the pivot premise. No lesson was loosened, reinterpreted or overridden, and no lesson was used to justify an action that a rule forbids. Nothing under reviews/ was read for modification or modified; the 22:00 review task owns that folder. Live trading remains disabled.",
+    "reason": "no_valid_construction_and_insufficient_evidence",
+    "evidence": [
+      {
+        "category": "trend",
+        "source": "demo-fapi.binance.com /fapi/v1/klines XRPUSDT 4h, sweep 18:05:08Z",
+        "note": "4h ascending lows INTACT and extended: 1.4939 (09-22 04:00Z) -> 1.5142 (08:00Z) -> 1.5306 (12:00Z) -> 1.5475 (16:00Z), four ascending lows; 16:00Z 4h bar closed 1.5704 in the upper half of its range. Supports the LONG. Answers the 00:00 note's key question in the affirmative."
+      },
+      {
+        "category": "market_context",
+        "source": "demo-fapi.binance.com /fapi/v1/ticker/24hr all five, sweeps 18:05:08Z and 18:08:14Z",
+        "note": "XRPUSDT +4.763% / +4.353% over 24h against BTC +0.746/+0.672%, ETH +0.338/+0.088%, SOL +0.717/+0.443%, BNB -1.053/-1.046%. Relative strength also holds on the 16:00Z-18:05Z window: XRP +0.486%, SOL +0.409%, ETH +0.189%, BTC +0.098%, BNB -0.253%. Supports the LONG. Corroborated by a web source placing XRP near 1.51-1.56 USD."
+      },
+      {
+        "category": "derivatives",
+        "source": "demo-fapi.binance.com /fapi/v1/premiumIndex and /fapi/v1/fundingRate XRPUSDT, 18:05:08Z and 18:08:14Z",
+        "note": "NOT CLAIMED - THIS LEG DIED THIS CHECK. Predicted rate -0.000601% then -0.000078%, a 99.5% decay from the -0.016553% the 00:00 note called the most directional thing on the board. Settled history ALTERNATES sign: +0.010000% (09-21 16:00Z), -0.006889% (09-22 00:00Z), +0.010000% (08:00Z), -0.017407% (16:00Z). Peers: ETH +0.010000%, SOL +0.010000%, BTC +0.003891%, BNB +0.001656%. Next funding 2026-09-23T00:00:00Z."
+      },
+      {
+        "category": "price_action",
+        "source": "demo-fapi.binance.com /fapi/v1/klines XRPUSDT 1h and 5m, 18:05:08Z and 18:08:14Z",
+        "note": "NOT CLAIMED FOR EITHER SIDE - COMPRESSION. Five consecutive lower 1h highs 1.5876 -> 1.5827 -> 1.5762 -> 1.5746 -> 1.5731 against rising lows 1.5475 -> 1.5617 -> 1.5677. The 1.5701 pivot was lost at 16:12:58Z, reclaimed, and LOST A THIRD TIME on the requote (1.5678/1.5680), so the long's price_action is negative, not neutral."
+      },
+      {
+        "category": "volume",
+        "source": "demo-fapi.binance.com /fapi/v1/klines XRPUSDT 1h and 5m quote volume, 18:05:08Z",
+        "note": "NOT CLAIMED, FOURTH CONSECUTIVE CHECK. Flat 1h band: 6066.6M, 5707.5M, 5538.9M, 5739.9M, 6009.2M (13:00Z-17:00Z). The 5m recovery off 1.5617 averaged about 500M against a 350.6M selloff bar - no expansion and no drying up on either side."
+      }
+    ],
+    "span_screen": {
+      "rule": "risk >= N and reward >= 1.5 x risk, so the clean structural stop-to-target span must be at least 2.5N + ~0.14% round-trip drag (~2.7N)",
+      "XRPUSDT": {
+        "N_percent": 0.506,
+        "required_span_percent": 1.405,
+        "available_structural_span_percent": 1.659,
+        "nearest_target_constructions_net_rr": {
+          "stop_1.5617_target_1.5731": 0.058,
+          "stop_1.5617_target_1.5762": 0.413,
+          "stop_1.5475_target_1.5762": 0.157,
+          "stop_1.5475_target_1.5876": 0.655
+        },
+        "only_passing_construction": "stop 1.5617 / target 1.5876, net 1.724 at 18:05:08Z - DECLINED as target-stretched: 1.5876 sits beyond four intervening 1h highs (1.5827, 1.5762, 1.5746, 1.5731) that have all already rejected",
+        "l003_requote_186s": {
+          "quote1_18:05:08Z_ask_1.5704": {
+            "risk_percent": 0.554,
+            "risk_vs_N": 1.09,
+            "net_rr": 1.724
+          },
+          "quote2_18:08:14Z_ask_1.5680": {
+            "risk_percent": 0.402,
+            "risk_vs_N": 0.79,
+            "net_rr": 2.761
+          },
+          "verdict": "ratio +60% on a 0.153% drift ONTO the fixed stop; the same drift carried the stop from 1.09x N to 0.79x N, so L-002 now rejects what it permitted 186 seconds earlier"
+        }
+      },
+      "BNBUSDT_short": {
+        "N_percent": 0.263,
+        "required_span_percent": 0.798,
+        "noise_safe_stop": "792.26 (4h swing high), 0.512% risk, 1.95x N",
+        "nearest_target_constructions_net_rr": {
+          "target_787.23": -0.023,
+          "target_785.73": 0.348,
+          "target_782.33_24h_low": 1.191
+        },
+        "verdict": "no construction reaches 1.5 on a noise-safe stop; only stop 790.45 (1.07x N) with target 782.33 passes at 2.171, which is target-stretching beyond two intervening lows. Independently disqualified by book instability."
+      }
+    },
+    "book_instability_finding": {
+      "window_seconds": 186,
+      "note": "Top-of-book SIZE is unstable across the whole watchlist, not just spread on BTCUSDT as L-001 records. Recorded for the review task; no rule or limit changed.",
+      "BNBUSDT": {
+        "t1": "bid 0.16 / ask 0.01 units, spread 0.38 bps",
+        "t2": "bid 1107.52 / ask 9203.63, spread 5.45 bps"
+      },
+      "BTCUSDT": {
+        "t1": "bid 69.3685 / ask 186.7960",
+        "t2": "bid 2.8759 / ask 0.0208"
+      },
+      "ETHUSDT": {
+        "t1": "bid 2004.945 / ask 2432.587",
+        "t2": "bid 451.097 / ask 2710.768"
+      },
+      "XRPUSDT": {
+        "t1": "bid 3465619.9 / ask 19366259.0",
+        "t2": "bid 12989181.4 / ask 30580.0"
+      }
+    },
+    "artifact_scan": {
+      "new_artifacts_this_check": "none at either 5m or 1h - sixth consecutive clean 5m scan",
+      "correction_to_00_00_note": "the 00:00 note omitted BTCUSDT 09-21 15:00Z 86999.00 (1.301% upper wick on a 0.131% body, 9.9x) from its list; the 00:00 count should have been SIX contaminated 1h bars, not five",
+      "btcusdt_contaminated_1h_bars_now": [
+        "09-21 13:00Z 86769.40",
+        "09-21 14:00Z 95804.10",
+        "09-21 15:00Z 86999.00",
+        "09-21 19:00Z 91000.00",
+        "09-21 20:00Z 90389.80"
+      ],
+      "aged_out_since_00_00": "09-21 12:00Z 87888.00",
+      "ethusdt": "09-21 15:00Z 2795.00 still flags on RANGE (2.381% vs 0.647% median), has not aged out - confirms the 00:00 note's correction 2",
+      "btcusdt_24h_high_field": "still reads 91000.00 against a real session top of 86534",
+      "l001_retest_clock": "last artifact print 09-21 20:00Z, 22h05m before this decision; the artifact-free day lands near 20:00Z / 04:00 MYT, between this check and 09:00. Exclusion stands in full - only the daily review may retire a lesson."
+    },
+    "spreads_bps": {
+      "sweep_18:05:08Z": {
+        "BTCUSDT": 1.6,
+        "ETHUSDT": 0.44,
+        "BNBUSDT": 0.38,
+        "SOLUSDT": 0.85,
+        "XRPUSDT": 0.64
+      },
+      "requote_18:08:14Z": {
+        "BTCUSDT": 0.47,
+        "ETHUSDT": 1.75,
+        "BNBUSDT": 5.45,
+        "SOLUSDT": 8.48,
+        "XRPUSDT": 1.28
+      },
+      "note": "all inside the 25 bps cap at both sweeps; XRPUSDT's 38.9 bps blowout at 16:12:58Z has fully repaired"
+    },
+    "lessons_applied": [
+      "L-001",
+      "L-002",
+      "L-003"
+    ],
+    "live_trading_enabled": false
+  },
+  "result": {
+    "status": "no_trade",
+    "event": null,
+    "snapshot": {
+      "rules": {
+        "symbol": "XRPUSDT",
+        "tradability": "BUY_SELL",
+        "stepSize": "0.1",
+        "minQty": "0.1",
+        "maxQty": "1000000",
+        "minNotional": "5",
+        "maxNotional": null,
+        "tickSize": "0.0001"
+      },
+      "quote": {
+        "symbol": "XRPUSDT",
+        "bid": "1.5678",
+        "ask": "1.5680",
+        "bid_size": "12978910.9",
+        "ask_size": "24561.3",
+        "received_at": "2026-09-22T18:10:24.947931+00:00"
+      }
+    }
+  },
+  "state": {
+    "cash_usdt": 5000,
+    "equity_usdt": 5000,
+    "positions": [],
+    "daily_open_risk_usdt": 0
+  }
+}

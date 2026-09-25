@@ -1,0 +1,336 @@
+{
+  "samples": [
+    {
+      "at": "2026-09-24T13:04:55Z",
+      "book": {
+        "BTCUSDT": {
+          "bid": 83682.8,
+          "ask": 83684.5,
+          "bidQty": 0.006,
+          "askQty": 615.8528,
+          "bid_notional": 502.1,
+          "ask_notional": 51537333.64,
+          "spread_bps": 0.203
+        },
+        "ETHUSDT": {
+          "bid": 2647.53,
+          "ask": 2650.03,
+          "bidQty": 8276.714,
+          "askQty": 2595.217,
+          "bid_notional": 21912848.62,
+          "ask_notional": 6877402.91,
+          "spread_bps": 9.438
+        },
+        "BNBUSDT": {
+          "bid": 772.85,
+          "ask": 772.94,
+          "bidQty": 837.63,
+          "askQty": 8481.19,
+          "bid_notional": 647362.35,
+          "ask_notional": 6555451.0,
+          "spread_bps": 1.164
+        },
+        "SOLUSDT": {
+          "bid": 114.11,
+          "ask": 114.12,
+          "bidQty": 206.38,
+          "askQty": 2912.97,
+          "bid_notional": 23550.02,
+          "ask_notional": 332428.14,
+          "spread_bps": 0.876
+        },
+        "XRPUSDT": {
+          "bid": 1.4825,
+          "ask": 1.4828,
+          "bidQty": 7996035.6,
+          "askQty": 4986441.4,
+          "bid_notional": 11854122.78,
+          "ask_notional": 7393895.31,
+          "spread_bps": 2.023
+        }
+      }
+    },
+    {
+      "at": "2026-09-24T13:13:31Z",
+      "book": {
+        "BTCUSDT": {
+          "bid": 83669.4,
+          "ask": 83684.0,
+          "bidQty": 18.5566,
+          "askQty": 11.426,
+          "bid_notional": 1552619.59,
+          "ask_notional": 956173.38,
+          "spread_bps": 1.745
+        },
+        "ETHUSDT": {
+          "bid": 2655.83,
+          "ask": 2656.0,
+          "bidQty": 1812.084,
+          "askQty": 6912.411,
+          "bid_notional": 4812587.05,
+          "ask_notional": 18359363.62,
+          "spread_bps": 0.64
+        },
+        "BNBUSDT": {
+          "bid": 773.93,
+          "ask": 774.13,
+          "bidQty": 10059.53,
+          "askQty": 40541.95,
+          "bid_notional": 7785372.05,
+          "ask_notional": 31384739.75,
+          "spread_bps": 2.584
+        },
+        "SOLUSDT": {
+          "bid": 114.26,
+          "ask": 114.27,
+          "bidQty": 253.12,
+          "askQty": 5146.92,
+          "bid_notional": 28921.49,
+          "ask_notional": 588138.55,
+          "spread_bps": 0.875
+        },
+        "XRPUSDT": {
+          "bid": 1.4852,
+          "ask": 1.4855,
+          "bidQty": 16808178.6,
+          "askQty": 15003806.3,
+          "bid_notional": 24963506.86,
+          "ask_notional": 22288154.26,
+          "spread_bps": 2.02
+        }
+      }
+    },
+    {
+      "at": "2026-09-24T13:14:27Z",
+      "book": {
+        "BTCUSDT": {
+          "bid": 83708.3,
+          "ask": 83708.7,
+          "bidQty": 4.1942,
+          "askQty": 96.1267,
+          "bid_notional": 351089.35,
+          "ask_notional": 8046641.09,
+          "spread_bps": 0.048
+        },
+        "ETHUSDT": {
+          "bid": 2655.89,
+          "ask": 2656.02,
+          "bidQty": 0.056,
+          "askQty": 705.828,
+          "bid_notional": 148.73,
+          "ask_notional": 1874693.28,
+          "spread_bps": 0.489
+        },
+        "BNBUSDT": {
+          "bid": 774.2,
+          "ask": 774.3,
+          "bidQty": 6.47,
+          "askQty": 22932.59,
+          "bid_notional": 5009.07,
+          "ask_notional": 17756704.44,
+          "spread_bps": 1.292
+        },
+        "SOLUSDT": {
+          "bid": 114.25,
+          "ask": 114.29,
+          "bidQty": 1378.17,
+          "askQty": 3992.3,
+          "bid_notional": 157455.92,
+          "ask_notional": 456279.97,
+          "spread_bps": 3.5
+        },
+        "XRPUSDT": {
+          "bid": 1.4862,
+          "ask": 1.4863,
+          "bidQty": 5000000.0,
+          "askQty": 412763.6,
+          "bid_notional": 7431000.0,
+          "ask_notional": 613490.54,
+          "spread_bps": 0.673
+        }
+      }
+    },
+    {
+      "at": "2026-09-24T13:15:24Z",
+      "book": {
+        "BTCUSDT": {
+          "bid": 83709.8,
+          "ask": 83711.1,
+          "bidQty": 243.7443,
+          "askQty": 0.0286,
+          "bid_notional": 20403786.6,
+          "ask_notional": 2394.14,
+          "spread_bps": 0.155
+        },
+        "ETHUSDT": {
+          "bid": 2655.75,
+          "ask": 2656.02,
+          "bidQty": 0.015,
+          "askQty": 111.763,
+          "bid_notional": 39.84,
+          "ask_notional": 296844.76,
+          "spread_bps": 1.017
+        },
+        "BNBUSDT": {
+          "bid": 774.26,
+          "ask": 774.37,
+          "bidQty": 6.47,
+          "askQty": 2905.42,
+          "bid_notional": 5009.46,
+          "ask_notional": 2249870.09,
+          "spread_bps": 1.421
+        },
+        "SOLUSDT": {
+          "bid": 114.22,
+          "ask": 114.29,
+          "bidQty": 1879.16,
+          "askQty": 3955.67,
+          "bid_notional": 214637.66,
+          "ask_notional": 452093.52,
+          "spread_bps": 6.127
+        },
+        "XRPUSDT": {
+          "bid": 1.4851,
+          "ask": 1.4852,
+          "bidQty": 19097364.3,
+          "askQty": 7949662.7,
+          "bid_notional": 28361495.72,
+          "ask_notional": 11806839.04,
+          "spread_bps": 0.673
+        }
+      }
+    },
+    {
+      "at": "2026-09-24T13:16:21Z",
+      "book": {
+        "BTCUSDT": {
+          "bid": 83714.5,
+          "ask": 83723.0,
+          "bidQty": 77.8067,
+          "askQty": 0.0075,
+          "bid_notional": 6513548.99,
+          "ask_notional": 627.92,
+          "spread_bps": 1.015
+        },
+        "ETHUSDT": {
+          "bid": 2655.46,
+          "ask": 2656.03,
+          "bidQty": 357.47,
+          "askQty": 11961.925,
+          "bid_notional": 949247.29,
+          "ask_notional": 31771231.66,
+          "spread_bps": 2.146
+        },
+        "BNBUSDT": {
+          "bid": 774.46,
+          "ask": 774.73,
+          "bidQty": 6.47,
+          "askQty": 19356.7,
+          "bid_notional": 5010.76,
+          "ask_notional": 14996216.19,
+          "spread_bps": 3.486
+        },
+        "SOLUSDT": {
+          "bid": 114.24,
+          "ask": 114.25,
+          "bidQty": 0.75,
+          "askQty": 0.21,
+          "bid_notional": 85.68,
+          "ask_notional": 23.99,
+          "spread_bps": 0.875
+        },
+        "XRPUSDT": {
+          "bid": 1.4851,
+          "ask": 1.4861,
+          "bidQty": 19096853.4,
+          "askQty": 682322.1,
+          "bid_notional": 28360736.98,
+          "ask_notional": 1013998.87,
+          "spread_bps": 6.731
+        }
+      }
+    }
+  ],
+  "ticker24": {
+    "BTCUSDT": {
+      "lastPrice": "83683.30",
+      "priceChangePercent": "-2.018",
+      "highPrice": "85747.00",
+      "lowPrice": "82980.20",
+      "quoteVolume": "122082924670.84",
+      "weightedAvgPrice": "84151.17"
+    },
+    "ETHUSDT": {
+      "lastPrice": "2650.03",
+      "priceChangePercent": "-2.443",
+      "highPrice": "2722.14",
+      "lowPrice": "2633.31",
+      "quoteVolume": "113675514276.06",
+      "weightedAvgPrice": "2672.15"
+    },
+    "BNBUSDT": {
+      "lastPrice": "772.920",
+      "priceChangePercent": "-0.727",
+      "highPrice": "783.050",
+      "lowPrice": "760.090",
+      "quoteVolume": "103362811788.497",
+      "weightedAvgPrice": "769.243"
+    },
+    "SOLUSDT": {
+      "lastPrice": "114.1100",
+      "priceChangePercent": "-2.236",
+      "highPrice": "117.0700",
+      "lowPrice": "112.6000",
+      "quoteVolume": "462999709.6521",
+      "weightedAvgPrice": "114.5272"
+    },
+    "XRPUSDT": {
+      "lastPrice": "1.4828",
+      "priceChangePercent": "-5.101",
+      "highPrice": "1.5800",
+      "lowPrice": "1.4543",
+      "quoteVolume": "133188133126.7300",
+      "weightedAvgPrice": "1.4981"
+    }
+  },
+  "funding": {
+    "BTCUSDT": {
+      "markPrice": "83684.50000000",
+      "lastFundingRate": "0.00010000",
+      "nextFundingTime": 1790265600000,
+      "indexPrice": "83746.34652174"
+    },
+    "ETHUSDT": {
+      "markPrice": "2650.03000000",
+      "lastFundingRate": "0.00010000",
+      "nextFundingTime": 1790265600000,
+      "indexPrice": "2653.56000000"
+    },
+    "BNBUSDT": {
+      "markPrice": "772.87057317",
+      "lastFundingRate": "0.00000000",
+      "nextFundingTime": 1790265600000,
+      "indexPrice": "772.47208488"
+    },
+    "SOLUSDT": {
+      "markPrice": "114.11000000",
+      "lastFundingRate": "0.00010000",
+      "nextFundingTime": 1790265600000,
+      "indexPrice": "114.20881182"
+    },
+    "XRPUSDT": {
+      "markPrice": "1.48288683",
+      "lastFundingRate": "0.00010000",
+      "nextFundingTime": 1790265600000,
+      "indexPrice": "1.48497273"
+    }
+  },
+  "oi": {
+    "BTCUSDT": "418210804.4663",
+    "ETHUSDT": "11876379527.618",
+    "BNBUSDT": "28103071301.59",
+    "SOLUSDT": "2987373011.65",
+    "XRPUSDT": "15865996661209.4"
+  },
+  "pulled_at": "2026-09-24T13:04:42Z"
+}

@@ -1,0 +1,253 @@
+{
+  "run_id": "2026-09-21_check_2200-research",
+  "slot": "2026-09-21_check_2200",
+  "captured_at_utc": "2026-09-21T14:12Z",
+  "source": "demo-fapi.binance.com public endpoints (read-only): /fapi/v1/bookTicker, /fapi/v1/ticker/24hr, /fapi/v1/premiumIndex, /fapi/v1/klines (5m, 1h, 1d)",
+  "decision": "no_trade",
+  "contracts": {
+    "BTCUSDT": {
+      "bid": 85318.8,
+      "ask": 85450.0,
+      "spread_bps": 15.37,
+      "last": 85319.9,
+      "mark": 85304.35,
+      "pct_24h": 5.673,
+      "high_24h": 95804.1,
+      "high_24h_note": "artifact-contaminated; real intraday high near 85672.80",
+      "low_24h": 80432.7,
+      "funding_pct": 0.002122,
+      "next_funding_utc": "2026-09-21T16:00Z",
+      "status": "excluded - fourth demo price artifact today plus a 36x spread widening since 21:00; no non-artifact daily high above spot in 60 days"
+    },
+    "ETHUSDT": {
+      "bid": 2721.34,
+      "ask": 2723.87,
+      "spread_bps": 9.29,
+      "last": 2729.1,
+      "mark": 2721.86,
+      "pct_24h": 5.674,
+      "high_24h": 2850.0,
+      "high_24h_note": "artifact-contaminated; real intraday high 2741.55",
+      "low_24h": 2574.59,
+      "funding_pct": 0.01,
+      "next_funding_utc": "2026-09-21T16:00Z",
+      "hourly_volume_13Z": 2106222,
+      "hourly_volume_12Z": 2218225,
+      "status": "closest call - required pullback occurred but net reward/risk 1.40 remains below the 1.50 floor"
+    },
+    "BNBUSDT": {
+      "bid": 792.76,
+      "ask": 793.54,
+      "spread_bps": 9.83,
+      "last": 792.76,
+      "mark": 793.15,
+      "pct_24h": 5.043,
+      "high_24h": 797.64,
+      "low_24h": 752.43,
+      "funding_pct": 0.0,
+      "next_funding_utc": "2026-09-21T16:00Z",
+      "status": "no structural target - printed a new 24h and 60-day high of 797.64 at 14:05Z and gave it back to 792.76 inside the same bar"
+    },
+    "SOLUSDT": {
+      "bid": 117.97,
+      "ask": 117.98,
+      "spread_bps": 0.85,
+      "last": 117.98,
+      "mark": 117.95,
+      "pct_24h": 8.818,
+      "high_24h": 118.52,
+      "low_24h": 107.95,
+      "funding_pct": 0.01,
+      "next_funding_utc": "2026-09-21T16:00Z",
+      "status": "no structural target - only contract to extend this hour (+8.82% from +8.25%), printed a new 24h and 60-day high of 118.52 at 14:05Z and gave it back inside the same bar"
+    },
+    "XRPUSDT": {
+      "bid": 1.4819,
+      "ask": 1.4824,
+      "spread_bps": 3.37,
+      "last": 1.4817,
+      "mark": 1.48177,
+      "pct_24h": 7.175,
+      "high_24h": 1.4969,
+      "low_24h": 1.3746,
+      "funding_pct": 0.01,
+      "next_funding_utc": "2026-09-21T16:00Z",
+      "hourly_volume_13Z": 4089988720,
+      "hourly_volume_12Z": 3445568944,
+      "largest_5m_volume_last_70min": {
+        "bar": "2026-09-21T14:05Z",
+        "volume": 519907895,
+        "open": 1.4877,
+        "high": 1.4891,
+        "low": 1.4765,
+        "close": 1.4824,
+        "note": "down bar that broke the 1.4847 range low - expansion confirms the failure, not the move"
+      },
+      "engine_requote_14_14_40Z": {
+        "bid": 1.4804,
+        "ask": 1.4805,
+        "note": "lower still two minutes after the research snapshot"
+      },
+      "status": "failed breakout - back below the 1.4894 swing high of 09-14 and through the 1.4847 four-hour range floor; both triggers named in advance by the 21:00 note failed"
+    }
+  },
+  "carried_forward_conditions_tested": [
+    {
+      "from": "2026-09-21_check_2100-research",
+      "condition": "XRPUSDT: a break AND hold above 1.4969 on expanding volume would supply the price-action trigger",
+      "result": "FAILED - 1.4969 was never revisited and still stands as today's high from the 11:00Z hour"
+    },
+    {
+      "from": "2026-09-21_check_2100-research",
+      "condition": "XRPUSDT: a retest of 1.4847/1.4894 that holds would give a better entry and a wider margin over the floor",
+      "result": "FAILED - the retest did not hold; the 14:05Z 5m bar broke 1.4847 and printed 1.4765, and price is back below 1.4894"
+    },
+    {
+      "from": "2026-09-21_check_2100-research",
+      "condition": "ETHUSDT only works on a pullback toward 2694-2700; do not re-test it higher without re-deriving the stop from structure",
+      "result": "PARTLY MET - ETH pulled back from a 2739.52 ask to 2723.87 (14:05Z low 2718.49). Re-tested with the 2693.00 stop re-verified against the 2694.94 post-breakout low rather than carried with price. Still fails at 1.40 net."
+    },
+    {
+      "from": "2026-09-21_check_2100-research",
+      "condition": "BTC remains excluded while artifacts print",
+      "result": "CONFIRMED - a fourth artifact printed at 13:50Z, and the spread widened from 0.43 to 15.37 bps"
+    }
+  ],
+  "reward_risk_tests": [
+    {
+      "candidate": "long_XRPUSDT",
+      "entry": 1.4824,
+      "entry_basis": "ask",
+      "stop": 1.47,
+      "stop_basis": "below the 1.4710 and 1.4717 post-breakout lows of the 09:00Z and 10:00Z hours",
+      "target": 1.527,
+      "target_basis": "2026-08-24 daily high",
+      "gross_risk": 0.0124,
+      "gross_reward": 0.0446,
+      "cost_estimate_14bps": 0.002075,
+      "net_reward_risk": 3.43,
+      "prior_check_net_reward_risk": 1.58,
+      "passes_floor": true,
+      "rejected": true,
+      "rejection_basis": "Fails the two-independent-evidence-category requirement, and by more than at 21:00. The improvement from 1.58 to 3.43 is spurious: it comes entirely from price falling 0.51% toward a fixed stop and compressing the risk leg, i.e. the market moving against the thesis. Independently sufficient: the 1.4700 stop is 0.84% below the entry while the 14:05Z 5m bar alone spanned 0.85%, so the stop sits inside one bar of the current tape and rests on an exchange that has printed four artifacts today."
+    },
+    {
+      "candidate": "long_ETHUSDT",
+      "entry": 2723.87,
+      "entry_basis": "ask",
+      "stop": 2693.0,
+      "stop_basis": "beyond the 2694.94 post-breakout low and the broken 2700.00 level",
+      "target": 2771.0,
+      "target_basis": "2026-08-21 daily high",
+      "gross_risk": 30.87,
+      "gross_reward": 47.13,
+      "cost_estimate_14bps": 3.8134,
+      "net_reward_risk": 1.4,
+      "prior_check_net_reward_risk": 0.55,
+      "check_2000_net_reward_risk": 1.34,
+      "passes_floor": false,
+      "rejected": true,
+      "rejection_basis": "Below the 1.50 floor. Not rounded up; the stop is not moved to 2700.00 to manufacture the difference, which would place it inside the level whose break defines the setup. The entry producing exactly 1.50 is 2722.68, only 1.19 below the current ask, inside one 5m bar of noise and comparable to the 9.29 bps spread. Volume contracting. Third consecutive check failing on the same arithmetic: 1.34, 0.55, 1.40."
+    },
+    {
+      "candidate": "short_XRPUSDT",
+      "entry": 1.4819,
+      "entry_basis": "bid",
+      "stop": 1.492,
+      "stop_basis": "above the 1.4908 high of the 14:00Z hour (stop above entry for a short)",
+      "target": 1.4717,
+      "target_basis": "post-breakout low of the 10:00Z hour (target below entry for a short)",
+      "gross_risk": 0.0101,
+      "gross_reward": 0.0102,
+      "cost_estimate_14bps": 0.002075,
+      "net_reward_risk": 0.8,
+      "passes_floor": false,
+      "rejected": true,
+      "rejection_basis": "Fails the 1.50 floor outright. Extending the target to 1.4383 would clear the ratio but would require the whole day's 08:00Z impulse to reverse inside the 24-hour limit and is a target invented to satisfy arithmetic. Fails the evidence test regardless: only price_action points down, trend and market_context argue against, and funding at or below baseline on all five means there is no crowded long positioning to squeeze."
+    },
+    {
+      "candidate": "long_SOLUSDT_long_BNBUSDT_long_BTCUSDT",
+      "net_reward_risk": null,
+      "passes_floor": false,
+      "rejected": true,
+      "rejection_basis": "Not computable. A re-verified 60-day daily scan confirms that for all three the only daily high above the current price is today's own (BTC 95804.10 which is itself the artifact, BNB 797.64, SOL 118.52). No structural target exists, so no reward/risk can be computed, and inventing one to clear the floor is prohibited."
+    }
+  ],
+  "overhead_structure_scan_60d": {
+    "method": "/fapi/v1/klines interval=1d limit=60, daily highs above the current ask",
+    "BTCUSDT": ["2026-09-21: 95804.10 (artifact)"],
+    "ETHUSDT": ["2026-08-21: 2771.00", "2026-09-21: 2850.00 (artifact)"],
+    "BNBUSDT": ["2026-09-21: 797.64 (today's own)"],
+    "SOLUSDT": ["2026-09-21: 118.52 (today's own)"],
+    "XRPUSDT": ["2026-09-14: 1.4894", "2026-09-21: 1.4969", "2026-08-24: 1.5270", "2026-08-25: 1.5441", "2026-08-23: 1.5444", "2026-08-22: 1.7000"]
+  },
+  "complex_relative_strength": {
+    "note": "First hour today in which the complex gave back ground rather than extending. Four of five fell against the 21:00 readings.",
+    "pct_24h_now_vs_2100": {
+      "SOLUSDT": [8.818, 8.25],
+      "XRPUSDT": [7.175, 8.16],
+      "ETHUSDT": [5.674, 6.08],
+      "BTCUSDT": [5.673, 5.87],
+      "BNBUSDT": [5.043, 5.15]
+    },
+    "reading": "XRPUSDT went from the second strongest of the five to the weakest in one hour, which is negative for the contract under consideration. SOLUSDT alone extended."
+  },
+  "open_interest_note": "Standing limitation, unchanged: demo-fapi.binance.com does not serve /futures/data/openInterestHist (empty response for every symbol), so the change in open interest is unmeasurable in this environment. The derivatives category reduces in practice to funding rate and next funding time, and cannot be counted toward the two-category requirement on its own. Flagged for the review's attention in PROPOSALS.md; not changed here.",
+  "artifacts_excluded": [
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21T13:50Z 5m, carried into the 13:00Z 1h bar",
+      "price": 86769.4,
+      "new_this_hour": true,
+      "note": "Fourth confirmed artifact of the day, third on BTC. The 5m bar opened 85377.20, closed 85448.00 and printed 86769.40 on 4,072 of volume, a 1.55% upper wick with no counterpart: ETHUSDT in the same window 2730.30 to 2737.29 with a 2741.55 high (+0.16%), SOLUSDT 117.51 to 117.91 with a 118.13 high, XRPUSDT 1.4894 to 1.4906 with a 1.4950 high. Carries into the 13:00Z 1h bar as a 1.66% upper wick against a 0.06% body (open 85353.30, close 85405.00). Excluded from all levels."
+    },
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21T09:00Z 1h",
+      "price": 95804.1,
+      "new_this_hour": false,
+      "note": "Carried forward from the 12:00, 20:00 and 21:00 checks. 13.21% upper wick against a 1.04% body. Still contaminates the 24h high field."
+    },
+    {
+      "symbol": "BTCUSDT",
+      "candle": "2026-09-21T12:00Z 1h",
+      "price": 87888.0,
+      "new_this_hour": false,
+      "note": "Carried forward, confirmed at the 21:00 check. 2.97% upper wick against a 0.73% body."
+    },
+    {
+      "symbol": "ETHUSDT",
+      "candle": "2026-09-21T09:00Z 1h",
+      "price": 2850.0,
+      "new_this_hour": false,
+      "note": "Carried forward. 4.75% upper wick against a 0.90% body printing an exact round 2850.00. Contaminates the 24h and daily high fields, which read 2850.00 against a real intraday high of 2741.55. The 2771.00 level used in the ETH reward/risk test is the 2026-08-21 daily high and is unaffected."
+    }
+  ],
+  "new_artifacts_this_hour": {
+    "count": 1,
+    "symbols": ["BTCUSDT"],
+    "scan": "Last fourteen 1h bars on all five contracts. No bar on ETHUSDT, BNBUSDT, SOLUSDT or XRPUSDT shows a wick exceeding 1.5%. XRPUSDT, the contract worked through this check, has produced no artifact at any point today."
+  },
+  "book_quality_note": {
+    "symbol": "BTCUSDT",
+    "spread_bps_2100": 0.43,
+    "spread_bps_2200": 15.37,
+    "limit_bps": 25,
+    "note": "Not an artifact but an independent sign that this contract's book is not behaving: a 36-fold widening in one hour, consuming 61% of the spread limit, while the other four sit between 0.85 and 9.83 bps."
+  },
+  "timing_check": {
+    "slot_scheduled_local": "2026-09-21T22:00+08:00",
+    "observation_run_local": "2026-09-21T22:10+08:00",
+    "decision_submitted_local": "2026-09-21T22:14+08:00",
+    "minutes_after_slot": 14,
+    "late": false
+  },
+  "lessons_applied": "None available: 05-交易记录-data/reviews/LESSONS.md records no lessons yet because the experiment has no closed trades. The 22:00 daily review owns that folder and may be running concurrently; nothing under reviews/ was read for writing or modified. The guidance carried forward is the 21:00 research note's next-task focus, followed item by item and recorded under carried_forward_conditions_tested.",
+  "engine_result": {
+    "run_id": "2026-09-21_check_2200_paper",
+    "status": "no_trade",
+    "live_order_sent": false,
+    "event": null,
+    "demo_api_verified": true
+  }
+}
